@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/materialize.min.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png" />
+    <link
+      rel="shortcut icon"
+      href="../img/icons/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <meta name="apple-mobile-web-app-status-bar" content="9e2123" />
+    <meta name="theme-color" content="#ee6f72" />
+
+    <title>Getmoco</title>
+  </head>
+  <body>
+    <main class="container row center-align">
+      <div class="col s10 m6 push-m3 push-s1">
+        <img src="" alt="Getmoco Logo" />
+        <h1>Error</h1>
+        <p>
+          Sorry, you've made an invalid request. Please go back or logout and
+          try again.
+        </p>
+        <a class="btn" href="/">Back to Home</a>
+        <br />
+        <a class="btn btn-small red logout">Logout</a>
+      </div>
+    </main>
+
+    <!-- ? Firebase v.8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDFXGl864Z-Qq2zzprT9VDZFK9K5iQSPIk",
+        authDomain: "getmoco-sca.firebaseapp.com",
+        projectId: "getmoco-sca",
+        storageBucket: "getmoco-sca.appspot.com",
+        messagingSenderId: "351174281270",
+        appId: "1:351174281270:web:dad92b8ed2a41eaa583097",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+      const storage = firebase.storage();
+      const storageRef = storage.ref();
+
+      db.settings({ timestampsInSnapshots: true });
+    </script>
+    <script src="../js/app.js"></script>
+    <script src="../js/db.js"></script>
+    <script src="../js/ui.js"></script>
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+
+    <script>
+      // * Auth Status
+      auth.onAuthStateChanged((user) => {
+        //console.log(user);
+
+        if (user) {
+          logout();
+        } else {
+          window.location.href = "/";
+        }
+      });
+    </script>
+  </body>
+</html>

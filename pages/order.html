@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../css/materialize.min.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png" />
+    <link
+      rel="shortcut icon"
+      href="../img/icons/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <meta name="apple-mobile-web-app-status-bar" content="9e2123" />
+    <meta name="theme-color" content="#ee6f72" />
+
+    <title>Getmoco</title>
+  </head>
+  <body>
+    <!-- * Main-->
+    <main class="" style="display: none">
+      <!-- ? Nav & Sidenav -->
+      <div class="navbar-fixed">
+        <nav class="z-depth-0 teal">
+          <div class="nav-wrapper container">
+            <ul>
+              <li class="left">
+                <a class="cancel-pin-location waves-effect">
+                  <i class="material-icons left">arrow_back</i>
+                  Cancel
+                </a>
+              </li>
+              <li class="right">
+                <a
+                  class="next-back-customer waves-effect modal-trigger"
+                  href="#weight_modal"
+                  onclick="checkWeightServiceFee(orderID)"
+                  style="display: none"
+                >
+                  <i class="material-icons right">arrow_forward</i>
+                  Next
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <!-- * Content -->
+      <div class="container">
+        <h4 class="center-align">Items List</h4>
+        <div class="row">
+          <div class="col s12 m4 grey lighten-3">
+            <ul class="collapsible">
+              <li class="active">
+                <div class="collapsible-header">
+                  <i class="material-icons">location_on</i>
+                  Location Details
+                </div>
+                <div class="collapsible-body">
+                  <h6><strong>Address</strong></h6>
+                  <p class="address"></p>
+                  <h6><strong>Landmark</strong></h6>
+                  <p class="landmark"></p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="col s12 m8 teal lighten-3">
+            <ul class="collapsible order-items"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ? Floating button -->
+      <div class="fixed-action-btn">
+        <a
+          onclick="getElementById('add-item-form').reset(); showPriceStoreLimit()"
+          class="btn-floating btn-large teal modal-trigger tooltipped"
+          href="#add_item_modal"
+          data-position="left"
+          data-tooltip="List New Item"
+        >
+          <i class="large material-icons">mode_edit</i>
+        </a>
+      </div>
+    </main>
+
+    <!-- Modal Structure -->
+    <div id="weight_modal" class="modal">
+      <div class="modal-content">
+        <div class="">
+          <div class="row">
+            <div class="col s12">
+              <div class="card">
+                <form id="weight-form">
+                  <div class="card-content">
+                    <h6><strong>Total Weight</strong></h6>
+                    <p class="center-align">
+                      <span class="weight-value">0</span> kg
+                    </p>
+                    <p class="range-field">
+                      <input
+                        type="range"
+                        id="weight-range"
+                        min="0"
+                        max="20"
+                        value="0"
+                        oninput="changeWeightPriceValue()"
+                      />
+                    </p>
+                    <h6><strong>Change For</strong></h6>
+                    <div class="input-field">
+                      <input
+                        id="change"
+                        type="number"
+                        class="validate change"
+                        name="change"
+                        step="0.01"
+                        min="0"
+                        placeholder="Ex: 500, 1000, 1500, 2000"
+                        required
+                      />
+                    </div>
+                    <p class="orange-text text-darken-3 left-align">
+                      Note: <br />
+                      - Please be advised that the payment is cash on delivery.
+                    </p>
+                  </div>
+                  <div class="card-action col s12">
+                    <button
+                      class="waves-effect waves-light btn-small col s6 push-s3"
+                      type="submit"
+                    >
+                      Proceed
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="add_item_modal" class="modal add-item">
+      <div class="modal-content">
+        <h4>List Item</h4>
+        <form id="add-item-form">
+          <div class="center-align">
+            <div class="input-field">
+              <input id="store" type="text" class="validate" name="store" />
+              <label for="store">Store Name (Optional)</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="product"
+                type="text"
+                class="validate"
+                name="product"
+                required
+              />
+              <label for="product">Product Name</label>
+            </div>
+            <div class="input-field">
+              <textarea
+                id="productDesc"
+                name="productDesc"
+                class="materialize-textarea"
+              ></textarea>
+              <label for="productDesc">Product Description (Optional)</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="quantity"
+                type="number"
+                class="validate"
+                name="quantity"
+                min="0"
+                required
+              />
+              <label for="quantity">Quantity</label>
+            </div>
+            <div class="input-field">
+              <textarea
+                id="note"
+                name="note"
+                class="materialize-textarea"
+              ></textarea>
+              <label for="note">Note (Optional)</label>
+            </div>
+            <span
+              class="helper-text error red-text"
+              data-error=""
+              data-success=""
+            >
+            </span>
+            <button
+              class="btn btn-large waves-effect waves-light"
+              type="submit"
+            >
+              <i class="material-icons right large">add_circle</i>
+              Submit
+            </button>
+            <p class="orange-text text-darken-3 left-align">
+              Note: <br />
+              - Total price of all items has a limit of &#8369;<span
+                class="price-limit"
+              ></span
+              >.
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="edit_item_modal" class="modal edit-item">
+      <div class="modal-content">
+        <h4>Update Item</h4>
+        <form id="edit-item-form">
+          <div class="center-align">
+            <div class="input-field">
+              <input id="editStore" type="text" class="validate" name="store" />
+              <label for="editStore">Store Name (Optional)</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="editproduct"
+                type="text"
+                class="validate product"
+                name="product"
+                required
+              />
+              <label for="editproduct">Product Name</label>
+            </div>
+            <div class="input-field">
+              <textarea
+                id="editProdDesc"
+                name="productDesc"
+                class="materialize-textarea productDesc"
+              ></textarea>
+              <label for="editProdDesc">Product Description (Optional)</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="editquantity"
+                type="text"
+                class="validate quantity"
+                name="quantity"
+                required
+              />
+              <label for="editquantity">Quantity</label>
+            </div>
+            <div class="input-field">
+              <textarea
+                id="editnote"
+                name="note"
+                class="materialize-textarea note"
+              ></textarea>
+              <label for="editnote">Note (Optional)</label>
+            </div>
+            <span
+              class="helper-text error red-text"
+              data-error=""
+              data-success=""
+            >
+            </span>
+            <button
+              class="btn btn-large waves-effect waves-light"
+              type="submit"
+            >
+              <i class="material-icons right large">check_circle</i>
+              Update
+            </button>
+            <p class="orange-text text-darken-3 left-align">
+              Note: <br />
+              - Total price of all items has a limit of &#8369;<span
+                class="price-limit"
+              ></span
+              >.
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ? Loading Screen -->
+    <div
+      class="loading"
+      style="
+        position: fixed;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      "
+    >
+      <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-teal-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Firebase v.8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDFXGl864Z-Qq2zzprT9VDZFK9K5iQSPIk",
+        authDomain: "getmoco-sca.firebaseapp.com",
+        projectId: "getmoco-sca",
+        storageBucket: "getmoco-sca.appspot.com",
+        messagingSenderId: "351174281270",
+        appId: "1:351174281270:web:dad92b8ed2a41eaa583097",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+      const storage = firebase.storage();
+      const storageRef = storage.ref();
+
+      db.settings({ timestampsInSnapshots: true });
+    </script>
+    <script src="../js/app.js"></script>
+    <script src="../js/db.js"></script>
+    <script src="../js/ui.js"></script>
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+
+    <!-- 
+      ! Authentication Status 
+    -->
+    <script>
+      let customerID = "";
+      let orderID = "";
+      let orderItemID = "";
+
+      // * Auth Status
+      auth.onAuthStateChanged((user) => {
+        //console.log(user);
+
+        if (user) {
+          customerID = user.uid;
+
+          // Account Type
+          db.collection("getmoco_users")
+            .doc(customerID)
+            .get()
+            .then((doc) => {
+              const type = doc.data().type;
+
+              db.collection("getmoco_orders")
+                .where("status", "in", ["current"])
+                .where("customerID", "==", customerID)
+                .get()
+                .then((querySnapshot) => {
+                  querySnapshot.forEach((doc2) => {
+                    // doc2.data() is never undefined for query doc snapshots
+                    // console.log(doc2.id, " => ", doc2.data());
+                    const id = doc2.id;
+
+                    return (orderID = id);
+                  });
+                })
+                .then(() => {
+                  if (type === "admin")
+                    window.location.href = "/pages/admin.html";
+                  else if (type === "driver")
+                    window.location.href = "/pages/driver.html";
+                  else if (type === "user" && orderID !== "") {
+                    setupPageLoading();
+                    cancelPinLocation(customerID, orderID, type);
+                    nextBackCustomer(orderID, "waiting");
+                    setupLocPlaceAdd(customerID);
+                    setupItemsList(customerID, orderID);
+                    addOrderItem(customerID, orderID);
+                    modifyOrderItem();
+                    editOrderItem();
+                  } else {
+                    window.location.href = "/pages/home.html";
+                  }
+                })
+                .catch((error) => {
+                  console.log(error.message);
+                });
+            });
+        } else window.location.href = "/";
+      });
+    </script>
+  </body>
+</html>

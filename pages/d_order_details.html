@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../css/materialize.min.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png" />
+    <link
+      rel="shortcut icon"
+      href="../img/icons/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <meta name="apple-mobile-web-app-status-bar" content="9e2123" />
+    <meta name="theme-color" content="#ee6f72" />
+
+    <title>Getmoco</title>
+  </head>
+  <body>
+    <!-- * Main-->
+    <main class="" style="display: none">
+      <!-- ? Nav & Sidenav -->
+      <div class="navbar-fixed">
+        <nav class="z-depth-0 teal">
+          <div class="nav-wrapper container">
+            <ul>
+              <li class="left">
+                <a
+                  class="next-back-customer waves-effect"
+                  onclick="backToOrdersList(locationID, 'driver')"
+                >
+                  <i class="material-icons left">arrow_back</i>
+                  Orders
+                </a>
+              </li>
+              <li class="right">
+                <a
+                  class="waves-effect modal-trigger"
+                  href="#report_modal"
+                  onclick="resetReportForm()"
+                >
+                  <i class="material-icons right">report</i>
+                  Report
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <!-- * Content -->
+      <div class="container">
+        <div class="items-list">
+          <br />
+          <div class="row">
+            <div class="col s12 m4 grey lighten-3">
+              <ul class="collapsible">
+                <li class="active">
+                  <div class="collapsible-header">
+                    <i class="material-icons">location_on</i>
+                    Location Details
+                  </div>
+                  <div class="collapsible-body">
+                    <h6><strong>Address</strong></h6>
+                    <p class="address"></p>
+                    <h6><strong>Landmark</strong></h6>
+                    <p class="landmark"></p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="col s12 m8 teal lighten-3">
+              <ul class="collapsible order-items"></ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="payment-user">
+          <div class="row">
+            <div class="col s12 m8 grey lighten-2 push-m2">
+              <div class="card">
+                <div class="card-content">
+                  <span class="card-title">
+                    Order ID: <span class="order-id"></span>
+                  </span>
+                  <div class="row">
+                    <div class="col s6">
+                      <div class="col s6">Total Weight:</div>
+                      <div class="col s6">
+                        <span class="totalWeight">0</span> kg
+                      </div>
+                    </div>
+                    <div class="col s6">
+                      <div class="col s6">Items Price:</div>
+                      <div class="col s6">
+                        &#8369;&nbsp;<span class="itemsPrice">0.00</span>
+                      </div>
+                    </div>
+                    <div class="col s6">
+                      <div class="col s6">Total Distance:</div>
+                      <div class="col s6">
+                        <span class="totalDistance">0</span> km
+                      </div>
+                    </div>
+                    <div class="col s6">
+                      <div class="col s6">Service Fee:</div>
+                      <div class="col s6">
+                        &#8369;&nbsp;<span class="serviceFee">0.00</span>
+                      </div>
+                    </div>
+                    <hr class="col s12" />
+                    <div class="col s12">
+                      <div class="col s6"><strong>Total Price:</strong></div>
+                      <div class="col s6">
+                        <strong>
+                          &#8369;&nbsp;<span class="totalItemsPrice">0.00</span>
+                        </strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col s12 m8 push-m2 grey lighten-2">
+              <ul class="collapsible">
+                <li class="">
+                  <div class="collapsible-header">
+                    <i class="material-icons">account_box</i>
+                    Getmoco Customer
+                  </div>
+                  <div class="collapsible-body">
+                    <ul class="collection">
+                      <li class="collection-item avatar">
+                        <img
+                          src="/img/default-user.jpg"
+                          alt=""
+                          class="circle user-image materialboxed"
+                        />
+                        <p>Customer ID: <span class="user-id"></span></p>
+                        <p>Name: <span class="user-name"></span></p>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-status">
+          <div class="row">
+            <div class="col s12 m8 teal lighten-3 push-m2">
+              <div class="card">
+                <div class="card-content">
+                  <span class="card-title">
+                    Order Status: <span class="shipment-status"></span>
+                  </span>
+                  <h6 class="teal-text">Shipment Time:</h6>
+                  <p class="shipment"></p>
+                  <h6 class="teal-text">Delivered Time:</h6>
+                  <p class="delivered"></p>
+                  <h6 class="teal-text">Received Time:</h6>
+                  <p class="received"></p>
+                  <hr style="display: none" />
+                  <div class="center-align" style="display: none">
+                    <button
+                      class="btn waves-effect waves-light teal receive-button"
+                      onclick="//setAsReceived(true, orderID, locationID); this.disabled = 'true'"
+                      style="display: none"
+                    >
+                      Order Received
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ? Report Modal Structure -->
+    <div id="report_modal" class="modal">
+      <div class="modal-content grey lighten-2">
+        <div class="card">
+          <div class="card-content">
+            <h5 class="center-align card-title">Report Customer</h5>
+            <p>Please tell us what happened with this Getmoco Customer.</p>
+            <form id="report_form" class="center-align">
+              <div class="input-field">
+                <textarea
+                  id="report"
+                  name="report"
+                  class="materialize-textarea"
+                  required
+                ></textarea>
+                <label for="report">Report Details</label>
+              </div>
+              <span class="error helper-text"></span>
+              <button class="waves-effect waves-light btn red report-button">
+                Send Report
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Loading Screen -->
+    <div
+      class="loading"
+      style="
+        position: fixed;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      "
+    >
+      <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-teal-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Firebase v.8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDFXGl864Z-Qq2zzprT9VDZFK9K5iQSPIk",
+        authDomain: "getmoco-sca.firebaseapp.com",
+        projectId: "getmoco-sca",
+        storageBucket: "getmoco-sca.appspot.com",
+        messagingSenderId: "351174281270",
+        appId: "1:351174281270:web:dad92b8ed2a41eaa583097",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+      const storage = firebase.storage();
+      const storageRef = storage.ref();
+
+      db.settings({ timestampsInSnapshots: true });
+    </script>
+    <script src="../js/app.js"></script>
+    <script src="../js/db.js"></script>
+    <script src="../js/ui.js"></script>
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+
+    <!-- 
+      ! Authentication Status 
+    -->
+    <script>
+      let driverID = "";
+      let locationID = "";
+      let customerID = "";
+      let orderID = "";
+
+      // * Auth Status
+      auth.onAuthStateChanged((user) => {
+        //console.log(user);
+
+        if (user) {
+          driverID = user.uid;
+
+          // Account Type
+          db.collection("getmoco_users")
+            .doc(driverID)
+            .get()
+            .then((doc) => {
+              const type = doc.data().type;
+
+              db.collection("getmoco_locations")
+                .where("status", "in", ["delivered"])
+                .where("request", "==", "checkNow")
+                .where("driverID", "==", driverID)
+                .get()
+                .then((querySnapshot) => {
+                  querySnapshot.forEach((doc2) => {
+                    // doc2.data() is never undefined for query doc snapshots
+                    // console.log(doc2.id, " => ", doc2.data());
+                    const id = doc2.id;
+                    const customer = doc2.data().customerID;
+                    const order = doc2.data().orderID;
+
+                    return (
+                      (orderID = order),
+                      (customerID = customer),
+                      (locationID = id)
+                    );
+                  });
+                })
+                .then(() => {
+                  if (type === "admin")
+                    window.location.href = "/pages/admin.html";
+                  else if (type === "user")
+                    window.location.href = "/pages/home.html";
+                  else if (type === "driver" && locationID !== "") {
+                    setupPageLoading();
+                    reportUser(
+                      "customer", // reportedUser
+                      "driver", // reportedBy
+                      "d_order_details" // report page
+                    );
+                    setOrderItems(customerID, orderID);
+                    setupOrderDetails(orderID, "driver");
+                  } else {
+                    window.location.href = "/pages/driver.html";
+                  }
+                })
+                .catch((error) => {
+                  console.log(error.message);
+                });
+            });
+        } else window.location.href = "/";
+      });
+    </script>
+  </body>
+</html>

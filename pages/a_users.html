@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../css/materialize.min.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png" />
+    <link
+      rel="shortcut icon"
+      href="../img/icons/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <meta name="apple-mobile-web-app-status-bar" content="9e2123" />
+    <meta name="theme-color" content="#ee6f72" />
+
+    <title>Getmoco</title>
+  </head>
+  <body>
+    <!-- * Main-->
+    <main class="" style="display: none">
+      <!-- ? Nav & Sidenav -->
+      <div class="navbar-fixed">
+        <nav class="z-depth-0 teal">
+          <div class="nav-wrapper container">
+            <a href="/pages/admin.html" class="brand-logo hide-on-med-and-down">
+              <img
+                src="/img/getmoco.png"
+                alt="Getmoco"
+                style="width: 180px; margin-top: 10px"
+              />
+            </a>
+            <a data-target="sidenav" class="sidenav-trigger">
+              <i class="material-icons">menu</i>
+            </a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <li>
+                <a class="" href="/pages/a_sales_report.html"> Sales </a>
+              </li>
+              <li class="active">
+                <a class="" href="/pages/a_users.html"> Users </a>
+              </li>
+              <li><div class="divider"></div></li>
+              <li>
+                <a class="" href="/pages/a_profile.html"> Profile </a>
+              </li>
+              <li>
+                <a class="" href="/pages/a_settings.html"> Matrix </a>
+              </li>
+              <li>
+                <a class="logout">Log out</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <ul id="sidenav" class="sidenav">
+        <li>
+          <div class="user-view">
+            <a href="/pages/a_profile.html">
+              <div class="background teal darken-2"></div>
+              <img
+                class="circle responsive-img user-image"
+                src="/img/default-user.jpg"
+              />
+              <span class="white-text name"></span>
+              <span class="white-text email"></span>
+            </a>
+          </div>
+        </li>
+        <li><a href="/pages/admin.html">Getmoco</a></li>
+        <li><div class="divider"></div></li>
+        <li>
+          <a class="" href="/pages/a_sales_report.html"> Sales </a>
+        </li>
+        <li class="active">
+          <a class="" href="/pages/a_users.html"> Users </a>
+        </li>
+        <li>
+          <a class="" href="/pages/a_settings.html"> Matrix </a>
+        </li>
+        <li><a class="waves-effect logout">Log out</a></li>
+      </ul>
+
+      <!-- * Content -->
+      <div class="container center-align">
+        <div class="row">
+          <div class="input-field col s10 filter-users">
+            <select onchange="setupUsersList()" class="">
+              <option value="all, type, ==, user, lname, asc">
+                Customers (All)
+              </option>
+              <option
+                value="verified, ==, toVerify, type, ==, user, lname, asc"
+              >
+                Customers (To Verify)
+              </option>
+              <option
+                value="verified, ==, unverified, type, ==, user, lname, asc"
+              >
+                Customers (Unverified)
+              </option>
+              <option
+                value="verified, ==, verified, type, ==, user, lname, asc"
+              >
+                Customers (Verified)
+              </option>
+              <!-- <option value="reportedUserType, ==, user, created, desc">
+                Customers (Reports)
+              </option> -->
+              <option value="all, type, ==, driver, lname, asc">
+                Drivers (All)
+              </option>
+              <option
+                value="verified, ==, toVerify, type, ==, driver, lname, asc"
+              >
+                Drivers (To Verify)
+              </option>
+              <option
+                value="verified, ==, unverified, type, ==, driver, lname, asc"
+              >
+                Drivers (Unverified)
+              </option>
+              <option
+                value="verified, ==, verified, type, ==, driver, lname, asc"
+              >
+                Drivers (Verified)
+              </option>
+              <!-- <option value="reportedUserType, ==, driver, created, desc">
+                Drivers (Reports)
+              </option> -->
+            </select>
+          </div>
+          <br />
+          <div class="col s2">
+            <button
+              class="waves-effect waves-light btn-small col s12 refresh-button"
+              onclick="setupUsersList()"
+            >
+              <i class="material-icons right">refresh</i>
+              <span class="hide-on-med-and-down">Refresh</span>
+            </button>
+          </div>
+          <div class="input-field col s12 search">
+            <i class="material-icons prefix">search</i>
+            <input
+              id="search"
+              type="text"
+              class="validate"
+              oninput="searchUser(this.value)"
+            />
+            <label for="search">Search (Lastname)</label>
+          </div>
+        </div>
+        <table class="responsive-table striped centered table-main">
+          <thead class="table-head">
+            <tr>
+              <th>ID</th>
+            </tr>
+          </thead>
+          <tbody class="table-body">
+            <tr>
+              <td>123456789</td>
+            </tr>
+          </tbody>
+        </table>
+        <span class="no-result"></span>
+      </div>
+    </main>
+
+    <!-- Modal Structure -->
+    <div id="user_modal" class="modal">
+      <div class="modal-content">
+        <ul class="tabs tabs-fixed-width tab-demo z-depth-1">
+          <li class="tab">
+            <a class="tab-profile active" href="#tab-profile">Profile</a>
+          </li>
+          <li class="tab">
+            <a class="tab-orders" href="#tab-orders">Orders</a>
+          </li>
+          <li class="tab">
+            <a class="tab-reports" href="#tab-reports">Reports</a>
+          </li>
+          <li class="tab">
+            <a class="tab-verification" href="#tab-verification">
+              Verification
+            </a>
+          </li>
+          <li class="tab">
+            <a class="tab-status" href="#tab-status">Status</a>
+          </li>
+        </ul>
+
+        <div id="tab-profile" class="">
+          <br /><br />
+          <div class="row">
+            <div class="col s8 push-s2 center-align">
+              <div class="col s8 push-s2 m4 push-m4">
+                <img
+                  class="circle responsive-img user-image materialboxed"
+                  src="/img/default-user.jpg"
+                />
+              </div>
+            </div>
+            <div class="col s12 center-align">
+              <h5 class="name">First Last</h5>
+            </div>
+            <div class="col s12"><br /><br /></div>
+            <div class="col s12">
+              <a
+                href="#edit-account-modal"
+                class="modal-trigger right"
+                onclick="document.querySelector('#edit-account-form .helper-text.error').innerHTML = ''"
+              >
+                Edit Account
+              </a>
+              <br /><br />
+              <h6><strong>ID:</strong></h6>
+              <p class="user-id"></p>
+              <h6><strong>Full Name:</strong></h6>
+              <p class="name"></p>
+              <h6><strong>Email:</strong></h6>
+              <p class="email"></p>
+              <h6><strong>Contact Number:</strong></h6>
+              <p class="contact"></p>
+              <h6><strong>Address:</strong></h6>
+              <p class="address"></p>
+              <h6><strong>Landmark:</strong></h6>
+              <p class="landmark"></p>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-orders" class="">
+          <select onchange="tabOrderSelect()" class="">
+            <option value="toShip, orderConfirmed, desc">To Ship</option>
+            <option
+              value="completed, orderReceived, ==, false, delivered, desc"
+            >
+              Delivered
+            </option>
+            <option value="completed, orderReceived, ==, true, received, desc">
+              Received
+            </option>
+          </select>
+          <hr />
+          <h6>
+            <strong class="teal-text"
+              >Total <span class="totalType"></span>:</strong
+            >
+          </h6>
+          <p>&#8369;&nbsp;<span class="totalTypeValue">0.00</span></p>
+          <hr />
+          <ul class="collapsible list-orders"></ul>
+        </div>
+
+        <div id="tab-reports" class="">
+          <select onchange="tabReportSelect()" class="">
+            <option value="reportedBy">Submitted</option>
+            <option value="reportedUser">Received</option>
+          </select>
+          <ul class="collapsible list-reports"></ul>
+        </div>
+
+        <div id="tab-verification" class="">
+          <div class="error-req center-align" style="display: none">
+            <i class="material-icons large red-text">report</i>
+            <h5 class="">Error request, Please Try Again Later.</h5>
+          </div>
+          <div class="verified center-align" style="display: none">
+            <h5>User Verification ID</h5>
+            <div class="row">
+              <div class="col s12 m6 push-m3">
+                <div class="card">
+                  <div class="card-content">
+                    <img
+                      src="https://via.placeholder.com/1000.png?text=No+image+is+uploaded"
+                      class="materialboxed"
+                      width="100%"
+                      id="verify-image"
+                    />
+                    <br />
+                    <i class="material-icons large teal-text">verified_user</i>
+                    <h5 class="">The user is already verified.</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="unverified center-align" style="display: none">
+            <i class="material-icons large orange-text">new_releases</i>
+            <h5 class="">The user is not yet verified.</h5>
+          </div>
+          <div class="toVerify center-align" style="display: none">
+            <h5>User Verification ID</h5>
+            <div class="row">
+              <div class="col s12 m6 push-m3">
+                <div class="card">
+                  <div class="card-content">
+                    <img
+                      src="https://via.placeholder.com/1000.png?text=No+image+is+uploaded"
+                      class="materialboxed"
+                      width="100%"
+                      id="verify-image2"
+                    />
+                  </div>
+                  <div class="card-action col s12">
+                    <button
+                      class="waves-effect waves-light btn-small left col s5 red modal-trigger"
+                      href="#reject_id_modal"
+                    >
+                      Reject
+                    </button>
+                    <button
+                      class="waves-effect waves-light btn-small right col s5 modal-trigger"
+                      href="#confirm_id_modal"
+                    >
+                      Confirm
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-status" class="">
+          <div class="card">
+            <div class="card-content">
+              <br />
+              <div class="error-req center-align" style="display: none">
+                <i class="material-icons large red-text">report</i>
+                <h5 class="">Error request, Please Try Again Later.</h5>
+              </div>
+              <div class="disable center-align" style="display: none">
+                <i class="material-icons large red-text">report</i>
+                <h5 class="">The user is disabled.</h5>
+                <p>Since: <span class="date"></span></p>
+              </div>
+              <div class="inactive center-align" style="display: none">
+                <i class="material-icons large orange-text">new_releases</i>
+                <h5 class="">The user is inactive.</h5>
+                <p>Since: <span class="date"></span></p>
+              </div>
+              <div class="active center-align" style="display: none">
+                <i class="material-icons large green-text">verified_user</i>
+                <h5 class="">The user is active.</h5>
+              </div>
+              <div class="center-align">
+                <br />
+                <a href="#edit_status_modal" class="modal-trigger right">
+                  Change Status
+                </a>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Tab Status Modal Structure -->
+    <div id="edit_status_modal" class="modal">
+      <div class="modal-content">
+        <div class="center-align">
+          <h5>Change User Status</h5>
+          <div class="row">
+            <div class="col s12 m6 push-m3">
+              <div class="card">
+                <form>
+                  <div class="card-content">
+                    <p>
+                      <label>
+                        <input
+                          class="with-gap green"
+                          name="status"
+                          type="radio"
+                          value="active"
+                          checked
+                        />
+                        <span class="green-text">Active</span>
+                      </label>
+                    </p>
+                    <p>
+                      <label>
+                        <input
+                          class="with-gap"
+                          name="status"
+                          type="radio"
+                          value="inactive"
+                        />
+                        <span class="orange-text">Inactive</span>
+                      </label>
+                    </p>
+                    <p>
+                      <label>
+                        <input
+                          class="with-gap"
+                          name="status"
+                          type="radio"
+                          value="disabled"
+                        />
+                        <span class="red-text">Disabled</span>
+                      </label>
+                    </p>
+                  </div>
+                  <div class="card-action col s12">
+                    <button
+                      class="waves-effect waves-light btn-small teal change-status-button"
+                    >
+                      Change
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Tab Verify Modal Structure -->
+    <div id="reject_id_modal" class="modal">
+      <div class="modal-content">
+        <div class="center-align">
+          <h5>Reject ID</h5>
+          <div class="row">
+            <div class="col s12">
+              <div class="card">
+                <div class="card-content">
+                  <p>
+                    Note: The ID will not be validated and will require the user
+                    to upload a new ID.
+                  </p>
+                  <br />
+                  <p>Proceed to reject ID?</p>
+                </div>
+                <div class="card-action col s12">
+                  <button
+                    class="waves-effect waves-light btn-small red reject-id-button"
+                  >
+                    Reject
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Tab Verify Modal Structure -->
+    <div id="confirm_id_modal" class="modal">
+      <div class="modal-content">
+        <div class="center-align">
+          <h5>Confirm ID</h5>
+          <div class="row">
+            <div class="col s12">
+              <div class="card">
+                <div class="card-content">
+                  <p>
+                    Note: The ID will be validated and the user will become
+                    verified.
+                  </p>
+                  <br />
+                  <p>Proceed to validate ID and verify user?</p>
+                </div>
+                <div class="card-action col s12">
+                  <button
+                    class="waves-effect waves-light btn-small confirm-id-button"
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Tab Report Modal Structure -->
+    <div id="punish_user_modal" class="modal">
+      <div class="modal-content grey lighten-2">
+        <div class="card">
+          <div class="card-content">
+            <h6 class="center-align card-title">Reported User</h6>
+            <br />
+            <div class="row">
+              <div class="col s12 center-align">
+                <div class="col s6 push-s3 m2 push-m5">
+                  <img
+                    class="circle responsive-img user-image materialboxed"
+                    src="/img/default-user.jpg"
+                  />
+                </div>
+              </div>
+              <div class="col s12 center-align">
+                <h5 class="name">First Last</h5>
+                <p class="user-type-label">User ID:</p>
+                <p><small class="user-id left-align">ID</small></p>
+              </div>
+              <div class="col s12 center-align manage-report" data-id="">
+                <br />
+                <span class="error helper-text"></span>
+                <button
+                  class="waves-effect waves-light btn orange warn-button modal-trigger"
+                  href="#warn_modal"
+                  disabled
+                >
+                  Warn
+                </button>
+                <button
+                  class="waves-effect waves-light btn red disable-button modal-trigger"
+                  href="#disable_modal"
+                  disabled
+                >
+                  Disable
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Tab Report Modal Structure -->
+    <div id="warn_modal" class="modal">
+      <div class="modal-content">
+        <div class="center-align">
+          <h5>Warn Reported User</h5>
+          <div class="row">
+            <div class="col s12">
+              <div class="card">
+                <div class="card-content">
+                  <p>
+                    Note: The user will receive a warning message regarding to
+                    the report received.
+                  </p>
+                  <br />
+                  <p>Proceed to warn user?</p>
+                </div>
+                <div class="card-action col s12">
+                  <button
+                    class="waves-effect waves-light btn orange warn-button"
+                  >
+                    Warn
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Tab Report Modal Structure -->
+    <div id="disable_modal" class="modal">
+      <div class="modal-content">
+        <div class="center-align">
+          <h5>Disable Reported User</h5>
+          <div class="row">
+            <div class="col s12">
+              <div class="card">
+                <div class="card-content">
+                  <p>
+                    Note: The user will receive a disable account message
+                    regarding to the report received and banned from using the
+                    Getmoco app.
+                  </p>
+                  <br />
+                  <p>Proceed to disable user?</p>
+                </div>
+                <div class="card-action col s12">
+                  <button
+                    class="waves-effect waves-light btn red disable-button"
+                  >
+                    Disable
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Tab Profile Modal Structure -->
+    <div id="edit-account-modal" class="modal edit-account">
+      <div class="modal-content center-align">
+        <h5 class="">Edit Information</h5>
+        <form id="edit-account-form">
+          <div class="">
+            <div class="file-field input-field">
+              <div class="btn">
+                <span><i class="material-icons large">insert_photo</i></span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="file-holder"
+                  capture="environment"
+                />
+              </div>
+              <div class="file-path-wrapper">
+                <input
+                  class="file-path validate"
+                  type="text"
+                  placeholder="New Profile Photo"
+                />
+              </div>
+            </div>
+            <div class="input-field">
+              <input
+                id="fname"
+                type="text"
+                class="validate"
+                name="firstName"
+                pattern="[a-zA-Z]{1,}"
+                title="First name only."
+                required
+              />
+              <label for="fname">First Name</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="lname"
+                type="text"
+                class="validate"
+                name="lastName"
+                pattern="[a-z A-Z]{1,}"
+                title="Last name only"
+                required
+              />
+              <label for="lname">Last Name</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="contact"
+                type="tel"
+                class="validate"
+                name="contact"
+                pattern="[0]{1}[9]{1}[0-9]{9}"
+                title="09*********"
+              />
+              <label for="contact">Mobile Number</label>
+            </div>
+
+            <div>
+              <h6 class="left-align"><strong>Address</strong></h6>
+              <div
+                class="input-field"
+                data-id="Romblon, Romblon"
+                style="display: none"
+              >
+                <select class="browser-default" required>
+                  <option value="" selected disabled>Choose Option</option>
+                  <option value="Agbaluto, 5611, 6.4">Agbaluto</option>
+                  <option value="Agbudia, 5500, 6.2">Agbudia</option>
+                  <option value="Agnaga, 5013, 17.2">Agnaga</option>
+                  <option value="Agnay, 5500, 9.7">Agnay</option>
+                  <option value="Agnipa, 5500, 13.7">Agnipa</option>
+                  <option value="Agpanabat, 5500, 17.8">Agpanabat</option>
+                  <option value="Agtongo, 5500, 5.7">Agtongo</option>
+                  <option value="Alad, 2421, ">Alad</option>
+                  <option value="Bagacay, 4407, 1.2">Bagacay</option>
+                  <option value="Cajimos, 5611, 3.3">Cajimos</option>
+                  <option value="Calabogo, 6201, 13">Calabogo</option>
+                  <option value="Capaclan, 4430, 2.2">Capaclan</option>
+                  <option value="Ginablan, 4714, 10.7">Ginablan</option>
+                  <option value="Guimpingan, 7123, 3.8">Guimpingan</option>
+                  <option value="Ilauran, 5500, 16.1">Ilauran</option>
+                  <option value="Lamao, 8000, 10.2">Lamao</option>
+                  <option value="Li-o, 6021, 6.7">Li-o</option>
+                  <option value="Lonos, 4015, 5.4">Lonos</option>
+                  <option value="Lunas, 2623, 14.1">Lunas</option>
+                  <option value="Macalas, 7304, 10.7">Macalas</option>
+                  <option value="Mapula, 5500, 10.2">Mapula</option>
+                  <option value="Palje, 3021, 15.7">Palje</option>
+                  <option value="Sablayan, 5500, 20.2">Sablayan</option>
+                  <option value="Sawang, 4229, 10.7">Sawang</option>
+                  <option value="Tambac, 9403, 12">Tambac</option>
+                  <option value="Barangay IV (Pob.), 6108, 1">
+                    Barangay IV (Pob.)
+                  </option>
+                  <option value="Barangay III (Pob.), 6108, 0.75">
+                    Barangay III (Pob.)
+                  </option>
+                  <option value="Barangay II (Pob.), 6119, 0.45">
+                    Barangay II (Pob.)
+                  </option>
+                  <option value="Barangay I (Pob.), 3113, 0.75">
+                    Barangay I (Pob.)
+                  </option>
+                </select>
+                <label class="active">Town / Barangay</label>
+              </div>
+              <div class="input-field">
+                <input
+                  id="house"
+                  type="number"
+                  class="validate"
+                  name="house"
+                  required
+                />
+                <label for="house">Lot / Block / Phase / House No.</label>
+              </div>
+              <div class="input-field">
+                <input
+                  id="street"
+                  type="text"
+                  class="validate"
+                  name="street"
+                  required
+                />
+                <label for="street">Street</label>
+              </div>
+              <div class="input-field">
+                <input
+                  id="landmark"
+                  type="text"
+                  class="validate"
+                  name="landmark"
+                />
+                <label for="landmark">Landmark</label>
+              </div>
+            </div>
+
+            <hr />
+            <br />
+            <div class="input-field">
+              <input
+                id="icon_email"
+                type="email"
+                class="validate"
+                name="curr_email"
+                placeholder="Enter Current Email Address"
+              />
+              <label for="icon_email">Current Email Address</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="icon_pass"
+                type="password"
+                class="validate"
+                name="curr_password"
+                placeholder="Enter Current Password"
+              />
+              <label for="icon_pass">Current Password</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="icon_email1"
+                type="email"
+                class="validate"
+                name="new_email"
+                placeholder="Enter New Email Address"
+                oninput="newEmailPassLimit(this.value, 'email')"
+              />
+              <label for="icon_email1">New Email Address</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="icon_pass1"
+                type="password"
+                class="validate"
+                name="new_password"
+                placeholder="Enter New Password"
+                oninput="newEmailPassLimit(this.value, 'pass')"
+              />
+              <label for="icon_pass1">New Password</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="icon_pass2"
+                type="password"
+                class="validate"
+                name="new_confirm_password"
+                placeholder="Enter Confirm New Password"
+                oninput="newEmailPassLimit(this.value, 'confirmPass')"
+              />
+              <label for="icon_pass2">Confirm New Password</label>
+            </div>
+            <span class="helper-text error" data-error="" data-success="">
+            </span>
+            <button
+              class="btn btn-large waves-effect waves-light"
+              type="submit"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ? Loading Screen -->
+    <div
+      class="loading"
+      style="
+        position: fixed;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      "
+    >
+      <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-teal-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Firebase v.8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDFXGl864Z-Qq2zzprT9VDZFK9K5iQSPIk",
+        authDomain: "getmoco-sca.firebaseapp.com",
+        projectId: "getmoco-sca",
+        storageBucket: "getmoco-sca.appspot.com",
+        messagingSenderId: "351174281270",
+        appId: "1:351174281270:web:dad92b8ed2a41eaa583097",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+      const storage = firebase.storage();
+      const storageRef = storage.ref();
+
+      db.settings({ timestampsInSnapshots: true });
+    </script>
+    <script src="../js/app.js"></script>
+    <script src="../js/db.js"></script>
+    <script src="../js/ui.js"></script>
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+
+    <!-- TODO: Paypal -->
+    <script src="https://www.paypal.com/sdk/js?client-id=ATa2VjgKDalobWIOxUD0DTNP_Ivf38cLt3RVwB43zzeLvV1pp46FLIyDSuGW80IYZvEjF4tDZTUv7xYj&disable-funding=credit,card"></script>
+
+    <!-- 
+      ! Authentication Status 
+    -->
+    <script>
+      let settingsLoc = "";
+      let setProv = "";
+      let setCity = "";
+      let adminID = "";
+      let userID = "";
+
+      // ? Tab Order
+      let tabOrderUserType = "";
+
+      // ? Tab Report
+      let tabReportID = "";
+
+      // ? Tab G-Wallet
+      let paymentMethod = "Getmoco Wallet";
+      let price = 100;
+      let balance = 0;
+
+      // * Auth Status
+      auth.onAuthStateChanged((user) => {
+        //console.log(user);
+
+        if (user) {
+          adminID = user.uid;
+
+          db.collection("getmoco_users")
+            .doc(adminID)
+            .get()
+            .then((doc) => {
+              const type = doc.data().type;
+
+              if (type === "user") {
+                window.location.href = "/pages/home.html";
+              } else if (type === "driver") {
+                window.location.href = "/pages/driver.html";
+              } else if (type === "admin") {
+                setupPageLoading();
+                setupMenuUI(user);
+                logout();
+                setupUsersList();
+                renderUserInfo();
+                updateUserDetails(); // Tab Profile
+                changeUserStatus(); // Tab Status
+              } else {
+                window.location.href = "/pages/error.html";
+              }
+            });
+        } else window.location.href = "/";
+      });
+    </script>
+  </body>
+</html>

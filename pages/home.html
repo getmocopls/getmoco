@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../css/materialize.min.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png" />
+    <link
+      rel="shortcut icon"
+      href="../img/icons/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <meta name="apple-mobile-web-app-status-bar" content="9e2123" />
+    <meta name="theme-color" content="#ee6f72" />
+
+    <title>Getmoco</title>
+  </head>
+  <body>
+    <!-- * Main-->
+    <main class="" style="display: none">
+      <!-- ? Nav & Sidenav -->
+      <div class="navbar-fixed">
+        <nav class="z-depth-0 teal">
+          <div class="nav-wrapper container">
+            <a href="/pages/home.html" class="brand-logo hide-on-med-and-down">
+              <img
+                src="/img/getmoco.png"
+                alt="Getmoco"
+                style="width: 180px; margin-top: 10px"
+              />
+            </a>
+            <a data-target="sidenav" class="sidenav-trigger">
+              <i class="material-icons">menu</i>
+            </a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <li>
+                <a class="" href="/pages/orders.html"> Orders </a>
+              </li>
+              <li>
+                <a class="" href="/pages/profile.html"> Profile </a>
+              </li>
+              <li><div class="divider"></div></li>
+              <li>
+                <a class="logout">Log out</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <ul id="sidenav" class="sidenav">
+        <li>
+          <div class="user-view">
+            <a href="/pages/profile.html">
+              <div class="background teal darken-2"></div>
+              <img
+                class="circle responsive-img user-image"
+                src="/img/default-user.jpg"
+              />
+              <span class="white-text name"></span>
+              <span class="white-text email"></span>
+            </a>
+          </div>
+        </li>
+        <li class="active"><a href="/pages/home.html">Getmoco</a></li>
+        <li><div class="divider"></div></li>
+        <li><a href="/pages/orders.html">Orders</a></li>
+        <li><a class="waves-effect logout">Log out</a></li>
+      </ul>
+
+      <!-- * Content -->
+      <div class="container center-align row">
+        <div class="col s12 m3"></div>
+        <form class="col s12 m6" id="pin-location-form">
+          <h3>Getmoco</h3>
+          <div>
+            <h6 class="left-align"><strong>Enter Address</strong></h6>
+            <div
+              class="input-field"
+              data-id="Romblon, Romblon"
+              style="display: none"
+            >
+              <select class="browser-default" required>
+                <option value="" selected disabled>Choose Option</option>
+                <option value="Agbaluto, 5611, 6.4">Agbaluto</option>
+                <option value="Agbudia, 5500, 6.2">Agbudia</option>
+                <option value="Agnaga, 5013, 17.2">Agnaga</option>
+                <option value="Agnay, 5500, 9.7">Agnay</option>
+                <option value="Agnipa, 5500, 13.7">Agnipa</option>
+                <option value="Agpanabat, 5500, 17.8">Agpanabat</option>
+                <option value="Agtongo, 5500, 5.7">Agtongo</option>
+                <option value="Alad, 2421, ">Alad</option>
+                <option value="Bagacay, 4407, 1.2">Bagacay</option>
+                <option value="Cajimos, 5611, 3.3">Cajimos</option>
+                <option value="Calabogo, 6201, 13">Calabogo</option>
+                <option value="Capaclan, 4430, 2.2">Capaclan</option>
+                <option value="Ginablan, 4714, 10.7">Ginablan</option>
+                <option value="Guimpingan, 7123, 3.8">Guimpingan</option>
+                <option value="Ilauran, 5500, 16.1">Ilauran</option>
+                <option value="Lamao, 8000, 10.2">Lamao</option>
+                <option value="Li-o, 6021, 6.7">Li-o</option>
+                <option value="Lonos, 4015, 5.4">Lonos</option>
+                <option value="Lunas, 2623, 14.1">Lunas</option>
+                <option value="Macalas, 7304, 10.7">Macalas</option>
+                <option value="Mapula, 5500, 10.2">Mapula</option>
+                <option value="Palje, 3021, 15.7">Palje</option>
+                <option value="Sablayan, 5500, 20.2">Sablayan</option>
+                <option value="Sawang, 4229, 10.7">Sawang</option>
+                <option value="Tambac, 9403, 12">Tambac</option>
+                <option value="Barangay IV (Pob.), 6108, 1">
+                  Barangay IV (Pob.)
+                </option>
+                <option value="Barangay III (Pob.), 6108, 0.75">
+                  Barangay III (Pob.)
+                </option>
+                <option value="Barangay II (Pob.), 6119, 0.45">
+                  Barangay II (Pob.)
+                </option>
+                <option value="Barangay I (Pob.), 3113, 0.75">
+                  Barangay I (Pob.)
+                </option>
+              </select>
+              <label class="active">Town / Barangay</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="house"
+                type="number"
+                class="validate"
+                name="house"
+                required
+                disabled
+              />
+              <label for="house">Lot / Block / Phase / House No.</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="street"
+                type="text"
+                class="validate"
+                name="street"
+                required
+                disabled
+              />
+              <label for="street">Street</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="landmark"
+                type="text"
+                class="validate"
+                name="landmark"
+                disabled
+              />
+              <label for="landmark">Landmark</label>
+            </div>
+          </div>
+          <span class="error red-text helper-text col s12"></span>
+          <button
+            class="btn btn-large waves-effect waves-light pin-loc-button"
+            disabled
+          >
+            Enter Location
+            <i class="material-icons right">location_on</i>
+          </button>
+        </form>
+        <div class="col s12 m3"></div>
+
+        <div class="col s12 m6 push-m3">
+          <hr />
+          <button
+            class="btn btn-small waves-effect waves-light curr-loc-button green"
+            disabled
+          >
+            Use Current Address
+            <i class="material-icons right">location_on</i>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- ? Alert Modal Structure -->
+    <div id="alert_modal" class="modal">
+      <div class="modal-content grey lighten-2">
+        <div class="card">
+          <div class="card-content center-align">
+            <h5 class="card-title">Alert</h5>
+            <br />
+            <p class="details"></p>
+            <br />
+            <button id="alert_button" class="btn btn-small">Alert</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Loading Screen -->
+    <div
+      class="loading"
+      style="
+        position: fixed;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      "
+    >
+      <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-teal-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Firebase v.8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDFXGl864Z-Qq2zzprT9VDZFK9K5iQSPIk",
+        authDomain: "getmoco-sca.firebaseapp.com",
+        projectId: "getmoco-sca",
+        storageBucket: "getmoco-sca.appspot.com",
+        messagingSenderId: "351174281270",
+        appId: "1:351174281270:web:dad92b8ed2a41eaa583097",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+      const storage = firebase.storage();
+      const storageRef = storage.ref();
+
+      db.settings({ timestampsInSnapshots: true });
+    </script>
+    <script src="../js/app.js"></script>
+    <script src="../js/db.js"></script>
+    <script src="../js/ui.js"></script>
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+
+    <!-- 
+      ! Authentication Status 
+    -->
+    <script>
+      let settingsLoc = "";
+      let setProv = "";
+      let setCity = "";
+      let customerID = "";
+      let status = "";
+      let request = "";
+
+      // * Auth Status
+      auth.onAuthStateChanged((user) => {
+        //console.log(user);
+
+        if (user) {
+          customerID = user.uid;
+
+          db.collection("getmoco_settings")
+            .where("settings", "==", "ALL")
+            .get()
+            .then((snap) => {
+              if (!snap.empty) {
+                snap.forEach((doc) => {
+                  setProv = doc.data().province;
+                  setCity = doc.data().city;
+                  settingsLoc = setCity + ", " + setProv;
+
+                  const selectOptions = document.querySelector(
+                    `#pin-location-form div[data-id="${settingsLoc}"]`
+                  );
+
+                  if (selectOptions) {
+                    selectOptions.style.display = "block";
+                  }
+                });
+              }
+            });
+          db.collection("getmoco_users")
+            .doc(customerID)
+            .get()
+            .then((doc) => {
+              const type = doc.data().type;
+              const userStatus = doc.data().status;
+
+              if (userStatus === "disabled") {
+                renderDisableMessage(customerID);
+                logout();
+              } else {
+                if (type === "admin") {
+                  window.location.href = "/pages/admin.html";
+                } else if (type === "driver") {
+                  window.location.href = "/pages/driver.html";
+                } else if (type === "user") {
+                  db.collection("getmoco_orders")
+                    // .where("status", "in", ["current"])
+                    .where("customerID", "==", customerID)
+                    .get()
+                    .then((querySnapshot) => {
+                      querySnapshot.forEach((doc2) => {
+                        // doc2.data() is never undefined for query doc snapshots
+                        // console.log(doc2.id, " => ", doc2.data());
+                        const docStatus = doc2.data().status;
+                        const docRequest = doc2.data().request;
+
+                        status = docStatus;
+                        request = docRequest;
+
+                        if (
+                          status === "" ||
+                          ((status === "toPay" || status === "paid") &&
+                            request === "")
+                        ) {
+                          // wait to proceed
+                        } else if (status === "current") {
+                          window.location.href = "/pages/order.html";
+                        } else if (status === "waiting") {
+                          window.location.href = "/pages/wait_driver.html";
+                        } else if (status === "transac") {
+                          window.location.href = "/pages/check_price_list.html";
+                        } else if (
+                          (status === "toPay" || status === "paid") &&
+                          request === "checkNow"
+                        ) {
+                          window.location.href = "/pages/order_details.html";
+                        } else {
+                          window.location.href = "/pages/error.html";
+                        }
+                      });
+                    })
+                    .then(() => {
+                      db.collection("getmoco_notifications")
+                        .where("type", "==", "inactive")
+                        .where("userID", "==", customerID)
+                        .get()
+                        .then((snap) => {
+                          if (!snap.empty) {
+                            snap.forEach((doc) => {
+                              renderWarningMessage(
+                                doc.data(),
+                                doc.id,
+                                customerID,
+                                "inactive"
+                              );
+                            });
+                          }
+                        });
+                      db.collection("getmoco_notifications")
+                        .where("type", "==", "warning")
+                        .where("status", "==", "unread")
+                        .where("userID", "==", customerID)
+                        .get()
+                        .then((snap) => {
+                          if (!snap.empty) {
+                            snap.forEach((doc) => {
+                              renderWarningMessage(
+                                doc.data(),
+                                doc.id,
+                                customerID,
+                                "warning"
+                              );
+                            });
+                          }
+                        })
+                        .then(() => {
+                          // proceed
+                          setupPageLoading();
+                          setupMenuUI(user);
+                          logout();
+                          pinLocation(customerID, type);
+                          setupUserVerified(customerID, type);
+                          useCurrentAddress(customerID);
+                        });
+                    })
+                    .catch((error) => {
+                      console.log(error.message);
+                    });
+                }
+              }
+            });
+        } else window.location.href = "/";
+      });
+    </script>
+  </body>
+</html>

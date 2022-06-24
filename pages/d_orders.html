@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../css/materialize.min.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png" />
+    <link
+      rel="shortcut icon"
+      href="../img/icons/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <meta name="apple-mobile-web-app-status-bar" content="9e2123" />
+    <meta name="theme-color" content="#ee6f72" />
+
+    <title>Getmoco</title>
+  </head>
+  <body>
+    <!-- * Main-->
+    <main class="" style="display: none">
+      <!-- ? Nav & Sidenav -->
+      <div class="navbar-fixed">
+        <nav class="z-depth-0 teal">
+          <div class="nav-wrapper container">
+            <a
+              href="/pages/driver.html"
+              class="brand-logo hide-on-med-and-down"
+            >
+              <img
+                src="/img/getmoco.png"
+                alt="Getmoco"
+                style="width: 180px; margin-top: 10px"
+              />
+            </a>
+            <a data-target="sidenav" class="sidenav-trigger">
+              <i class="material-icons">menu</i>
+            </a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <li>
+                <a class="" href="/pages/d_sales_report.html"> Sales </a>
+              </li>
+              <li class="active">
+                <a class="" href="/pages/d_orders.html"> Orders </a>
+              </li>
+              <li>
+                <a class="" href="/pages/d_profile.html"> Profile </a>
+              </li>
+              <li><div class="divider"></div></li>
+              <li>
+                <a class="logout">Log out</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <ul id="sidenav" class="sidenav">
+        <li>
+          <div class="user-view">
+            <a href="/pages/d_profile.html">
+              <div class="background teal darken-2"></div>
+              <img
+                class="circle responsive-img user-image"
+                src="/img/default-user.jpg"
+              />
+              <span class="white-text name"></span>
+              <span class="white-text email"></span>
+            </a>
+          </div>
+        </li>
+        <li><a href="/pages/driver.html">Getmoco</a></li>
+        <li><div class="divider"></div></li>
+        <li><a href="/pages/d_sales_report.html">Sales</a></li>
+        <li class="active"><a href="/pages/d_orders.html">Orders</a></li>
+        <li><a class="waves-effect logout">Log out</a></li>
+      </ul>
+
+      <!-- * Content -->
+      <div class="container">
+        <div class="row">
+          <div class="input-field col s12 filter-orders">
+            <select
+              onchange="setupOrdersList(driverID, 'driver')"
+              class="col s12"
+            >
+              <option value="false, delivered, desc">To Receive</option>
+              <option value="true, received, desc">Received</option>
+            </select>
+          </div>
+          <br />
+          <div class="col s2" style="display: none">
+            <button
+              class="waves-effect waves-light btn-small col s12 refresh-button"
+              onclick="setupOrdersList(driverID, 'driver')"
+            >
+              <i class="material-icons right">refresh</i>
+              <span class="hide-on-med-and-down">Refresh</span>
+            </button>
+          </div>
+        </div>
+        <div class="collection list-result"></div>
+      </div>
+    </main>
+
+    <!-- ? Loading Screen -->
+    <div
+      class="loading"
+      style="
+        position: fixed;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      "
+    >
+      <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-teal-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Firebase v.8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDFXGl864Z-Qq2zzprT9VDZFK9K5iQSPIk",
+        authDomain: "getmoco-sca.firebaseapp.com",
+        projectId: "getmoco-sca",
+        storageBucket: "getmoco-sca.appspot.com",
+        messagingSenderId: "351174281270",
+        appId: "1:351174281270:web:dad92b8ed2a41eaa583097",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+      const storage = firebase.storage();
+      const storageRef = storage.ref();
+
+      db.settings({ timestampsInSnapshots: true });
+    </script>
+    <script src="../js/app.js"></script>
+    <script src="../js/db.js"></script>
+    <script src="../js/ui.js"></script>
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+
+    <!-- 
+      ! Authentication Status 
+    -->
+    <script>
+      let driverID = "";
+      let status = "";
+      let request = "";
+
+      // * Auth Status
+      auth.onAuthStateChanged((user) => {
+        //console.log(user);
+
+        if (user) {
+          driverID = user.uid;
+
+          // Account Type
+          db.collection("getmoco_users")
+            .doc(driverID)
+            .get()
+            .then((doc) => {
+              const type = doc.data().type;
+
+              db.collection("getmoco_locations")
+                // .where("status", "in", ["waiting"])
+                .where("driverID", "==", driverID)
+                .get()
+                .then((querySnapshot) => {
+                  querySnapshot.forEach((doc2) => {
+                    // doc2.data() is never undefined for query doc snapshots
+                    // console.log(doc2.id, " => ", doc2.data());
+                    const docStatus = doc2.data().status;
+                    const docRequest = doc2.data().request;
+
+                    return (status = docStatus), (request = docRequest);
+                  });
+                })
+                .then(() => {
+                  if (type === "admin")
+                    window.location.href = "/pages/admin.html";
+                  else if (type === "user")
+                    window.location.href = "/pages/home.html";
+                  else if (
+                    type === "driver" &&
+                    (status === "" ||
+                      (status === "delivered" && request === ""))
+                  ) {
+                    setupPageLoading();
+                    setupMenuUI(user);
+                    logout();
+                    setupOrdersList(driverID, "driver");
+                    modifyOrdersSetCheckNow("driver");
+                  } else if (status === "waiting") {
+                    window.location.href = "/pages/active_location.html";
+                  } else if (status === "transac") {
+                    window.location.href = "/pages/set_price_list.html";
+                  } else if (status === "payment") {
+                    window.location.href = "/pages/driver_payment.html";
+                  } else if (status === "delivery") {
+                    window.location.href = "/pages/driver_delivery.html";
+                  } else if (status === "delivered" && request === "checkNow") {
+                    window.location.href = "/pages/d_order_details.html";
+                  } else {
+                    window.location.href = "/pages/error.html";
+                  }
+                })
+                .catch((error) => {
+                  console.log(error.message);
+                });
+            });
+        } else window.location.href = "/";
+      });
+    </script>
+  </body>
+</html>

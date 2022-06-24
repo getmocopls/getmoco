@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../css/materialize.min.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png" />
+    <link
+      rel="shortcut icon"
+      href="../img/icons/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <meta name="apple-mobile-web-app-status-bar" content="9e2123" />
+    <meta name="theme-color" content="#ee6f72" />
+
+    <title>Getmoco</title>
+  </head>
+  <body>
+    <!-- * Main-->
+    <main class="" style="display: none">
+      <!-- ? Nav & Sidenav -->
+      <div class="navbar-fixed">
+        <nav class="z-depth-0 teal">
+          <div class="nav-wrapper container">
+            <a href="/pages/admin.html" class="brand-logo hide-on-med-and-down">
+              <img
+                src="/img/getmoco.png"
+                alt="Getmoco"
+                style="width: 180px; margin-top: 10px"
+              />
+            </a>
+            <a data-target="sidenav" class="sidenav-trigger">
+              <i class="material-icons">menu</i>
+            </a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <li>
+                <a class="" href="/pages/a_sales_report.html"> Sales </a>
+              </li>
+              <li>
+                <a class="" href="/pages/a_users.html"> Users </a>
+              </li>
+              <li><div class="divider"></div></li>
+              <li>
+                <a class="" href="/pages/a_profile.html"> Profile </a>
+              </li>
+              <li class="active">
+                <a class="" href="/pages/a_settings.html"> Matrix </a>
+              </li>
+              <li>
+                <a class="logout">Log out</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <ul id="sidenav" class="sidenav">
+        <li>
+          <div class="user-view">
+            <a href="/pages/a_profile.html">
+              <div class="background teal darken-2"></div>
+              <img
+                class="circle responsive-img user-image"
+                src="/img/default-user.jpg"
+              />
+              <span class="white-text name"></span>
+              <span class="white-text email"></span>
+            </a>
+          </div>
+        </li>
+        <li><a href="/pages/admin.html">Getmoco</a></li>
+        <li><div class="divider"></div></li>
+        <li>
+          <a class="" href="/pages/a_sales_report.html"> Sales </a>
+        </li>
+        <li>
+          <a class="" href="/pages/a_users.html"> Users </a>
+        </li>
+        <li class="active">
+          <a class="" href="/pages/a_settings.html"> Matrix </a>
+        </li>
+        <li><a class="waves-effect logout">Log out</a></li>
+      </ul>
+
+      <!-- * Content -->
+      <div class="container settings">
+        <br />
+        <h5 class="center-align">Matrix Settings</h5>
+        <br /><br />
+        <a
+          href="#edit-matrix-modal"
+          class="modal-trigger right"
+          onclick="document.querySelector('#edit-matrix-form .helper-text.error').innerHTML = ''"
+        >
+          Edit Matrix
+        </a>
+        <br /><br />
+        <h6 class="teal-text"><strong>Location:</strong></h6>
+        <p><span class="location">City, Province</span></p>
+        <h6 class="teal-text"><strong>Platform Fee (Service Fee):</strong></h6>
+        <p><span class="platformFee">0</span>%</p>
+        <h6 class="teal-text">
+          <strong>Price Limit (Total Order Fee):</strong>
+        </h6>
+        <p>&#8369;&nbsp;<span class="priceLimit">0.00</span></p>
+        <h6 class="teal-text"><strong>Price Matrix (Per Distance):</strong></h6>
+        <p>&#8369;&nbsp;<span class="priceMatrix">0.00</span></p>
+      </div>
+    </main>
+
+    <!-- Modal Structure -->
+    <div id="edit-matrix-modal" class="modal edit-matrix">
+      <div class="modal-content center-align">
+        <h5 class="">Edit Matrix</h5>
+        <form id="edit-matrix-form">
+          <div class="">
+            <div class="input-field">
+              <select
+                class="browser-default"
+                name="province"
+                id="province"
+                required
+              >
+                <option value="" selected disabled>Choose Option</option>
+                <option value="Romblon">Romblon</option>
+              </select>
+              <label class="active">Province</label>
+            </div>
+            <div class="input-field">
+              <select class="browser-default" name="city" id="city" required>
+                <option value="" selected disabled>Choose Option</option>
+                <option value="Romblon">Romblon</option>
+              </select>
+              <label class="active">City</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="platformFee"
+                type="number"
+                class="validate"
+                name="platformFee"
+                step="0.1"
+                min="0.1"
+                max="99.9"
+                required
+              />
+              <label for="platformFee">Platform Fee (Service Fee)</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="priceLimit"
+                type="number"
+                class="validate"
+                name="priceLimit"
+                step="0.01"
+                min="1"
+                required
+              />
+              <label for="priceLimit">Price Limit (Total Order Fee)</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="priceMatrix"
+                type="number"
+                class="validate"
+                name="priceMatrix"
+                step="0.01"
+                min="1"
+                required
+              />
+              <label for="priceMatrix">Price Matrix (Per Distance)</label>
+            </div>
+            <span class="helper-text error" data-error="" data-success="">
+            </span>
+            <button
+              class="btn btn-large waves-effect waves-light"
+              type="submit"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ? Loading Screen -->
+    <div
+      class="loading"
+      style="
+        position: fixed;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      "
+    >
+      <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-teal-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Firebase v.8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDFXGl864Z-Qq2zzprT9VDZFK9K5iQSPIk",
+        authDomain: "getmoco-sca.firebaseapp.com",
+        projectId: "getmoco-sca",
+        storageBucket: "getmoco-sca.appspot.com",
+        messagingSenderId: "351174281270",
+        appId: "1:351174281270:web:dad92b8ed2a41eaa583097",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+      const storage = firebase.storage();
+      const storageRef = storage.ref();
+
+      db.settings({ timestampsInSnapshots: true });
+    </script>
+    <script src="../js/app.js"></script>
+    <script src="../js/db.js"></script>
+    <script src="../js/ui.js"></script>
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+
+    <!-- 
+      ! Authentication Status 
+    -->
+    <script>
+      let adminID = "";
+      let settingsID = "";
+
+      // * Auth Status
+      auth.onAuthStateChanged((user) => {
+        //console.log(user);
+
+        if (user) {
+          adminID = user.uid;
+
+          // Account Type
+          db.collection("getmoco_settings")
+            .where("settings", "==", "ALL")
+            .get()
+            .then((snap) => {
+              if (!snap.empty) {
+                snap.forEach((doc) => {
+                  settingsID = doc.id;
+                });
+              }
+            })
+            .then(() => {
+              db.collection("getmoco_users")
+                .doc(adminID)
+                .get()
+                .then((doc) => {
+                  const type = doc.data().type;
+
+                  if (type === "user") {
+                    window.location.href = "/pages/home.html";
+                  } else if (type === "driver") {
+                    window.location.href = "/pages/driver.html";
+                  } else if (type === "admin") {
+                    setupPageLoading();
+                    setupMenuUI(user);
+                    logout();
+                    setupMatrixInfo(settingsID);
+                    updateMatrixDetails(settingsID);
+                  } else {
+                    window.location.href = "/pages/error.html";
+                  }
+                });
+            });
+        } else window.location.href = "/";
+      });
+    </script>
+  </body>
+</html>

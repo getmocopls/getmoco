@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../css/materialize.min.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png" />
+    <link
+      rel="shortcut icon"
+      href="../img/icons/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <meta name="apple-mobile-web-app-status-bar" content="9e2123" />
+    <meta name="theme-color" content="#ee6f72" />
+
+    <title>Getmoco</title>
+  </head>
+  <body>
+    <!-- * Main-->
+    <main class="" style="display: none">
+      <!-- ? Nav & Sidenav -->
+      <div class="navbar-fixed">
+        <nav class="z-depth-0 teal">
+          <div class="nav-wrapper container">
+            <ul>
+              <li class="left">
+                <a class="cancel-pin-location waves-effect">
+                  <i class="material-icons left">arrow_back</i>
+                  Cancel
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <!-- * Content -->
+      <div class="container">
+        <h5 class="center-align">New Orders</h5>
+        <div class="collection list-result"></div>
+      </div>
+    </main>
+
+    <!-- Modal Structure -->
+    <div id="view_customer_modal" class="modal">
+      <div class="modal-content">
+        <div class="center-align">
+          <div class="row">
+            <div class="card">
+              <div class="col s12 m4">
+                <div class="card-image">
+                  <img
+                    src="/img/default-user.jpg"
+                    class="customer-img materialboxed"
+                  />
+                  <span class="card-title name"></span>
+                </div>
+                <div class="card-content left-align">
+                  <p>Address: <span class="address orange-text"></span></p>
+                  <p>Landmark:<span class="landmark teal-text"></span></p>
+                  <p>Date: <span class="date green-text"></span></p>
+                </div>
+              </div>
+              <div class="col s12 m8 teal lighten-3 items-list left-align">
+                <ul class="collapsible order-items"></ul>
+              </div>
+              <div class="card-action col s12">
+                <button
+                  class="waves-effect waves-light btn take-order-button"
+                  disabled
+                >
+                  Take Order
+                </button>
+              </div>
+              <span class="error helper-text col s12"></span>
+              <div class="progress" style="display: none">
+                <div class="indeterminate"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Loading Screen -->
+    <div
+      class="loading"
+      style="
+        position: fixed;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      "
+    >
+      <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-teal-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Firebase v.8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDFXGl864Z-Qq2zzprT9VDZFK9K5iQSPIk",
+        authDomain: "getmoco-sca.firebaseapp.com",
+        projectId: "getmoco-sca",
+        storageBucket: "getmoco-sca.appspot.com",
+        messagingSenderId: "351174281270",
+        appId: "1:351174281270:web:dad92b8ed2a41eaa583097",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+      const storage = firebase.storage();
+      const storageRef = storage.ref();
+
+      db.settings({ timestampsInSnapshots: true });
+    </script>
+    <script src="../js/app.js"></script>
+    <script src="../js/db.js"></script>
+    <script src="../js/ui.js"></script>
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+
+    <!-- 
+      ! Authentication Status 
+    -->
+    <script>
+      let driverID = "";
+      let locationID = "";
+      let activeOrderID = "";
+
+      // * Auth Status
+      auth.onAuthStateChanged((user) => {
+        //console.log(user);
+
+        if (user) {
+          driverID = user.uid;
+
+          // Account Type
+          db.collection("getmoco_users")
+            .doc(driverID)
+            .get()
+            .then((doc) => {
+              const type = doc.data().type;
+
+              db.collection("getmoco_locations")
+                .where("status", "in", ["choosing"])
+                .where("driverID", "==", driverID)
+                .get()
+                .then((querySnapshot) => {
+                  querySnapshot.forEach((doc2) => {
+                    // doc2.data() is never undefined for query doc snapshots
+                    // console.log(doc2.id, " => ", doc2.data());
+                    const id = doc2.id;
+
+                    return (locationID = id);
+                  });
+                })
+                .then(() => {
+                  if (type === "admin")
+                    window.location.href = "/pages/admin.html";
+                  else if (type === "user")
+                    window.location.href = "/pages/home.html";
+                  else if (type === "driver" && locationID !== "") {
+                    setupPageLoading();
+                    cancelPinLocation(driverID, locationID, type);
+                    setupNewOrders();
+                    chooseNewOrder();
+                  } else {
+                    window.location.href = "/pages/driver.html";
+                  }
+                })
+                .catch((error) => {
+                  console.log(error.message);
+                });
+            });
+        } else window.location.href = "/";
+      });
+    </script>
+  </body>
+</html>

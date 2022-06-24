@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../css/materialize.min.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png" />
+    <link
+      rel="shortcut icon"
+      href="../img/icons/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <meta name="apple-mobile-web-app-status-bar" content="9e2123" />
+    <meta name="theme-color" content="#ee6f72" />
+
+    <title>Getmoco</title>
+  </head>
+  <body>
+    <!-- * Main-->
+    <main class="" style="display: none">
+      <!-- ? Nav & Sidenav -->
+      <div class="navbar-fixed">
+        <nav class="z-depth-0 teal">
+          <div class="nav-wrapper container">
+            <ul>
+              <li class="right">
+                <a
+                  class="waves-effect modal-trigger"
+                  href="#report_modal"
+                  onclick="resetReportForm()"
+                >
+                  <i class="material-icons right">report</i>
+                  Report
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <!-- * Content -->
+      <div class="container">
+        <h5 class="center-align status">Please Setup Prices</h5>
+        <div class="row">
+          <div class="col s12 m7 teal lighten-3">
+            <ul class="collapsible order-items"></ul>
+          </div>
+          <div class="col s12 m5 grey lighten-4">
+            <div class="card">
+              <div class="card-content">
+                <span class="card-title">
+                  Order ID: <span class="order-id"></span>
+                </span>
+                <div class="row">
+                  <div class="col s6">
+                    <div class="col s6">Total Weight:</div>
+                    <div class="col s6">
+                      <span class="totalWeight">0</span> kg
+                    </div>
+                  </div>
+                  <div class="col s6">
+                    <div class="col s6">Items Price:</div>
+                    <div class="col s6">
+                      &#8369;&nbsp;<span class="itemsPrice">0.00</span>
+                    </div>
+                  </div>
+                  <div class="col s6">
+                    <div class="col s6">Total Distance:</div>
+                    <div class="col s6">
+                      <span class="totalDistance">0</span> km
+                    </div>
+                  </div>
+                  <div class="col s6">
+                    <div class="col s6">Service Fee:</div>
+                    <div class="col s6">
+                      &#8369;&nbsp;<span class="serviceFee">0.00</span>
+                    </div>
+                  </div>
+                  <div class="col s6">
+                    <div class="col s6">Change For:</div>
+                    <div class="col s6">
+                      &#8369;&nbsp;<span class="change">0.00</span>
+                    </div>
+                  </div>
+                  <hr class="col s12" />
+                  <div class="col s12">
+                    <div class="col s6"><strong>Total Price:</strong></div>
+                    <div class="col s6">
+                      <strong>
+                        &#8369;&nbsp;<span class="totalItemsPrice">0.00</span>
+                      </strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ? Floating button -->
+        <div class="fixed-action-btn">
+          <a
+            id="chat_button"
+            class="btn-floating btn-large blue modal-trigger tooltipped"
+            href="#chat_modal"
+            data-position="left"
+            data-tooltip="Send message to the driver here"
+          >
+            <i class="large material-icons">message</i>
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <!-- ? Chat Modal Structure -->
+    <div id="chat_modal" class="modal modal-fixed-footer">
+      <div class="modal-content row">
+        <div class="col s12">
+          <ul class="collection list-result"></ul>
+        </div>
+      </div>
+      <div class="modal-footer row">
+        <form id="chat_form">
+          <div class="col s9 m10">
+            <div class="input-field">
+              <input
+                placeholder="Type a message"
+                name="message"
+                type="text"
+                class="validate"
+                required
+              />
+            </div>
+          </div>
+          <div class="col s3 m2">
+            <br />
+            <button
+              class="waves-effect waves-light btn-small col s12 send-button"
+            >
+              <i class="material-icons right">send</i>
+              <span class="hide-on-med-and-down">Send</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ? Report Modal Structure -->
+    <div id="report_modal" class="modal">
+      <div class="modal-content grey lighten-2">
+        <div class="card">
+          <div class="card-content">
+            <h5 class="center-align card-title">Report Customer</h5>
+            <p>Please tell us what happened with this Getmoco Customer.</p>
+            <form id="report_form" class="center-align">
+              <div class="input-field">
+                <textarea
+                  id="report"
+                  name="report"
+                  class="materialize-textarea"
+                  required
+                ></textarea>
+                <label for="report">Report Details</label>
+              </div>
+              <span class="error helper-text"></span>
+              <button class="waves-effect waves-light btn red report-button">
+                Send Report
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="edit_item_modal" class="modal edit-item">
+      <div class="modal-content">
+        <h4>Update Item Price</h4>
+        <form id="edit-item-form">
+          <div class="center-align">
+            <div class="input-field">
+              <input
+                id="editStore"
+                type="text"
+                class="validate"
+                name="store"
+                disabled
+              />
+              <label for="editStore">Store Name</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="editproduct"
+                type="text"
+                class="validate product"
+                name="product"
+                required
+                disabled
+              />
+              <label for="editproduct">Product Name</label>
+            </div>
+            <div class="input-field">
+              <textarea
+                id="editProdDesc"
+                name="productDesc"
+                class="materialize-textarea productDesc"
+                disabled
+              ></textarea>
+              <label for="editProdDesc">Product Description (Optional)</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="editquantity"
+                type="number"
+                class="validate quantity"
+                name="quantity"
+                required
+                disabled
+              />
+              <label for="editquantity">Quantity</label>
+            </div>
+            <div class="input-field">
+              <textarea
+                id="editnote"
+                name="note"
+                class="materialize-textarea note"
+                disabled
+              ></textarea>
+              <label for="editnote">Note (Optional)</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="editprice"
+                type="number"
+                class="validate price"
+                name="price"
+                step="0.01"
+                min="0"
+                placeholder="Set 0 (Zero) if Item is Unavailable"
+                required
+              />
+              <label for="editprice">Price</label>
+            </div>
+            <span
+              class="helper-text error red-text"
+              data-error=""
+              data-success=""
+            >
+            </span>
+            <button
+              class="btn btn-large waves-effect waves-light"
+              type="submit"
+            >
+              <i class="material-icons right large">check_circle</i>
+              Update
+            </button>
+            <p class="orange-text text-darken-2">
+              Note: Update option will be available to customer once total price
+              exceeds the price limit of &#8369;
+              <span class="price-limit"></span>.
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="notif_cancel_modal" class="modal">
+      <div class="modal-content">
+        <div class="row center-align">
+          <div class="col s12 m6 push-m3">
+            <h5>Cancelled</h5>
+            <br />
+            <p>
+              The client has cancelled the transaction. You may report the user
+              and click okay to continue.
+            </p>
+            <br />
+            <button
+              class="waves-effect waves-light btn-small ok-button left col s5"
+              onclick="confirmCancelTransac(locationID, 'choosing')"
+            >
+              Okay
+            </button>
+            <button
+              class="btn btn-small waves-effect modal-trigger red right col s5"
+              href="#report_modal"
+              onclick="resetReportForm()"
+            >
+              Report
+            </button>
+            <span class="error helper-text col s12"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="notif_confirm_modal" class="modal">
+      <div class="modal-content">
+        <div class="center-align">
+          <h5>Confirmed</h5>
+          <br />
+          <p>
+            The client has confirmed the transaction. Receipt is needed for all
+            items upon delivery.
+          </p>
+          <br />
+          <p>You can set the order as "In Shipment" after buying the items.</p>
+          <br />
+          <button
+            class="waves-effect waves-light btn-small ok-button"
+            onclick="confirmCancelTransac(locationID, orderID, 'delivery')"
+          >
+            Set as In Shipment
+          </button>
+          <span class="error helper-text col s12"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Loading Screen -->
+    <div
+      class="loading"
+      style="
+        position: fixed;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      "
+    >
+      <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-teal-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ? Firebase v.8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDFXGl864Z-Qq2zzprT9VDZFK9K5iQSPIk",
+        authDomain: "getmoco-sca.firebaseapp.com",
+        projectId: "getmoco-sca",
+        storageBucket: "getmoco-sca.appspot.com",
+        messagingSenderId: "351174281270",
+        appId: "1:351174281270:web:dad92b8ed2a41eaa583097",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+      const storage = firebase.storage();
+      const storageRef = storage.ref();
+
+      db.settings({ timestampsInSnapshots: true });
+    </script>
+    <script src="../js/app.js"></script>
+    <script src="../js/db.js"></script>
+    <script src="../js/ui.js"></script>
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+
+    <!-- 
+      ! Authentication Status 
+    -->
+    <script>
+      let driverID = "";
+      let locationID = "";
+      let customerID = "";
+      let orderID = "";
+      let orderItemID = "";
+
+      // * Auth Status
+      auth.onAuthStateChanged((user) => {
+        //console.log(user);
+
+        if (user) {
+          driverID = user.uid;
+
+          // Account Type
+          db.collection("getmoco_users")
+            .doc(driverID)
+            .get()
+            .then((doc) => {
+              const type = doc.data().type;
+
+              db.collection("getmoco_locations")
+                .where("status", "in", ["transac"])
+                .where("driverID", "==", driverID)
+                .get()
+                .then((querySnapshot) => {
+                  querySnapshot.forEach((doc2) => {
+                    // doc2.data() is never undefined for query doc snapshots
+                    // console.log(doc2.id, " => ", doc2.data());
+                    const id = doc2.id;
+                    const customer = doc2.data().customerID;
+                    const order = doc2.data().orderID;
+
+                    return (
+                      (orderID = order),
+                      (customerID = customer),
+                      (locationID = id)
+                    );
+                  });
+                })
+                .then(() => {
+                  if (type === "admin")
+                    window.location.href = "/pages/admin.html";
+                  else if (type === "user")
+                    window.location.href = "/pages/home.html";
+                  else if (type === "driver" && locationID !== "") {
+                    setupPageLoading();
+                    reportUser(
+                      "customer", // reportedUser
+                      "driver", // reportedBy
+                      "set_price_list" // report page
+                    );
+                    setupClientResponse(locationID);
+                    setupSetPriceList(customerID, orderID);
+                    modifyOrderItemSetPrice();
+                    editOrderItemSetPrice();
+                    setupChat(type);
+                    sendNewMessage(type);
+                  } else {
+                    window.location.href = "/pages/driver.html";
+                  }
+                })
+                .catch((error) => {
+                  console.log(error.message);
+                });
+            });
+        } else window.location.href = "/";
+      });
+    </script>
+  </body>
+</html>
