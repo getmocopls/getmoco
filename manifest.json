@@ -30,7 +30,7 @@
       "src": "/img/icons/logo192.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any maskable",
+      "purpose": "maskable",
       "background_color": "#32B3AA"
     },
     {
