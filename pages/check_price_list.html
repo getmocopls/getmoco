@@ -19,8 +19,8 @@
       type="image/x-icon"
     />
 
-    <meta name="apple-mobile-web-app-status-bar" content="9e2123" />
-    <meta name="theme-color" content="#ee6f72" />
+    <meta name="apple-mobile-web-app-status-bar" content="004d40" />
+    <meta name="theme-color" content="#004d40" />
 
     <title>Getmoco</title>
   </head>
@@ -34,7 +34,7 @@
             <ul>
               <li class="right">
                 <a
-                  class="waves-effect modal-trigger"
+                  class="waves-effect modal-trigger report"
                   href="#report_modal"
                   onclick="resetReportForm()"
                 >
@@ -48,7 +48,7 @@
       </div>
 
       <!-- * Content -->
-      <div class="container">
+      <div class="container check-price-list">
         <h5 class="center-align status">Setting up prices, Please Wait</h5>
         <div class="row">
           <div class="col s12 m7 teal lighten-3">
@@ -126,19 +126,19 @@
         <div class="fixed-action-btn">
           <a
             id="chat_button"
-            class="btn-floating btn-large blue modal-trigger tooltipped"
+            class="btn-floating btn-large blue modal-trigger tooltipped user"
             href="#chat_modal"
             data-position="left"
             data-tooltip="Send message to the driver here"
           >
-            <i class="large material-icons">message</i>
+            <i class="large material-icons message">message</i>
           </a>
         </div>
       </div>
     </main>
 
     <!-- ? Chat Modal Structure -->
-    <div id="chat_modal" class="modal modal-fixed-footer">
+    <div id="chat_modal" class="modal modal-fixed-footer chat">
       <div class="modal-content row">
         <div class="col s12">
           <ul class="collection list-result"></ul>
@@ -171,7 +171,7 @@
     </div>
 
     <!-- ? Report Modal Structure -->
-    <div id="report_modal" class="modal">
+    <div id="report_modal" class="modal report">
       <div class="modal-content grey lighten-2">
         <div class="card">
           <div class="card-content">
@@ -198,7 +198,7 @@
     </div>
 
     <!-- Modal Structure -->
-    <div id="cancel_modal" class="modal">
+    <div id="cancel_modal" class="modal cancel">
       <div class="modal-content">
         <div class="center-align">
           <h5>Cancel Transaction</h5>
@@ -231,7 +231,7 @@
     </div>
 
     <!-- Modal Structure -->
-    <div id="confirm_modal" class="modal">
+    <div id="confirm_modal" class="modal confirm">
       <div class="modal-content">
         <div class="center-align">
           <h5>Confirm Transaction</h5>
@@ -268,7 +268,7 @@
     </div>
 
     <!-- Modal Structure -->
-    <div id="order_confirmed_modal" class="modal">
+    <div id="order_confirmed_modal" class="modal confirmed">
       <div class="modal-content">
         <div class="center-align">
           <h5>Order Confirmed</h5>

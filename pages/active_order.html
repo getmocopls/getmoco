@@ -19,8 +19,8 @@
       type="image/x-icon"
     />
 
-    <meta name="apple-mobile-web-app-status-bar" content="9e2123" />
-    <meta name="theme-color" content="#ee6f72" />
+    <meta name="apple-mobile-web-app-status-bar" content="004d40" />
+    <meta name="theme-color" content="#004d40" />
 
     <title>Getmoco</title>
   </head>
@@ -44,14 +44,15 @@
       </div>
 
       <!-- * Content -->
-      <div class="container">
+      <div class="container active-order">
         <h5 class="center-align">New Orders</h5>
+        <hr />
         <div class="collection list-result"></div>
       </div>
     </main>
 
     <!-- Modal Structure -->
-    <div id="view_customer_modal" class="modal">
+    <div id="view_customer_modal" class="modal view-customer active-order">
       <div class="modal-content">
         <div class="center-align">
           <div class="row">
@@ -65,12 +66,37 @@
                   <span class="card-title name"></span>
                 </div>
                 <div class="card-content left-align">
-                  <p>Address: <span class="address orange-text"></span></p>
-                  <p>Landmark:<span class="landmark teal-text"></span></p>
-                  <p>Date: <span class="date green-text"></span></p>
+                  <p>Date:<br /><span class="date green-text"></span></p>
+                  <hr />
+                  <p>
+                    Address:<br /><span class="addressOrg orange-text"></span>
+                  </p>
+                  <p>
+                    Landmark:<br /><span class="landmarkOrg teal-text"></span>
+                  </p>
+                  <hr />
+                  <p>
+                    Drop-off Address:<br />
+                    <span class="addressDrp orange-text"></span>
+                  </p>
+                  <p>
+                    Drop-off Landmark:<br />
+                    <span class="landmarkDrp teal-text"></span>
+                  </p>
+                  <hr />
+                  <p class="blue-text">
+                    <span class="black-text">Distance:</span><br />
+                    <span class="totalDistance">0</span>km
+                  </p>
+                  <p class="blue-text">
+                    <span class="black-text">Service Fee:</span><br />
+                    &#8369;<span class="serviceFee">0.00</span>
+                  </p>
                 </div>
               </div>
-              <div class="col s12 m8 teal lighten-3 items-list left-align">
+              <div
+                class="col s12 m8 teal lighten-3 items-list left-align active-order-modal"
+              >
                 <ul class="collapsible order-items"></ul>
               </div>
               <div class="card-action col s12">

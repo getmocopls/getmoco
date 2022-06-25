@@ -19,8 +19,8 @@
       type="image/x-icon"
     />
 
-    <meta name="apple-mobile-web-app-status-bar" content="9e2123" />
-    <meta name="theme-color" content="#ee6f72" />
+    <meta name="apple-mobile-web-app-status-bar" content="004d40" />
+    <meta name="theme-color" content="#004d40" />
 
     <title>Getmoco</title>
   </head>
@@ -57,12 +57,12 @@
       </div>
 
       <!-- * Content -->
-      <div class="container">
+      <div class="container order-details">
         <div class="items-list">
           <br />
           <div class="row">
             <div class="col s12 m4 grey lighten-3">
-              <ul class="collapsible">
+              <ul class="collapsible address">
                 <li class="active">
                   <div class="collapsible-header">
                     <i class="material-icons">location_on</i>
@@ -70,9 +70,14 @@
                   </div>
                   <div class="collapsible-body">
                     <h6><strong>Address</strong></h6>
-                    <p class="address"></p>
+                    <p class="addressOrg"></p>
                     <h6><strong>Landmark</strong></h6>
-                    <p class="landmark"></p>
+                    <p class="landmarkOrg"></p>
+                    <hr />
+                    <h6><strong>Drop-off Address</strong></h6>
+                    <p class="addressDrp"></p>
+                    <h6><strong>Drop-off Landmark</strong></h6>
+                    <p class="landmarkDrp"></p>
                   </div>
                 </li>
               </ul>
@@ -85,7 +90,7 @@
 
         <div class="payment-user">
           <div class="row">
-            <div class="col s12 m8 grey lighten-2 push-m2">
+            <div class="col s12 m8 grey lighten-2 push-m2 payment">
               <div class="card">
                 <div class="card-content">
                   <span class="card-title">
@@ -129,7 +134,7 @@
                 </div>
               </div>
             </div>
-            <div class="col s12 m8 push-m2 grey lighten-2">
+            <div class="col s12 m8 push-m2 grey lighten-2 order-details-driver-driver">
               <ul class="collapsible">
                 <li class="">
                   <div class="collapsible-header">
@@ -155,7 +160,7 @@
           </div>
         </div>
 
-        <div class="order-status">
+        <div class="order-status order-details">
           <div class="row">
             <div class="col s12 m8 teal lighten-3 push-m2">
               <div class="card">
@@ -187,7 +192,7 @@
     </main>
 
     <!-- ? Report Modal Structure -->
-    <div id="report_modal" class="modal">
+    <div id="report_modal" class="modal report-order-details">
       <div class="modal-content grey lighten-2">
         <div class="card">
           <div class="card-content">

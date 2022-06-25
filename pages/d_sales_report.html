@@ -19,8 +19,8 @@
       type="image/x-icon"
     />
 
-    <meta name="apple-mobile-web-app-status-bar" content="9e2123" />
-    <meta name="theme-color" content="#ee6f72" />
+    <meta name="apple-mobile-web-app-status-bar" content="004d40" />
+    <meta name="theme-color" content="#004d40" />
 
     <title>Getmoco</title>
   </head>
@@ -85,7 +85,7 @@
       </ul>
 
       <!-- * Content -->
-      <div class="container">
+      <div class="container d-sales-report">
         <div class="">
           <div class="input-field filter-orders">
             <select
@@ -164,7 +164,7 @@
     </main>
 
     <!-- Modal Structure -->
-    <div id="view_order_modal" class="modal">
+    <div id="view_order_modal" class="modal d-sales-report-view-order">
       <div class="modal-content">
         <div class="items-list">
           <br />
@@ -178,9 +178,14 @@
                   </div>
                   <div class="collapsible-body">
                     <h6><strong>Address</strong></h6>
-                    <p class="address"></p>
+                    <p class="addressOrg"></p>
                     <h6><strong>Landmark</strong></h6>
-                    <p class="landmark"></p>
+                    <p class="landmarkOrg"></p>
+                    <hr>
+                    <h6><strong>Drop-off Address</strong></h6>
+                    <p class="addressDrp"></p>
+                    <h6><strong>Drop-off Landmark</strong></h6>
+                    <p class="landmarkDrp"></p>
                   </div>
                 </li>
               </ul>
@@ -190,7 +195,7 @@
             </div>
           </div>
         </div>
-        <div class="payment-user">
+        <div class="payment-user d-sales-report">
           <div class="row">
             <div class="col s12 m8 grey lighten-2 push-m2">
               <div class="card">
@@ -240,7 +245,7 @@
                 </div>
               </div>
             </div>
-            <div class="col s12 m8 push-m2 grey lighten-2">
+            <div class="col s12 m8 push-m2 grey lighten-2 customer-detail">
               <ul class="collapsible">
                 <li class="">
                   <div class="collapsible-header">
@@ -248,14 +253,14 @@
                     Getmoco Customer
                   </div>
                   <div class="collapsible-body">
-                    <div class="col s12 center-align">
-                      <div class="col s10 push-s1 m4 push-m4">
+                    <div class="col center-align">
+                      <div class="col">
                         <img
-                          class="circle responsive-img user-image materialboxed"
+                          class="circle user-image materialboxed"
                           src="/img/default-user.jpg"
                         />
                       </div>
-                      <div class="col s12">
+                      <div class="col push-s1">
                         <h6 class="user-name"></h6>
                       </div>
                     </div>
@@ -270,7 +275,7 @@
             </div>
           </div>
         </div>
-        <div class="order-status">
+        <div class="order-status d-sales-report">
           <div class="row">
             <div class="col s12 m8 teal lighten-3 push-m2">
               <div class="card">

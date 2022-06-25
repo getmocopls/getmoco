@@ -1120,10 +1120,10 @@ function updateUserDetails() {
     const town = editAccountForm
       .querySelector(`div[data-id="${settingsLoc}"] select`)
       .value.trim();
-    let splitVal = town.split(", ");
-    const brgy = splitVal[0];
-    const zip = splitVal[1];
-    const totalDistance = splitVal[2];
+    let splitVal = town.split(" | ");
+    const dmDestination = splitVal[0];
+    const brgy = splitVal[1];
+    const zip = splitVal[2];
 
     const street = editAccountForm.street.value.trim();
     const house = editAccountForm.house.value.trim();
@@ -1146,6 +1146,7 @@ function updateUserDetails() {
       .update({
         fname: fname,
         lname: lname,
+        dmDestination: dmDestination,
         address: address,
         zip: zip,
         province: province,
@@ -1154,7 +1155,6 @@ function updateUserDetails() {
         street: street,
         house: house,
         landmark: landmark,
-        totalDistance: totalDistance,
         modified: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(() => {
@@ -1706,10 +1706,10 @@ function updateAccountDetails(userID, user) {
     const town = editAccountForm
       .querySelector(`div[data-id="${settingsLoc}"] select`)
       .value.trim();
-    let splitVal = town.split(", ");
-    const brgy = splitVal[0];
-    const zip = splitVal[1];
-    const totalDistance = splitVal[2];
+    let splitVal = town.split(" | ");
+    const dmDestination = splitVal[0];
+    const brgy = splitVal[1];
+    const zip = splitVal[2];
 
     const street = editAccountForm.street.value.trim();
     const house = editAccountForm.house.value.trim();
@@ -1732,6 +1732,7 @@ function updateAccountDetails(userID, user) {
       .update({
         fname: fname,
         lname: lname,
+        dmDestination: dmDestination,
         address: address,
         zip: zip,
         province: province,
@@ -1740,7 +1741,6 @@ function updateAccountDetails(userID, user) {
         street: street,
         house: house,
         landmark: landmark,
-        totalDistance: totalDistance,
         modified: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(() => {
@@ -3037,16 +3037,24 @@ function chooseNewOrder() {
       `.customer[data-id="${activeOrderID}"]`
     );
     const name = customer.querySelector(".name").textContent;
-    const address = customer.querySelector(".address").textContent;
-    const landmark = customer.querySelector(".landmark").textContent;
+    const addressOrg = customer.querySelector(".addressOrg").textContent;
+    const landmarkOrg = customer.querySelector(".landmarkOrg").textContent;
     const date = customer.querySelector(".date").textContent;
     const img = customer.querySelector(".customer-img").src;
+    const addressDrp = customer.querySelector(".addressDrp").textContent;
+    const landmarkDrp = customer.querySelector(".landmarkDrp").textContent;
+    const totalDistance = customer.querySelector(".totalDistance").textContent;
+    const serviceFee = customer.querySelector(".serviceFee").textContent;
 
     viewCustomer.querySelector(".name").textContent = name;
-    viewCustomer.querySelector(".address").textContent = address;
-    viewCustomer.querySelector(".landmark").textContent = landmark;
+    viewCustomer.querySelector(".addressOrg").textContent = addressOrg;
+    viewCustomer.querySelector(".landmarkOrg").textContent = landmarkOrg;
     viewCustomer.querySelector(".date").textContent = date;
     viewCustomer.querySelector(".customer-img").src = img;
+    viewCustomer.querySelector(".addressDrp").textContent = addressDrp;
+    viewCustomer.querySelector(".landmarkDrp").textContent = landmarkDrp;
+    viewCustomer.querySelector(".totalDistance").textContent = totalDistance;
+    viewCustomer.querySelector(".serviceFee").textContent = serviceFee;
 
     const takeOrderButton = viewCustomer.querySelector(".take-order-button");
 
@@ -3081,36 +3089,69 @@ function chooseNewOrder() {
 
         if (status === "waiting") {
           let customerID;
-          let address;
-          let brgy;
-          let house;
-          let street;
-          let zip;
-          let landmark;
+          let dmOrigin;
+          let dmDestination;
+          let province;
+          let city;
+          let addressOrg;
+          let brgyOrg;
+          let houseOrg;
+          let streetOrg;
+          let zipOrg;
+          let landmarkOrg;
+          let addressDrp;
+          let brgyDrp;
+          let houseDrp;
+          let streetDrp;
+          let zipDrp;
+          let landmarkDrp;
+          let totalDistance;
 
           db.collection("getmoco_orders")
             .doc(activeOrderID)
             .get()
             .then((doc) => {
               customerID = doc.data().customerID;
-              address = doc.data().address;
-              brgy = doc.data().brgy;
-              house = doc.data().house;
-              street = doc.data().street;
-              zip = doc.data().zip;
-              landmark = doc.data().landmark;
+              dmOrigin = doc.data().dmOrigin;
+              dmDestination = doc.data().dmDestination;
+              province = doc.data().province;
+              city = doc.data().city;
+
+              addressOrg = doc.data().addressOrg;
+              brgyOrg = doc.data().brgyOrg;
+              houseOrg = doc.data().houseOrg;
+              streetOrg = doc.data().streetOrg;
+              zipOrg = doc.data().zipOrg;
+              landmarkOrg = doc.data().landmarkOrg;
+
+              addressDrp = doc.data().addressDrp;
+              brgyDrp = doc.data().brgyDrp;
+              houseDrp = doc.data().houseDrp;
+              streetDrp = doc.data().streetDrp;
+              zipDrp = doc.data().zipDrp;
+              landmarkDrp = doc.data().landmarkDrp;
               totalDistance = doc.data().totalDistance;
             })
             .then(() => {
               db.collection("getmoco_locations").doc(locationID).update({
                 customerID: customerID,
                 orderID: activeOrderID,
-                address: address,
-                brgy: brgy,
-                house: house,
-                street: street,
-                zip: zip,
-                landmark: landmark,
+                dmOrigin: dmOrigin,
+                dmDestination: dmDestination,
+                province: province,
+                city: city,
+                addressOrg: addressOrg,
+                brgyOrg: brgyOrg,
+                houseOrg: houseOrg,
+                streetOrg: streetOrg,
+                zipOrg: zipOrg,
+                landmarkOrg: landmarkOrg,
+                addressDrp: addressDrp,
+                brgyDrp: brgyDrp,
+                houseDrp: houseDrp,
+                streetDrp: streetDrp,
+                zipDrp: zipDrp,
+                landmarkDrp: landmarkDrp,
                 totalDistance: totalDistance,
                 status: "transac",
                 transac: firebase.firestore.FieldValue.serverTimestamp(),
@@ -3532,30 +3573,106 @@ function setupUserVerified(userID, type) {
     );
 }
 
-// * Use Current Address
-function useCurrentAddress(customerID) {
-  const currLocButton = document.querySelector(".curr-loc-button");
+// * Calculate Distance
+function calculateDistance(origin, destination) {
+  const accessToken = "4e5JlBCrZzqIniPGkkIqOIuZ0HkIW"; // patrick tup email token
 
+  // api url: distancematrix.ai
+  const api_url = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&key=${accessToken}`;
+
+  // Defining async function
+  async function getapi(url) {
+    // Storing response
+    const response = await fetch(url);
+
+    // Storing data in form of JSON
+    let data = await response.json();
+    // console.log(data);
+    // console.log(data.origin_addresses[0]);
+    // console.log(data.destination_addresses[0]);
+    // console.log(data.rows[0].elements[0].distance);
+    // console.log(data.rows[0].elements[0].duration);
+    // console.log(data.rows[0].elements[0].distance.value);
+
+    return data.rows[0].elements[0].distance.value / 1000;
+  }
+
+  // Call Async
+  return getapi(api_url);
+}
+
+// * Pin Location
+function pinLocation(userID, type) {
   const pinLocForm = document.querySelector("#pin-location-form");
-  const errorField = pinLocForm.querySelector(".error");
+  pinLocForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-  currLocButton.addEventListener("click", () => {
-    errorField.innerHTML = "";
-    pinLocForm.reset();
+    if (type === "user") {
+      const province = setProv;
+      const city = setCity;
 
-    db.collection("getmoco_users")
-      .doc(customerID)
-      .get()
-      .then((doc) => {
-        const address = doc.data().address;
-        const province = doc.data().province;
-        const city = doc.data().city;
-        const brgy = doc.data().brgy;
-        const street = doc.data().street;
-        const house = doc.data().house;
-        const zip = doc.data().zip;
-        const landmark = doc.data().landmark;
-        const totalDistance = parseFloat(doc.data().totalDistance);
+      const townOrg = pinLocForm
+        .querySelector(`.origin-container div[data-id="${settingsLoc}"] select`)
+        .value.trim();
+      let splitTownOrg = townOrg.split(" | ");
+      const brgyOrg = splitTownOrg[1];
+      const zipOrg = splitTownOrg[2];
+
+      const streetOrg = pinLocForm.streetOrg.value.trim();
+      const houseOrg = pinLocForm.houseOrg.value.trim();
+      const landmarkOrg = pinLocForm.landmarkOrg.value.trim();
+      const addressOrg =
+        houseOrg +
+        " " +
+        streetOrg +
+        ", " +
+        brgyOrg +
+        ", " +
+        settingsLoc +
+        " " +
+        zipOrg;
+
+      const useCurrent = pinLocForm.useCurrent.checked;
+
+      if (!useCurrent) {
+        const townDrp = pinLocForm
+          .querySelector(
+            `.dropoff-container div[data-id="${settingsLoc}"] select`
+          )
+          .value.trim();
+        let splitTownDrp = townDrp.split(" | ");
+        brgyDrp = splitTownDrp[1];
+        zipDrp = splitTownDrp[2];
+
+        streetDrp = pinLocForm.streetDrp.value.trim();
+        houseDrp = pinLocForm.houseDrp.value.trim();
+        landmarkDrp = pinLocForm.landmarkDrp.value.trim();
+
+        dmDestination = splitTownDrp[0];
+      } else {
+        // data set in useCurrentAddress()
+      }
+
+      const addressDrp =
+        houseDrp +
+        " " +
+        streetDrp +
+        ", " +
+        brgyDrp +
+        ", " +
+        settingsLoc +
+        " " +
+        zipDrp;
+
+      const dmOrigin = splitTownOrg[0];
+
+      // Calling that async function
+      const getDistance = calculateDistance(dmOrigin, dmDestination);
+      // console.log(getDistance);
+
+      getDistance.then((val) => {
+        // console.log(val);
+        const totalDistance = val.toFixed(2);
 
         let serviceFee = 0;
 
@@ -3566,30 +3683,30 @@ function useCurrentAddress(customerID) {
             snap.forEach((doc) => {
               const priceMatrix = parseFloat(doc.data().priceMatrix);
 
-              if (totalDistance >= 0 && totalDistance <= 4.9) {
-                serviceFee = 90;
-              } else if (totalDistance >= 5 && totalDistance <= 20) {
-                if (totalDistance === 5) {
-                  serviceFee = 120;
+              if (totalDistance >= 0 && totalDistance <= 5) {
+                serviceFee = 50;
+              } else if (totalDistance >= 5.01 && totalDistance <= 20) {
+                if (totalDistance === 5.01) {
+                  serviceFee = 80;
                 } else {
-                  // 5k min, +6php(example)
+                  // 5.01k min, +6php(example)
 
-                  serviceFee = 120;
+                  serviceFee = 80;
 
                   const distance =
-                    totalDistance > 5 ? totalDistance - 5 : 5 - totalDistance;
+                    totalDistance > 5.01 ? totalDistance - 5.01 : 5.01 - totalDistance;
 
                   const addPrice = distance * priceMatrix;
 
                   serviceFee += addPrice;
                 }
               } else {
-                // 20km min, +6php(example)
+                // 20.01km min, +6php(example)
 
-                serviceFee = 220;
+                serviceFee = 180;
 
                 const distance =
-                  totalDistance > 5 ? totalDistance - 5 : 5 - totalDistance;
+                  totalDistance > 20.01 ? totalDistance - 20.01 : 20.01 - totalDistance;
 
                 const addPrice = distance * priceMatrix;
 
@@ -3602,15 +3719,23 @@ function useCurrentAddress(customerID) {
           .then(() => {
             db.collection("getmoco_orders")
               .add({
-                customerID: customerID,
-                address: address,
-                zip: zip,
+                customerID: userID,
+                dmDestination: dmDestination,
+                dmOrigin: dmOrigin,
                 province: province,
                 city: city,
-                brgy: brgy,
-                street: street,
-                house: house,
-                landmark: landmark,
+                addressOrg: addressOrg,
+                zipOrg: zipOrg,
+                brgyOrg: brgyOrg,
+                streetOrg: streetOrg,
+                houseOrg: houseOrg,
+                landmarkOrg: landmarkOrg,
+                addressDrp: addressDrp,
+                zipDrp: zipDrp,
+                brgyDrp: brgyDrp,
+                streetDrp: streetDrp,
+                houseDrp: houseDrp,
+                landmarkDrp: landmarkDrp,
                 status: "current",
                 created: firebase.firestore.FieldValue.serverTimestamp(),
                 transac: "",
@@ -3628,6 +3753,7 @@ function useCurrentAddress(customerID) {
                 totalWeight: 0,
                 totalDistance: totalDistance,
                 change: "",
+                orderConfirmed: "",
                 driverEarning: "0.00",
                 appEarning: "0.00",
               })
@@ -3636,123 +3762,26 @@ function useCurrentAddress(customerID) {
               });
           });
       });
-  });
-}
-
-// * Pin Location
-function pinLocation(userID, type) {
-  const pinLocForm = document.querySelector("#pin-location-form");
-  pinLocForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    if (type === "user") {
-      const province = setProv;
-      const city = setCity;
-      const town = pinLocForm
-        .querySelector(`div[data-id="${settingsLoc}"] select`)
-        .value.trim();
-      let splitVal = town.split(", ");
-      const brgy = splitVal[0];
-      const zip = splitVal[1];
-      const totalDistance = parseFloat(splitVal[2]);
-
-      const street = pinLocForm.street.value.trim();
-      const house = pinLocForm.house.value.trim();
-      const landmark = pinLocForm.landmark.value.trim();
-      const address =
-        house + " " + street + ", " + brgy + ", " + settingsLoc + " " + zip;
-
-      let serviceFee = 0;
-
-      db.collection("getmoco_settings")
-        .where("settings", "==", "ALL")
-        .get()
-        .then((snap) => {
-          snap.forEach((doc) => {
-            const priceMatrix = parseFloat(doc.data().priceMatrix);
-
-            if (totalDistance >= 0 && totalDistance <= 4.9) {
-              serviceFee = 90;
-            } else if (totalDistance >= 5 && totalDistance <= 20) {
-              if (totalDistance === 5) {
-                serviceFee = 120;
-              } else {
-                // 5k min, +6php(example)
-
-                serviceFee = 120;
-
-                const distance =
-                  totalDistance > 5 ? totalDistance - 5 : 5 - totalDistance;
-
-                const addPrice = distance * priceMatrix;
-
-                serviceFee += addPrice;
-              }
-            } else {
-              // 20km min, +6php(example)
-
-              serviceFee = 220;
-
-              const distance =
-                totalDistance > 5 ? totalDistance - 5 : 5 - totalDistance;
-
-              const addPrice = distance * priceMatrix;
-
-              serviceFee += addPrice;
-            }
-
-            // console.log("Fee: " + serviceFee);
-          });
-        })
-        .then(() => {
-          db.collection("getmoco_orders")
-            .add({
-              customerID: userID,
-              address: address,
-              zip: zip,
-              province: province,
-              city: city,
-              brgy: brgy,
-              street: street,
-              house: house,
-              landmark: landmark,
-              status: "current",
-              created: firebase.firestore.FieldValue.serverTimestamp(),
-              transac: "",
-              itemsPrice: "0.00",
-              serviceFee: serviceFee.toFixed(2),
-              totalItemsPrice: serviceFee.toFixed(2),
-              driverID: "",
-              request: "",
-              shipStatus: "toShip",
-              orderReceived: false,
-              delivered: "",
-              shipment: "",
-              receipt: "",
-              received: "",
-              totalWeight: 0,
-              totalDistance: totalDistance,
-              change: "",
-              orderConfirmed: "",
-              driverEarning: "0.00",
-              appEarning: "0.00",
-            })
-            .then(() => {
-              window.location.href = "/pages/order.html";
-            });
-        });
     } else {
       db.collection("getmoco_locations")
         .add({
           driverID: userID,
-          address: "",
-          zip: "",
+          dmDestination: "",
+          dmOrigin: "",
           province: "",
           city: "",
-          brgy: "",
-          street: "",
-          house: "",
-          landmark: "",
+          addressOrg: "",
+          zipOrg: "",
+          brgyOrg: "",
+          streetOrg: "",
+          houseOrg: "",
+          landmarkOrg: "",
+          addressDrp: "",
+          zipDrp: "",
+          brgyDrp: "",
+          streetDrp: "",
+          houseDrp: "",
+          landmarkDrp: "",
           totalDistance: "",
           status: "choosing",
           request: "",
@@ -3947,10 +3976,10 @@ function signup() {
     const town = signupForm
       .querySelector(`div[data-id="${settingsLoc}"] select`)
       .value.trim();
-    let splitVal = town.split(", ");
-    const brgy = splitVal[0];
-    const zip = splitVal[1];
-    const totalDistance = splitVal[2];
+    let splitVal = town.split(" | ");
+    const dmDestination = splitVal[0];
+    const brgy = splitVal[1];
+    const zip = splitVal[2];
 
     const street = signupForm.street.value.trim();
     const house = signupForm.house.value.trim();
@@ -4028,6 +4057,7 @@ function signup() {
                   fname: fname,
                   lname: lname,
                   contact: contact,
+                  dmDestination: dmDestination,
                   address: address,
                   zip: zip,
                   province: province,
@@ -4036,7 +4066,6 @@ function signup() {
                   street: street,
                   house: house,
                   landmark: landmark,
-                  totalDistance: totalDistance,
                   type: type,
                   verified: "unverified",
                   toVerify: "",
@@ -4054,6 +4083,7 @@ function signup() {
                   fname: fname,
                   lname: lname,
                   contact: contact,
+                  dmDestination: dmDestination,
                   address: address,
                   zip: zip,
                   province: province,
@@ -4062,7 +4092,6 @@ function signup() {
                   street: street,
                   house: house,
                   landmark: landmark,
-                  totalDistance: totalDistance,
                   type: type,
                   drvLicense: drvLicense,
                   drvPlate: drvPlate,

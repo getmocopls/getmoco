@@ -1685,182 +1685,183 @@ const renderUserOrdersList = (
   count,
   userType
 ) => {
-  const userTypeID =
-    userType === "customerID" ? data.driverID : data.customerID;
+  if (data.status === "paid" || data.status === "toPay") {
+    const userTypeID =
+      userType === "customerID" ? data.driverID : data.customerID;
 
-  let name;
-  let userImage;
-  const orderConfirmed = data.orderConfirmed; // upload id
+    let name;
+    let userImage;
+    const orderConfirmed = data.orderConfirmed; // upload id
 
-  let ordShipmentStatus = "";
-  let ordShipmentTime = "";
-  let ordDeliveredTime = "";
-  let ordReceivedTime = "";
+    let ordShipmentStatus = "";
+    let ordShipmentTime = "";
+    let ordDeliveredTime = "";
+    let ordReceivedTime = "";
 
-  let orderItems = [];
+    let orderItems = [];
 
-  // Order Type Date
-  const date =
-    type === "toShip"
-      ? data.orderConfirmed.toDate().toLocaleString("en-US", {
-          weekday: "short",
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-          second: "numeric",
-          hour12: true,
-        })
-      : !typeBool
-      ? data.delivered.toDate().toLocaleString("en-US", {
-          weekday: "short",
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-          second: "numeric",
-          hour12: true,
-        })
-      : data.received.toDate().toLocaleString("en-US", {
-          weekday: "short",
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-          second: "numeric",
-          hour12: true,
-        });
+    // Order Type Date
+    const date =
+      type === "toShip"
+        ? data.orderConfirmed.toDate().toLocaleString("en-US", {
+            weekday: "short",
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true,
+          })
+        : !typeBool
+        ? data.delivered.toDate().toLocaleString("en-US", {
+            weekday: "short",
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true,
+          })
+        : data.received.toDate().toLocaleString("en-US", {
+            weekday: "short",
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true,
+          });
 
-  // Order Status
-  const shipment =
-    data.shipment === ""
-      ? data.shipment
-      : data.shipment.toDate().toLocaleString("en-US", {
-          weekday: "short",
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-          second: "numeric",
-          hour12: true,
-        });
-  const delivered =
-    data.delivered === ""
-      ? data.delivered
-      : data.delivered.toDate().toLocaleString("en-US", {
-          weekday: "short",
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-          second: "numeric",
-          hour12: true,
-        });
-  const received =
-    data.received === ""
-      ? data.received
-      : data.received.toDate().toLocaleString("en-US", {
-          weekday: "short",
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-          second: "numeric",
-          hour12: true,
-        });
-  if (
-    orderConfirmed === "" &&
-    shipment === "" &&
-    delivered === "" &&
-    received === ""
-  ) {
-    ordShipmentStatus = "In Purchase";
-    ordShipmentTime = "In Purchase";
-    ordDeliveredTime = "In Purchase";
-    ordReceivedTime = "In Purchase";
-  } else if (
-    orderConfirmed !== "" &&
-    shipment === "" &&
-    delivered === "" &&
-    received === ""
-  ) {
-    ordShipmentStatus = "To Ship";
-    ordShipmentTime = "To Ship";
-    ordDeliveredTime = "To Ship";
-    ordReceivedTime = "To Ship";
-  } else if (
-    orderConfirmed !== "" &&
-    shipment !== "" &&
-    delivered === "" &&
-    received === ""
-  ) {
-    ordShipmentStatus = "In Shipment";
-    ordShipmentTime = shipment;
-    ordDeliveredTime = "In Shipment";
-    ordReceivedTime = "In Shipment";
-  } else if (
-    orderConfirmed !== "" &&
-    shipment !== "" &&
-    delivered !== "" &&
-    received === ""
-  ) {
-    ordShipmentStatus = "Delivered";
-    ordShipmentTime = shipment;
-    ordDeliveredTime = delivered;
-    ordReceivedTime = `To Receive`;
-  } else {
-    ordShipmentStatus = "Completed";
-    ordShipmentTime = shipment;
-    ordDeliveredTime = delivered;
-    ordReceivedTime = received;
-  }
+    // Order Status
+    const shipment =
+      data.shipment === ""
+        ? data.shipment
+        : data.shipment.toDate().toLocaleString("en-US", {
+            weekday: "short",
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true,
+          });
+    const delivered =
+      data.delivered === ""
+        ? data.delivered
+        : data.delivered.toDate().toLocaleString("en-US", {
+            weekday: "short",
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true,
+          });
+    const received =
+      data.received === ""
+        ? data.received
+        : data.received.toDate().toLocaleString("en-US", {
+            weekday: "short",
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true,
+          });
+    if (
+      orderConfirmed === "" &&
+      shipment === "" &&
+      delivered === "" &&
+      received === ""
+    ) {
+      ordShipmentStatus = "In Purchase";
+      ordShipmentTime = "In Purchase";
+      ordDeliveredTime = "In Purchase";
+      ordReceivedTime = "In Purchase";
+    } else if (
+      orderConfirmed !== "" &&
+      shipment === "" &&
+      delivered === "" &&
+      received === ""
+    ) {
+      ordShipmentStatus = "To Ship";
+      ordShipmentTime = "To Ship";
+      ordDeliveredTime = "To Ship";
+      ordReceivedTime = "To Ship";
+    } else if (
+      orderConfirmed !== "" &&
+      shipment !== "" &&
+      delivered === "" &&
+      received === ""
+    ) {
+      ordShipmentStatus = "In Shipment";
+      ordShipmentTime = shipment;
+      ordDeliveredTime = "In Shipment";
+      ordReceivedTime = "In Shipment";
+    } else if (
+      orderConfirmed !== "" &&
+      shipment !== "" &&
+      delivered !== "" &&
+      received === ""
+    ) {
+      ordShipmentStatus = "Delivered";
+      ordShipmentTime = shipment;
+      ordDeliveredTime = delivered;
+      ordReceivedTime = `To Receive`;
+    } else {
+      ordShipmentStatus = "Completed";
+      ordShipmentTime = shipment;
+      ordDeliveredTime = delivered;
+      ordReceivedTime = received;
+    }
 
-  // Receipt
-  db.collection("getmoco_users")
-    .doc(userTypeID)
-    .get()
-    .then((doc) => {
-      name = `${doc.data().fname} ${doc.data().lname}`;
-    });
-  db.collection("getmoco_uploads")
-    .where("uploadedBy", "==", userTypeID)
-    .where("description", "==", "profile")
-    .get()
-    .then((snap) => {
-      if (!snap.empty) {
-        snap.forEach((doc) => {
-          userImage = doc.data().url;
-        });
-      } else {
-        userImage = "/img/default-user.jpg";
-      }
-    });
-  db.collection("getmoco_items")
-    .where("orderID", "==", dataID)
-    .where("customerID", "==", data.customerID)
-    .get()
-    .then((snap) => {
-      if (!snap.empty) {
-        snap.forEach((doc) => {
-          // orderItems.push(doc.data());
+    // Receipt
+    db.collection("getmoco_users")
+      .doc(userTypeID)
+      .get()
+      .then((doc) => {
+        name = `${doc.data().fname} ${doc.data().lname}`;
+      });
+    db.collection("getmoco_uploads")
+      .where("uploadedBy", "==", userTypeID)
+      .where("description", "==", "profile")
+      .get()
+      .then((snap) => {
+        if (!snap.empty) {
+          snap.forEach((doc) => {
+            userImage = doc.data().url;
+          });
+        } else {
+          userImage = "/img/default-user.jpg";
+        }
+      });
+    db.collection("getmoco_items")
+      .where("orderID", "==", dataID)
+      .where("customerID", "==", data.customerID)
+      .get()
+      .then((snap) => {
+        if (!snap.empty) {
+          snap.forEach((doc) => {
+            // orderItems.push(doc.data());
 
-          orderItems.push(tabOrderItems(doc.data(), doc.id));
-        });
-      }
-    })
-    .then(() => {
-      // console.log(orderItems);
-      // console.log(orderItems.join(""));
+            orderItems.push(tabOrderItems(doc.data(), doc.id));
+          });
+        }
+      })
+      .then(() => {
+        // console.log(orderItems);
+        // console.log(orderItems.join(""));
 
-      const listResult = document.querySelector("#tab-orders .list-orders");
+        const listResult = document.querySelector("#tab-orders .list-orders");
 
-      const html = `
+        const html = `
         <li class="order" data-id="${dataID}">
           <div class="collapsible-header">
             <i class="material-icons">shopping_cart</i>
@@ -1890,14 +1891,27 @@ const renderUserOrdersList = (
                         Location Details
                       </div>
                       <div class="collapsible-body">
-                      <h6><strong>Address</strong></h6>
-                      <p class="address">${data.address}</p>
-                      <h6><strong>Landmark</strong></h6>
-                      <p class="landmark">
-                        ${
-                          data.landmark === "" ? "<em>None</em>" : data.landmark
-                        }
-                      </p>
+                        <h6><strong>Address</strong></h6>
+                        <p class="addressOrg">${data.addressOrg}</p>
+                        <h6><strong>Landmark</strong></h6>
+                        <p class="landmarkOrg">
+                          ${
+                            data.landmarkOrg === ""
+                              ? "<em>None</em>"
+                              : data.landmarkOrg
+                          }
+                        </p>
+                        <hr>
+                        <h6><strong>Drop-off Address</strong></h6>
+                        <p class="addressDrp">${data.addressDrp}</p>
+                        <h6><strong>Drop-off Landmark</strong></h6>
+                        <p class="landmarkDrp">
+                          ${
+                            data.landmarkDrp === ""
+                              ? "<em>None</em>"
+                              : data.landmarkDrp
+                          }
+                        </p>
                       </div>
                     </li>
                   </ul>
@@ -2037,12 +2051,13 @@ const renderUserOrdersList = (
         </li>
       `;
 
-      listResult.innerHTML += html;
-    })
-    .then(() => {
-      initAllMaterializeCSS("Collapsible", "collapse");
-      initAllMaterializeCSS("Materialbox", "materialBox");
-    });
+        listResult.innerHTML += html;
+      })
+      .then(() => {
+        initAllMaterializeCSS("Collapsible", "collapse");
+        initAllMaterializeCSS("Materialbox", "materialBox");
+      });
+  }
 };
 
 // * Render Order Items
@@ -2156,7 +2171,7 @@ const renderUserDetails = (data, dataID) => {
       );
       if (selectOptions) {
         selectOptions.value =
-          data.brgy + ", " + data.zip + ", " + data.totalDistance;
+          data.dmDestination + " | " + data.brgy + " | " + data.zip;
       }
       editAccountForm.street.value = data.street;
       editAccountForm.house.value = data.house;
@@ -2184,12 +2199,16 @@ const renderUsersList = (data, dataID, type, count) => {
       .then((snap) => {
         if (!snap.empty) {
           snap.forEach((doc) => {
-            orderCount++;
+            const status = doc.data().status;
+
+            if (status === "paid" || status === "toPay") {
+              orderCount++;
+            }
           });
         }
       });
     db.collection("getmoco_reports")
-      .where("reportedUser", "==", dataID)
+      .where("reportedBy", "==", dataID)
       .get()
       .then((snap) => {
         if (!snap.empty) {
@@ -2199,7 +2218,7 @@ const renderUsersList = (data, dataID, type, count) => {
         }
       });
     db.collection("getmoco_reports")
-      .where("reportedBy", "==", dataID)
+      .where("reportedUser", "==", dataID)
       .get()
       .then((snap) => {
         if (!snap.empty) {
@@ -2500,7 +2519,7 @@ const renderProfileInfo = (userID, data, dataID, user) => {
       );
       if (selectOptions) {
         selectOptions.value =
-          data.brgy + ", " + data.zip + ", " + data.totalDistance;
+          data.dmDestination + " | " + data.brgy + " | " + data.zip;
       }
       editAccountForm.street.value = data.street;
       editAccountForm.house.value = data.house;
@@ -2550,8 +2569,10 @@ const renderProfileInfo = (userID, data, dataID, user) => {
 const modifyOrderDetails = (data, dataID, type) => {
   // Items list
   const itemsListContainer = document.querySelector(".items-list");
-  const itemAddress = itemsListContainer.querySelector(".address");
-  const itemLandmark = itemsListContainer.querySelector(".landmark");
+  const itemAddressOrg = itemsListContainer.querySelector(".addressOrg");
+  const itemLandmarkOrg = itemsListContainer.querySelector(".landmarkOrg");
+  const itemAddressDrp = itemsListContainer.querySelector(".addressDrp");
+  const itemLandmarkDrp = itemsListContainer.querySelector(".landmarkDrp");
 
   // Payment & Receipt
   const paymentUser = document.querySelector(".payment-user");
@@ -2577,9 +2598,13 @@ const modifyOrderDetails = (data, dataID, type) => {
 
   // ? =====================================================================
 
-  itemAddress.innerHTML = data.address;
-  itemLandmark.innerHTML =
-    data.landmark === "" ? "<em>None</em>" : data.landmark;
+  itemAddressOrg.innerHTML = data.addressOrg;
+  itemLandmarkOrg.innerHTML =
+    data.landmarkOrg === "" ? "<em>None</em>" : data.landmarkOrg;
+
+  itemAddressDrp.innerHTML = data.addressDrp;
+  itemLandmarkDrp.innerHTML =
+    data.landmarkDrp === "" ? "<em>None</em>" : data.landmarkDrp;
 
   payOrderID.innerHTML = dataID;
   payItemsPrice.innerHTML = data.itemsPrice;
@@ -2828,7 +2853,8 @@ const modifyDeliveryStatus = (data, dataID) => {
   const deliveryContainer = document.querySelector(".delivery");
   const dOrderID = deliveryContainer.querySelector(".orderID");
   const dCustomer = deliveryContainer.querySelector(".name");
-  const dAddress = deliveryContainer.querySelector(".address");
+  const dAddressOrg = deliveryContainer.querySelector(".addressOrg");
+  const dAddressDrp = deliveryContainer.querySelector(".addressDrp");
   const dShipment = deliveryContainer.querySelector(".shipment");
   const dDelivered = deliveryContainer.querySelector(".delivered");
 
@@ -2846,10 +2872,12 @@ const modifyDeliveryStatus = (data, dataID) => {
     .doc(data.orderID)
     .get()
     .then((doc) => {
-      const docAddress = doc.data().address;
+      const docAddressOrg = doc.data().addressOrg;
+      const docAddressDrp = doc.data().addressDrp;
 
       dOrderID.innerHTML = data.orderID;
-      dAddress.innerHTML = docAddress;
+      dAddressOrg.innerHTML = docAddressOrg;
+      dAddressDrp.innerHTML = docAddressDrp;
 
       const shipmentDate = data.shipment.toDate().toLocaleString("en-US", {
         weekday: "short",
@@ -2987,14 +3015,14 @@ const renderOrdersList = (data, dataID, type, received) => {
         <i class="material-icons circle" data-id="${dataID}">shopping_cart</i>
         <p data-id="${dataID}">
           Address: 
-          <span class="address orange-text" data-id="${dataID}">
-           ${data.address}
+          <span class="addressOrg orange-text" data-id="${dataID}">
+           ${data.addressOrg}
           </span>
         </p>
         <p data-id="${dataID}">
           Landmark: 
-          <span class="landmark teal-text" data-id="${dataID}">
-            ${data.landmark === "" ? "<em>None</em>" : data.landmark} 
+          <span class="landmarkOrg teal-text" data-id="${dataID}">
+            ${data.landmarkOrg === "" ? "<em>None</em>" : data.landmarkOrg} 
           </span>
         </p>
         <p data-id="${dataID}">
@@ -3013,14 +3041,14 @@ const renderOrdersList = (data, dataID, type, received) => {
         <i class="material-icons circle" data-id="${dataID}">shopping_cart</i>
         <p data-id="${dataID}">
           Address: 
-          <span class="address orange-text" data-id="${dataID}">
-            ${data.address}
+          <span class="addressOrg orange-text" data-id="${dataID}">
+            ${data.addressOrg}
           </span>
         </p>
         <p data-id="${dataID}">
           Landmark: 
-          <span class="landmark teal-text" data-id="${dataID}">
-            ${data.landmark === "" ? "<em>None</em>" : data.landmark} 
+          <span class="landmarkOrg teal-text" data-id="${dataID}">
+            ${data.landmarkOrg === "" ? "<em>None</em>" : data.landmarkOrg} 
           </span>
         </p>
         <p data-id="${dataID}">
@@ -3050,9 +3078,8 @@ const renderOrdersList = (data, dataID, type, received) => {
 const updateSetPriceList = (data, dataID, orderID, customerID) => {
   db.collection("getmoco_orders")
     .doc(orderID)
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
+    .onSnapshot(
+      (doc) => {
         const totalDistance = document.querySelector(".totalDistance");
         const totalWeight = document.querySelector(".totalWeight");
         const itemsPrice = document.querySelector(".itemsPrice");
@@ -3155,11 +3182,11 @@ const updateSetPriceList = (data, dataID, orderID, customerID) => {
                 console.log(err.message);
               });
           });
+      },
+      (err) => {
+        console.log(err);
       }
-    })
-    .catch((err) => {
-      console.log(err.message);
-    });
+    );
 };
 
 // * Render Set Price List
@@ -3439,13 +3466,21 @@ const renderChats = (data, dataID, type) => {
         }
       })
       .then(() => {
-        const chatButton = document.querySelector("#chat_button");
-        const instance = M.Tooltip.getInstance(chatButton);
+        if (chatByType !== "user") {
+          const chatUserButton = document.querySelector("#chat_button.user");
+          const instanceUser = M.Tooltip.getInstance(chatUserButton);
 
-        chatButton.setAttribute("data-tooltip", "New message here!");
-        instance.open();
+          chatUserButton.setAttribute("data-tooltip", "New message here!");
+          instanceUser.open();
+          chatUserButton.setAttribute("data-tooltip", "Send message here.");
+        } else {
+          const chatDriverButton = document.querySelector("#chat_button.driver");
+          const instanceDriver = M.Tooltip.getInstance(chatDriverButton);
 
-        chatButton.setAttribute("data-tooltip", "Send message here.");
+          chatDriverButton.setAttribute("data-tooltip", "New message here!");
+          instanceDriver.open();
+          chatDriverButton.setAttribute("data-tooltip", "Send message here.");
+        }
 
         initAllMaterializeCSS("Materialbox", "materialBox");
       });
@@ -3456,9 +3491,8 @@ const renderChats = (data, dataID, type) => {
 const updateGetPriceList = (data, dataID, orderID, customerID) => {
   db.collection("getmoco_orders")
     .doc(orderID)
-    .get()
-    .then((doc) => {
-      if (!doc.empty) {
+    .onSnapshot(
+      (doc) => {
         const totalDistance = document.querySelector(".totalDistance");
         const totalWeight = document.querySelector(".totalWeight");
         const itemsPrice = document.querySelector(".itemsPrice");
@@ -3593,11 +3627,11 @@ const updateGetPriceList = (data, dataID, orderID, customerID) => {
                 console.log(err.message);
               });
           });
+      },
+      (err) => {
+        console.log(err);
       }
-    })
-    .catch((err) => {
-      console.log(err.message);
-    });
+    );
 };
 
 // * Render Get Price List
@@ -3840,23 +3874,81 @@ const renderNewOrder = (data, dataID) => {
               href="#view_customer_modal"
             >
               <img src="${customerImage}" alt="" class="circle customer-img" data-id="${dataID}">
+              <h6 data-id="${dataID}">
+                <strong class="name" data-id="${dataID}">
+                  ${name}
+                </strong>
+              </h6>
               <p data-id="${dataID}">
-                <span class="name" data-id="${dataID}">
-                 ${name}
-                </span>
-              </p>
-              <p data-id="${dataID}">
-                <span class="address orange-text" data-id="${dataID}">${
-          data.address
-        }</span>
-              </p>
-              <p data-id="${dataID}">
-                <span class="landmark teal-text" data-id="${dataID}">
-                  ${data.landmark === "" ? "<em>None</em>" : data.landmark}
-                </span>
-              </p>
-              <p data-id="${dataID}">
+                Date: 
                 <span class="date green-text" data-id="${dataID}">${date}</span>
+              </p>
+              <hr>
+              <p data-id="${dataID}">
+                Address: 
+                <span class="addressOrg orange-text" data-id="${dataID}">
+                  ${data.addressOrg}
+                </span>
+              </p>
+              <p data-id="${dataID}">
+                Landmark: 
+                <span class="landmarkOrg teal-text" data-id="${dataID}">
+                  ${
+                    data.landmarkOrg === "" ? "<em>None</em>" : data.landmarkOrg
+                  }
+                </span>
+              </p>
+              <hr>
+              <p data-id="${dataID}">
+                Drop-off Address: 
+                <span class="addressDrp orange-text" data-id="${dataID}">
+                  ${data.addressDrp}
+                </span>
+              </p>
+              <p data-id="${dataID}">
+                Drop-off Landmark: 
+                <span class="landmarkDrp teal-text" data-id="${dataID}">
+                  ${
+                    data.landmarkDrp === "" ? "<em>None</em>" : data.landmarkDrp
+                  }
+                </span>
+              </p>
+              <hr>
+              <p 
+                data-id="${dataID}" 
+                class="
+                  ${
+                    data.totalDistance >= 0 && data.totalDistance <= 5
+                      ? "green-text"
+                      : data.totalDistance >= 5.01 && data.totalDistance <= 20
+                      ? "orange-text"
+                      : "red-text"
+                  }
+                "
+              >
+                <span class="black-text">Distance:</span>
+                <span class="totalDistance" data-id="${dataID}">
+                  ${data.totalDistance}
+                </span>
+                km
+              </p>
+              <p 
+                data-id="${dataID}" 
+                class="
+                  ${
+                    data.totalDistance >= 0 && data.totalDistance <= 5
+                      ? "green-text"
+                      : data.totalDistance >= 5.01 && data.totalDistance <= 20
+                      ? "orange-text"
+                      : "red-text"
+                  }
+                "
+              >
+                <span class="black-text">Service Fee:</span>
+                &#8369;
+                <span class="serviceFee" data-id="${dataID}">
+                  ${data.serviceFee}
+                </span>
               </p>
             </a>
           `;
@@ -4116,8 +4208,12 @@ const renderSampleItem = () => {
 
 // * Setup Location Place Address
 const setupLocPlaceAdd = (customerID) => {
-  const address = document.querySelector(".address");
-  const landmark = document.querySelector(".landmark");
+  const addressOrg = document.querySelector(".addressOrg");
+  const landmarkOrg = document.querySelector(".landmarkOrg");
+  const addressDrp = document.querySelector(".addressDrp");
+  const landmarkDrp = document.querySelector(".landmarkDrp");
+  const totalDistance = document.querySelector(".totalDistance");
+  const serviceFee = document.querySelector(".serviceFee");
 
   db.collection("getmoco_orders")
     .where("status", "in", ["current"])
@@ -4128,9 +4224,20 @@ const setupLocPlaceAdd = (customerID) => {
         // doc.data() is never undefined for query doc snapshots
         // console.log(doc.id, " => ", doc.data());
 
-        address.innerHTML = doc.data().address;
-        landmark.innerHTML =
-          doc.data().landmark === "" ? "<em>None</em>" : doc.data().landmark;
+        addressOrg.innerHTML = doc.data().addressOrg;
+        landmarkOrg.innerHTML =
+          doc.data().landmarkOrg === ""
+            ? "<em>None</em>"
+            : doc.data().landmarkOrg;
+
+        addressDrp.innerHTML = doc.data().addressDrp;
+        landmarkDrp.innerHTML =
+          doc.data().landmarkDrp === ""
+            ? "<em>None</em>"
+            : doc.data().landmarkDrp;
+
+        totalDistance.innerHTML = doc.data().totalDistance;
+        serviceFee.innerHTML = parseFloat(doc.data().serviceFee).toFixed(2);
       });
     })
     .catch((error) => {
@@ -4184,6 +4291,63 @@ const setupUserTypeChoice = () => {
  ** ****************************************************************************
  */
 
+// * Use Current Address
+const useCurrentAddress = (userID) => {
+  const pinLocForm = document.querySelector("#pin-location-form");
+
+  const townDrpC = pinLocForm.querySelector(
+    `.dropoff-container div[data-id="${settingsLoc}"] select`
+  );
+  const streetDrpC = pinLocForm.querySelector("#streetDrp");
+  const houseDrpC = pinLocForm.querySelector("#houseDrp");
+  const landmarkDrpC = pinLocForm.querySelector("#landmarkDrp");
+
+  const useCurrent = pinLocForm.useCurrent.checked;
+
+  if (useCurrent) {
+    if (townDrpC) {
+      townDrpC.disabled = true;
+      townDrpC.value = "";
+    }
+    streetDrpC.disabled = true;
+    houseDrpC.disabled = true;
+    landmarkDrpC.disabled = true;
+    streetDrpC.value = "";
+    houseDrpC.value = "";
+    landmarkDrpC.value = "";
+
+    db.collection("getmoco_users")
+      .doc(userID)
+      .get()
+      .then((doc) => {
+        brgyDrp = doc.data().brgy;
+        zipDrp = doc.data().zip;
+        streetDrp = doc.data().street;
+        houseDrp = doc.data().house;
+        landmarkDrp = doc.data().landmark;
+        dmDestination = doc.data().dmDestination;
+      });
+  } else {
+    if (townDrpC) {
+      townDrpC.disabled = false;
+      townDrpC.value = "";
+    }
+    streetDrpC.disabled = false;
+    houseDrpC.disabled = false;
+    landmarkDrpC.disabled = false;
+    streetDrpC.value = "";
+    houseDrpC.value = "";
+    landmarkDrpC.value = "";
+
+    brgyDrp = "";
+    zipDrp = "";
+    streetDrp = "";
+    houseDrp = "";
+    landmarkDrp = "";
+    dmDestination = "";
+  }
+};
+
 // * Render User Verified
 const renderUserVerified = (data, dataID, type) => {
   const pinLocForm = document.querySelector("#pin-location-form");
@@ -4193,32 +4357,47 @@ const renderUserVerified = (data, dataID, type) => {
   const verifyStatus = data.verified;
 
   if (type === "user") {
-    const currLocButton = document.querySelector(".curr-loc-button");
-
-    const town = pinLocForm.querySelector(
-      `div[data-id="${settingsLoc}"] select`
+    const townOrg = pinLocForm.querySelector(
+      `.origin-container div[data-id="${settingsLoc}"] select`
     );
-    const street = pinLocForm.querySelector("#street");
-    const house = pinLocForm.querySelector("#house");
-    const landmark = pinLocForm.querySelector("#landmark");
+    const streetOrg = pinLocForm.querySelector("#streetOrg");
+    const houseOrg = pinLocForm.querySelector("#houseOrg");
+    const landmarkOrg = pinLocForm.querySelector("#landmarkOrg");
+
+    const townDrp = pinLocForm.querySelector(
+      `.dropoff-container div[data-id="${settingsLoc}"] select`
+    );
+    const streetDrp = pinLocForm.querySelector("#streetDrp");
+    const houseDrp = pinLocForm.querySelector("#houseDrp");
+    const landmarkDrp = pinLocForm.querySelector("#landmarkDrp");
 
     errorField.innerHTML = "";
     pinLocForm.reset();
 
-    if (verifyStatus === "verified" && town) {
+    if (verifyStatus === "verified" && townOrg && townDrp) {
       pinLocButton.disabled = false;
-      town.disabled = false;
-      street.disabled = false;
-      house.disabled = false;
-      landmark.disabled = false;
-      currLocButton.disabled = false;
+
+      townOrg.disabled = false;
+      streetOrg.disabled = false;
+      houseOrg.disabled = false;
+      landmarkOrg.disabled = false;
+
+      townDrp.disabled = false;
+      streetDrp.disabled = false;
+      houseDrp.disabled = false;
+      landmarkDrp.disabled = false;
     } else {
       pinLocButton.disabled = true;
-      // town.disabled = true;
-      street.disabled = true;
-      house.disabled = true;
-      landmark.disabled = true;
-      currLocButton.disabled = true;
+
+      // townOrg.disabled = true;
+      streetOrg.disabled = true;
+      houseOrg.disabled = true;
+      landmarkOrg.disabled = true;
+
+      // townDrp.disabled = true;
+      streetDrp.disabled = true;
+      houseDrp.disabled = true;
+      landmarkDrp.disabled = true;
 
       if (verifyStatus !== "verified") {
         errorField.innerHTML =
