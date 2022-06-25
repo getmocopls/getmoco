@@ -5,38 +5,45 @@
     {
       "src": "/img/icons/logo48.png",
       "type": "image/png",
-      "sizes": "48x48"
+      "sizes": "48x48",
+      "background_color": "#32B3AA"
     },
     {
       "src": "/img/icons/logo72.png",
       "type": "image/png",
-      "sizes": "72x72"
+      "sizes": "72x72",
+      "background_color": "#32B3AA"
     },
     {
       "src": "/img/icons/logo96.png",
       "type": "image/png",
-      "sizes": "96x96"
+      "sizes": "96x96",
+      "background_color": "#32B3AA"
     },
     {
       "src": "/img/icons/logo144.png",
       "type": "image/png",
-      "sizes": "144x144"
+      "sizes": "144x144",
+      "background_color": "#32B3AA"
     },
     {
       "src": "/img/icons/logo192.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any maskable"
+      "purpose": "any maskable",
+      "background_color": "#32B3AA"
     },
     {
       "src": "/img/icons/logo512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "background_color": "#32B3AA"
     },
     {
       "src": "/img/icons/logo1024.png",
       "type": "image/png",
-      "sizes": "1024x1024"
+      "sizes": "1024x1024",
+      "background_color": "#32B3AA"
     }
   ],
   "start_url": "/",
