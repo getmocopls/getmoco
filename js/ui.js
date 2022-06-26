@@ -911,10 +911,14 @@ const renderDriverSales = (data, dataID) => {
             // console.log(day1Time, dateTime, day2Time);
             if (dateTime >= day1Time && dateTime <= day2Time) {
               renderEachDriverSales(data, dataID);
+            } else {
+              i--;
             }
           } else if (perDay === day1 && date === day1) {
             if (dateTime >= day1Time) {
               renderEachDriverSales(data, dataID);
+            } else {
+              i--;
             }
           } else if (perDay === day2 && date === day2) {
             if (dateTime <= day2Time) {
