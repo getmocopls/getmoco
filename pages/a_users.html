@@ -174,8 +174,311 @@
           </tbody>
         </table>
         <span class="no-result"></span>
+
+        <!-- ? Floating button -->
+        <div class="fixed-action-btn">
+          <a
+            onclick="getElementById('signup-form').reset()"
+            class="btn-floating btn-large teal modal-trigger tooltipped"
+            href="#signup-modal"
+            data-position="left"
+            data-tooltip="Add New Driver"
+          >
+            <i class="large material-icons">person_add</i>
+          </a>
+        </div>
       </div>
     </main>
+
+    <!--  Modal Structure -->
+    <div id="signup-modal" class="modal">
+      <div class="modal-content">
+        <div class="center-align">
+          <h4>Create Driver</h4>
+          <form id="signup-form">
+            <div class="center-align">
+              <div class="input-field">
+                <input
+                  id="s_fname"
+                  type="text"
+                  class="validate"
+                  name="firstName"
+                  pattern="[a-zA-Z]{1,}"
+                  title="First name only."
+                  required
+                />
+                <label for="s_fname">First Name</label>
+              </div>
+              <div class="input-field">
+                <input
+                  id="s_lname"
+                  type="text"
+                  class="validate"
+                  name="lastName"
+                  pattern="[a-z A-Z]{1,}"
+                  title="Last name only"
+                  required
+                />
+                <label for="s_lname">Last Name</label>
+              </div>
+              <div class="input-field">
+                <input
+                  id="s_contact"
+                  type="tel"
+                  class="validate"
+                  name="contact"
+                  pattern="[0]{1}[9]{1}[0-9]{9}"
+                  title="09*********"
+                  required
+                />
+                <label for="s_contact">Mobile Number</label>
+              </div>
+
+              <div>
+                <h6 class="left-align"><strong>Address</strong></h6>
+                <div
+                  class="input-field"
+                  data-id="Romblon, Romblon"
+                  style="display: none"
+                >
+                  <select class="browser-default" required>
+                    <option value="" selected disabled>Choose Option</option>
+                    <option
+                      value="Agbaluto, Romblon, Lalawigan ng Romblon | Agbaluto | 5611"
+                    >
+                      Agbaluto
+                    </option>
+                    <option
+                      value="Agbudia, Romblon, Lalawigan ng Romblon | Agbudia | 5500"
+                    >
+                      Agbudia
+                    </option>
+                    <option
+                      value="Agnaga, Romblon, Lalawigan ng Romblon | Agnaga | 5013"
+                    >
+                      Agnaga
+                    </option>
+                    <option
+                      value="Agnay, Romblon, Lalawigan ng Romblon | Agnay | 5500"
+                    >
+                      Agnay
+                    </option>
+                    <option
+                      value="Agnipa, Romblon, Lalawigan ng Romblon | Agnipa | 5500"
+                    >
+                      Agnipa
+                    </option>
+                    <option
+                      value="Agpanabat, Romblon, Lalawigan ng Romblon | Agpanabat | 5500"
+                    >
+                      Agpanabat
+                    </option>
+                    <option
+                      value="Agtongo, Romblon, Lalawigan ng Romblon | Agtongo | 5500"
+                    >
+                      Agtongo
+                    </option>
+                    <option
+                      value="Bagacay, Romblon, Lalawigan ng Romblon | Bagacay | 4407"
+                    >
+                      Bagacay
+                    </option>
+                    <option
+                      value="Cajimos, Romblon, Lalawigan ng Romblon | Cajimos | 5611"
+                    >
+                      Cajimos
+                    </option>
+                    <option
+                      value="Calabogo, Romblon, Lalawigan ng Romblon | Calabogo | 6201"
+                    >
+                      Calabogo
+                    </option>
+                    <option
+                      value="Capaclan, Romblon, Lalawigan ng Romblon | Capaclan | 4430"
+                    >
+                      Capaclan
+                    </option>
+                    <option
+                      value="Ginablan, Romblon, Lalawigan ng Romblon | Ginablan | 4714"
+                    >
+                      Ginablan
+                    </option>
+                    <option
+                      value="Guimpingan, Romblon, Lalawigan ng Romblon | Guimpingan | 7123"
+                    >
+                      Guimpingan
+                    </option>
+                    <option
+                      value="Ilauran, Romblon, Lalawigan ng Romblon | Ilauran | 5500"
+                    >
+                      Ilauran
+                    </option>
+                    <option
+                      value="Lamao, Romblon, Lalawigan ng Romblon | Lamao | 8000"
+                    >
+                      Lamao
+                    </option>
+                    <option
+                      value="Li-o, Romblon, Lalawigan ng Romblon | Li-o | 6021"
+                    >
+                      Li-o
+                    </option>
+                    <option
+                      value="Lonos, Romblon, Lalawigan ng Romblon | Lonos | 4015"
+                    >
+                      Lonos
+                    </option>
+                    <option
+                      value="Lunas, Romblon, Lalawigan ng Romblon | Lunas | 2623"
+                    >
+                      Lunas
+                    </option>
+                    <option
+                      value="Macalas, Romblon, Lalawigan ng Romblon | Macalas | 7304"
+                    >
+                      Macalas
+                    </option>
+                    <option
+                      value="Mapula, Romblon, Lalawigan ng Romblon | Mapula | 5500"
+                    >
+                      Mapula
+                    </option>
+                    <option
+                      value="Palje, Romblon, Lalawigan ng Romblon | Palje | 3021"
+                    >
+                      Palje
+                    </option>
+                    <option
+                      value="Sablayan, Romblon, Lalawigan ng Romblon | Sablayan | 5500"
+                    >
+                      Sablayan
+                    </option>
+                    <option
+                      value="Sawang, Romblon, Lalawigan ng Romblon | Sawang | 4229"
+                    >
+                      Sawang
+                    </option>
+                    <option
+                      value="Tambac, Romblon, Lalawigan ng Romblon | Tambac | 9403"
+                    >
+                      Tambac
+                    </option>
+                    <option
+                      value="Barangay-4 (Poblacion), Romblon, Lalawigan ng Romblon | Barangay IV (Pob.) | 6108"
+                    >
+                      Barangay IV (Pob.)
+                    </option>
+                    <option
+                      value="Barangay-3 (Poblacion), Romblon, Lalawigan ng Romblon | Barangay III (Pob.) | 6108"
+                    >
+                      Barangay III (Pob.)
+                    </option>
+                    <option
+                      value="Barangay-2 (Poblacion), Romblon, Lalawigan ng Romblon | Barangay II (Pob.) | 6119"
+                    >
+                      Barangay II (Pob.)
+                    </option>
+                    <option
+                      value="Barangay-1 (Poblacion), Romblon, Lalawigan ng Romblon | Barangay I (Pob.) | 3113"
+                    >
+                      Barangay I (Pob.)
+                    </option>
+                  </select>
+                  <label class="active">Town / Barangay</label>
+                </div>
+                <div class="input-field">
+                  <input
+                    id="s_house"
+                    type="text"
+                    class="validate"
+                    name="house"
+                    required
+                  />
+                  <label for="s_house">Lot / Block / Phase / House No.</label>
+                </div>
+                <div class="input-field">
+                  <input
+                    id="s_street"
+                    type="text"
+                    class="validate"
+                    name="street"
+                    required
+                  />
+                  <label for="s_street">Street</label>
+                </div>
+                <div class="input-field">
+                  <input
+                    id="s_landmark"
+                    type="text"
+                    class="validate"
+                    name="landmark"
+                  />
+                  <label for="s_landmark">Landmark</label>
+                </div>
+              </div>
+
+              <div class="input-field">
+                <input
+                  id="s_icon_email"
+                  type="email"
+                  class="validate"
+                  name="email"
+                  required
+                />
+                <label for="s_icon_email">Email Address</label>
+              </div>
+              <div class="input-field">
+                <input
+                  id="s_icon_pass"
+                  type="password"
+                  class="validate"
+                  name="password"
+                  required
+                />
+                <label for="s_icon_pass">Password</label>
+              </div>
+              <div class="input-field">
+                <input
+                  id="s_icon_pass2"
+                  type="password"
+                  class="validate"
+                  name="confirm_password"
+                  required
+                />
+                <label for="s_icon_pass2">Confirm Password</label>
+              </div>
+              <span class="driver-input" style="display: block">
+                <div class="input-field">
+                  <input
+                    id="s_drvLicense"
+                    type="text"
+                    class=""
+                    name="drvLicense"
+                  />
+                  <label for="s_drvLicense">Driver's License</label>
+                </div>
+                <div class="input-field">
+                  <input id="s_drvPlate" type="text" class="" name="drvPlate" />
+                  <label for="s_drvPlate">Plate No.</label>
+                </div>
+              </span>
+              <span
+                class="helper-text error red-text"
+                data-error=""
+                data-success=""
+              >
+              </span>
+              <button
+                class="btn btn-large waves-effect waves-light"
+                type="submit"
+              >
+                Create
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
     <!-- Modal Structure -->
     <div id="user_modal" class="modal">
@@ -990,6 +1293,28 @@
         if (user) {
           adminID = user.uid;
 
+          db.collection("getmoco_settings")
+            .where("settings", "==", "ALL")
+            .get()
+            .then((snap) => {
+              if (!snap.empty) {
+                snap.forEach((doc) => {
+                  setProv = doc.data().province;
+                  setCity = doc.data().city;
+                  settingsLoc = setCity + ", " + setProv;
+
+                  const selectOptions = document.querySelectorAll(
+                    `#signup-form div[data-id="${settingsLoc}"]`
+                  );
+
+                  if (selectOptions) {
+                    selectOptions.forEach((item) => {
+                      item.style.display = "block";
+                    });
+                  }
+                });
+              }
+            });
           db.collection("getmoco_users")
             .doc(adminID)
             .get()
@@ -1008,6 +1333,7 @@
                 renderUserInfo();
                 updateUserDetails(); // Tab Profile
                 changeUserStatus(); // Tab Status
+                signup("driver"); // from index
               } else {
                 window.location.href = "/pages/error.html";
               }

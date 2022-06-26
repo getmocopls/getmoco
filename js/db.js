@@ -3694,7 +3694,9 @@ function pinLocation(userID, type) {
                   serviceFee = 80;
 
                   const distance =
-                    totalDistance > 5.01 ? totalDistance - 5.01 : 5.01 - totalDistance;
+                    totalDistance > 5.01
+                      ? totalDistance - 5.01
+                      : 5.01 - totalDistance;
 
                   const addPrice = distance * priceMatrix;
 
@@ -3706,7 +3708,9 @@ function pinLocation(userID, type) {
                 serviceFee = 180;
 
                 const distance =
-                  totalDistance > 20.01 ? totalDistance - 20.01 : 20.01 - totalDistance;
+                  totalDistance > 20.01
+                    ? totalDistance - 20.01
+                    : 20.01 - totalDistance;
 
                 const addPrice = distance * priceMatrix;
 
@@ -3952,7 +3956,7 @@ function login() {
 }
 
 // * Signup
-function signup() {
+function signup(type) {
   const signupForm = document.querySelector("#signup-form");
   const signupModal = document.querySelector("#signup-modal");
   signupForm.addEventListener("submit", (e) => {
@@ -3987,7 +3991,7 @@ function signup() {
     const address =
       house + " " + street + ", " + brgy + ", " + settingsLoc + " " + zip;
 
-    const type = signupForm.type.value.trim();
+    // const type = signupForm.type.value.trim();
 
     let drvLicense = "";
     let drvPlate = "";

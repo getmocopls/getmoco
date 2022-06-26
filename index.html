@@ -28,7 +28,11 @@
     <!-- * Main -->
     <main class="container row center-align" style="display: none">
       <div class="col s10 m6 push-m3 push-s1 login">
-        <img src="/img/default-logo.jpg" alt="Getmoco Logo" class="responsive-img" />
+        <img
+          src="/img/default-logo.jpg"
+          alt="Getmoco Logo"
+          class="responsive-img"
+        />
         <form id="login-form">
           <div class="row center-align">
             <div class="input-field col s12">
@@ -71,7 +75,7 @@
               id="signup-button"
               href="#signup-modal"
               class="btn waves-effect waves-light green modal-trigger"
-              onclick="setupUserTypeChoice()"
+              onclick="// setupUserTypeChoice()"
               disabled
             >
               Create New Account
@@ -347,7 +351,7 @@
                 <label for="drvPlate">Plate No.</label>
               </div>
             </span>
-            <div class="row">
+            <div class="row" style="display: none">
               <div class="col s6">
                 <p>
                   <label>
@@ -356,7 +360,7 @@
                       name="type"
                       type="radio"
                       value="user"
-                      onclick="setupUserTypeChoice()"
+                      onclick="// setupUserTypeChoice()"
                       checked
                     />
                     <span>Customer</span>
@@ -371,7 +375,7 @@
                       name="type"
                       type="radio"
                       value="driver"
-                      onclick="setupUserTypeChoice()"
+                      onclick="// setupUserTypeChoice()"
                     />
                     <span>Driver</span>
                   </label>
@@ -478,10 +482,10 @@
             });
         } else {
           setupPageLoading();
-          setupUserTypeChoice();
+          // setupUserTypeChoice();
 
           login();
-          signup();
+          signup("user");
           setupMatrix();
         }
       });
