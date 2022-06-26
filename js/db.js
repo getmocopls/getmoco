@@ -50,6 +50,102 @@ function reportUser(reportedUser, reportedBy, page) {
  ** ****************************************************************************
  */
 
+function searchInTable(searchName, tableName) {
+  // Declare variables
+  let input, filter, table, tr, td, x, txtValue;
+  input = document.querySelector(searchName);
+  filter = input.value.toUpperCase();
+  table = document.querySelector(tableName);
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (x = 0; x < tr.length; x++) {
+    td = tr[x].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      //console.log(txtValue);
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[x].style.display = "";
+        //console.log(tr[x]);
+      } else {
+        //tr[x].style.display = "none";
+
+        td = tr[x].getElementsByTagName("td")[2];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          //console.log(txtValue);
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[x].style.display = "";
+            //console.log(tr[x]);
+          } else {
+            //tr[x].style.display = "none";
+
+            td = tr[x].getElementsByTagName("td")[3];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              //console.log(txtValue);
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[x].style.display = "";
+                //console.log(tr[x]);
+              } else {
+                //tr[x].style.display = "none";
+
+                td = tr[x].getElementsByTagName("td")[4];
+                if (td) {
+                  txtValue = td.textContent || td.innerText;
+                  //console.log(txtValue);
+                  if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[x].style.display = "";
+                    //console.log(tr[x]);
+                  } else {
+                    //tr[x].style.display = "none";
+
+                    td = tr[x].getElementsByTagName("td")[5];
+                    if (td) {
+                      txtValue = td.textContent || td.innerText;
+                      //console.log(txtValue);
+                      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[x].style.display = "";
+                        //console.log(tr[x]);
+                      } else {
+                        //tr[x].style.display = "none";
+
+                        td = tr[x].getElementsByTagName("td")[6];
+                        if (td) {
+                          txtValue = td.textContent || td.innerText;
+                          //console.log(txtValue);
+                          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[x].style.display = "";
+                            //console.log(tr[x]);
+                          } else {
+                            //tr[x].style.display = "none";
+
+                            td = tr[x].getElementsByTagName("td")[7];
+                            if (td) {
+                              txtValue = td.textContent || td.innerText;
+                              //console.log(txtValue);
+                              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                tr[x].style.display = "";
+                                //console.log(tr[x]);
+                              } else {
+                                tr[x].style.display = "none";
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 // * Setup All Sales with Day, Week, Month
 function setupAllSales() {
   //document.querySelector("#date-form").reset();
@@ -502,6 +598,8 @@ function updateMatrixDetails(settingsID) {
  ** ****************************************************************************
  */
 
+// ? Call searchInTable(searchName, tableName) from a_sales_report.html
+
 // * Render User Info
 function renderUserInfo() {
   const tableBody = document.querySelector(".table-body");
@@ -534,6 +632,12 @@ function renderUserInfo() {
 
       userID = "";
       userID = e.target.parentElement.getAttribute("data-id");
+
+      if (
+        (e.target.parentElement.getAttribute("data-id").className = "actions")
+      ) {
+        reportID = e.target.parentElement.getAttribute("data-report-id");
+      }
 
       // ? Tab
       db.collection("getmoco_settings")
@@ -1512,8 +1616,13 @@ function setupUsersList() {
           renderUsersList(doc.data(), doc.id, splitVal[0], count);
         });
       } else {
-        noResult.innerHTML =
-          '<h5 class="center-align">No Getmoco Users Found.</h5>';
+        if (splitVal[0] !== "reportedUserType") {
+          noResult.innerHTML =
+            '<h5 class="center-align">No Getmoco Users Found.</h5>';
+        } else {
+          noResult.innerHTML =
+            '<h5 class="center-align">No Reports Found.</h5>';
+        }
         tableHead.innerHTML = "";
         tableBody.innerHTML = "";
       }

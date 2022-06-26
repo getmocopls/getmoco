@@ -43,6 +43,26 @@ self.addEventListener("install", (e) => {
 // activate process
 self.addEventListener("activate", (e) => {
   //console.log("sw is activated");
+
+  // The activate handler takes care of cleaning up old caches.
+  const currentCaches = [staticCache, dynamicCache];
+  e.waitUntil(
+    caches
+      .keys()
+      .then((cacheNames) => {
+        return cacheNames.filter(
+          (cacheName) => !currentCaches.includes(cacheName)
+        );
+      })
+      .then((cachesToDelete) => {
+        return Promise.all(
+          cachesToDelete.map((cacheToDelete) => {
+            return caches.delete(cacheToDelete);
+          })
+        );
+      })
+      .then(() => self.clients.claim())
+  );
 });
 
 // fetch process

@@ -92,7 +92,32 @@
       </ul>
 
       <!-- * Content -->
-      <div class="container center-align"></div>
+      <div class="container center-align">
+        <h3 style="color: #004d40; font-weight: 800; margin-top: 3rem">
+          Getmoco Admin
+        </h3>
+        <br />
+        <a
+          class="waves-effect waves-light btn-large blue"
+          href="/pages/a_sales_report.html"
+        >
+          <i class="material-icons right">insert_chart</i>Sales Report
+        </a>
+        <br /><br />
+        <a
+          class="waves-effect waves-light btn-large green"
+          href="/pages/a_users.html"
+        >
+          <i class="material-icons right">supervisor_account</i>Users
+        </a>
+        <br /><br />
+        <a
+          class="waves-effect waves-light btn-large orange"
+          href="/pages/a_settings.html"
+        >
+          <i class="material-icons right">settings</i>Matrix
+        </a>
+      </div>
     </main>
 
     <!-- ? Loading Screen -->
@@ -177,7 +202,7 @@
                 setupPageLoading();
                 setupMenuUI(user);
                 logout();
-                window.location.href = "/pages/a_sales_report.html";
+                // window.location.href = "/pages/a_sales_report.html";
               } else {
                 window.location.href = "/pages/error.html";
               }

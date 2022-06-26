@@ -346,9 +346,57 @@ const renderAllSales = (data, dataID) => {
             year: "numeric",
           });
 
+          // console.log(day1, day2);
           // console.log(perDay, date);
 
-          if (perDay === date) {
+          const day1Time = new Date(dateForm.day1.value).toLocaleString(
+            "en-US",
+            {
+              hour: "numeric",
+              minute: "numeric",
+              second: "numeric",
+              hour12: false,
+            }
+          );
+          const day2Time = new Date(dateForm.day2.value).toLocaleString(
+            "en-US",
+            {
+              hour: "numeric",
+              minute: "numeric",
+              second: "numeric",
+              hour12: false,
+            }
+          );
+          const dateTime = data.delivered.toDate().toLocaleString("en-US", {
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: false,
+          });
+
+          if (
+            perDay === day1 &&
+            perDay === day2 &&
+            date === day1 &&
+            date === day2
+          ) {
+            // console.log(day1Time, dateTime, day2Time);
+            if (dateTime >= day1Time && dateTime <= day2Time) {
+              renderEachSales(data, dataID);
+            } else {
+              i--;
+            }
+          } else if (perDay === day1 && date === day1) {
+            if (dateTime >= day1Time) {
+              renderEachSales(data, dataID);
+            } else {
+              i--;
+            }
+          } else if (perDay === day2 && date === day2) {
+            if (dateTime <= day2Time) {
+              renderEachSales(data, dataID);
+            }
+          } else if (perDay === date) {
             renderEachSales(data, dataID);
           }
         });
@@ -826,9 +874,53 @@ const renderDriverSales = (data, dataID) => {
             year: "numeric",
           });
 
+          // console.log(day1, day2);
           // console.log(perDay, date);
 
-          if (perDay === date) {
+          const day1Time = new Date(dateForm.day1.value).toLocaleString(
+            "en-US",
+            {
+              hour: "numeric",
+              minute: "numeric",
+              second: "numeric",
+              hour12: false,
+            }
+          );
+          const day2Time = new Date(dateForm.day2.value).toLocaleString(
+            "en-US",
+            {
+              hour: "numeric",
+              minute: "numeric",
+              second: "numeric",
+              hour12: false,
+            }
+          );
+          const dateTime = data.delivered.toDate().toLocaleString("en-US", {
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: false,
+          });
+
+          if (
+            perDay === day1 &&
+            perDay === day2 &&
+            date === day1 &&
+            date === day2
+          ) {
+            // console.log(day1Time, dateTime, day2Time);
+            if (dateTime >= day1Time && dateTime <= day2Time) {
+              renderEachDriverSales(data, dataID);
+            }
+          } else if (perDay === day1 && date === day1) {
+            if (dateTime >= day1Time) {
+              renderEachDriverSales(data, dataID);
+            }
+          } else if (perDay === day2 && date === day2) {
+            if (dateTime <= day2Time) {
+              renderEachDriverSales(data, dataID);
+            }
+          } else if (perDay === date) {
             renderEachDriverSales(data, dataID);
           }
         });
@@ -1597,7 +1689,10 @@ const renderUserReportsList = (data, dataID, count, type) => {
     })
     .then(() => {
       const html = `
-        <li class="order" data-id="${dataID}">
+        <li 
+          class="report ${dataID === reportID ? "active" : ""}"
+          data-id="${dataID}"
+        >
           <div class="collapsible-header">
             <i class="material-icons">report</i>
             <strong>
@@ -1607,7 +1702,10 @@ const renderUserReportsList = (data, dataID, count, type) => {
             </strong>
             <span class="badge">${count}</span>
           </div>
-          <div class="collapsible-body grey lighten-2">
+          <div 
+            class="collapsible-body grey lighten-2" 
+            ${dataID === reportID ? 'style="display: block"' : ""}
+          >
             <h6>
             ${
               // Alternate for Submitted or Received
@@ -2324,7 +2422,15 @@ const renderUsersList = (data, dataID, type, count) => {
         const html = `
           <tr class="report" data-id="${dataID}">
             <td class="count">${count}</td>
-            <td class="reportedUser">${reportedUser}</td>
+            <td class="user" data-id="${data.reportedUser}">
+              <span class="name">${reportedUser}</span>
+              <span class="verification" style="display: none;">
+                <span style="display: none;"></span>
+              </span>
+              <span class="status" style="display: none;">
+                <span style="display: none;"></span>
+              </span>
+            </td>
             <td class="reportedBy">${reportedBy}</td>
             <td class="details">${data.details}</td>
             <td class="date">
@@ -2340,14 +2446,24 @@ const renderUsersList = (data, dataID, type, count) => {
               })}
             </td>
             <td>
-              <div class="" data-id="${dataID}">
+              <div 
+                class="actions" 
+                data-id="${data.reportedUser}"
+                data-report-id="${dataID}"
+              >
                 <i
-                  class="material-icons modal-trigger tooltipped view-report"
-                  href="#report_modal"
+                  class="material-icons modal-trigger tooltipped view"
+                  href="#user_modal"
                   style="cursor: pointer"
                   data-position="top"
-                  data-tooltip="View Report"
-                  title="View Report"
+                  data-tooltip="View User"
+                  title="View User"
+                  onclick='
+                    ${document.querySelector(".tab-reports").click()}
+                    ${(document.querySelector(
+                      "#tab-reports select"
+                    )[1].selected = true)}
+                  '
                 >
                   remove_red_eye
                 </i>
@@ -3474,7 +3590,9 @@ const renderChats = (data, dataID, type) => {
           instanceUser.open();
           chatUserButton.setAttribute("data-tooltip", "Send message here.");
         } else {
-          const chatDriverButton = document.querySelector("#chat_button.driver");
+          const chatDriverButton = document.querySelector(
+            "#chat_button.driver"
+          );
           const instanceDriver = M.Tooltip.getInstance(chatDriverButton);
 
           chatDriverButton.setAttribute("data-tooltip", "New message here!");

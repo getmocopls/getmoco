@@ -49,6 +49,8 @@ https://distancematrix.ai/dev
 
 https://www.geeksforgeeks.org/how-to-use-the-javascript-fetch-api-to-get-data/
 
+https://www.w3schools.com/howto/howto_js_filter_table.asp
+
 Distance Matrix AI Token: (patrick tup email)
 4e5JlBCrZzqIniPGkkIqOIuZ0HkIW
 

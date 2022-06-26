@@ -127,7 +127,7 @@
                 <div class="col s6">
                   <label for="day1">Start Date:</label>
                   <input
-                    type="date"
+                    type="datetime-local"
                     id="day1"
                     name="day1"
                     onchange="setupAllSales()"
@@ -136,7 +136,7 @@
                 <div class="col s6">
                   <label for="day2">End Date:</label>
                   <input
-                    type="date"
+                    type="datetime-local"
                     id="day2"
                     name="day2"
                     onchange="setupAllSales()"
@@ -231,6 +231,18 @@
                 <i class="material-icons right">file_download</i>
                 <span class="hide-on-med-and-down">Export</span>
               </button>
+            </div>
+            <div class="col s12">
+              <div class="input-field col s12 search">
+                <i class="material-icons prefix">search</i>
+                <input
+                  id="search"
+                  type="text"
+                  class="validate"
+                  onkeyup="searchInTable('#search', '.table-main')"
+                />
+                <label for="search">Search</label>
+              </div>
             </div>
           </div>
           <hr />

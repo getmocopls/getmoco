@@ -114,9 +114,9 @@
               >
                 Customers (Verified)
               </option>
-              <!-- <option value="reportedUserType, ==, user, created, desc">
+              <option value="reportedUserType, ==, user, created, desc">
                 Customers (Reports)
-              </option> -->
+              </option>
               <option value="all, type, ==, driver, lname, asc">
                 Drivers (All)
               </option>
@@ -135,9 +135,9 @@
               >
                 Drivers (Verified)
               </option>
-              <!-- <option value="reportedUserType, ==, driver, created, desc">
+              <option value="reportedUserType, ==, driver, created, desc">
                 Drivers (Reports)
-              </option> -->
+              </option>
             </select>
           </div>
           <br />
@@ -156,9 +156,9 @@
               id="search"
               type="text"
               class="validate"
-              oninput="searchUser(this.value)"
+              onkeyup="searchInTable('#search', '.table-main')"
             />
-            <label for="search">Search (Lastname)</label>
+            <label for="search">Search</label>
           </div>
         </div>
         <table class="responsive-table striped centered table-main">
@@ -567,7 +567,7 @@
         </div>
 
         <div id="tab-reports" class="">
-          <select onchange="tabReportSelect()" class="">
+          <select onchange="tabReportSelect()" class="browser-default">
             <option value="reportedBy">Submitted</option>
             <option value="reportedUser">Received</option>
           </select>
@@ -1274,6 +1274,7 @@
       let setCity = "";
       let adminID = "";
       let userID = "";
+      let reportID = "";
 
       // ? Tab Order
       let tabOrderUserType = "";
