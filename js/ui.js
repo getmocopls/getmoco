@@ -239,6 +239,8 @@ const renderAllOrders = (data, dataID, dateType) => {
       i--;
       j--;
       k--;
+      m--;
+      n--;
     }
   } else if (selectVal === "week") {
     dayWeekContainer.style.display = "block";
@@ -387,6 +389,8 @@ const renderAllOrders = (data, dataID, dateType) => {
             i--;
             j--;
             k--;
+            m--;
+            n--;
           }
         } else if (perDay === day1 && date === day1) {
           if (dateTime >= day1Time) {
@@ -395,6 +399,8 @@ const renderAllOrders = (data, dataID, dateType) => {
             i--;
             j--;
             k--;
+            m--;
+            n--;
           }
         } else if (perDay === day2 && date === day2) {
           if (dateTime <= day2Time) {
@@ -453,24 +459,31 @@ const renderEachOrders = (data, dataID, dateType) => {
 
     drivers[j - 1] = driverID;
     customers[k - 1] = customerID;
+    drivers2[m - 1] = driverID;
+    customers2[n - 1] = customerID;
     // console.log("drivers", drivers);
     // console.log("customers", customers);
 
     let newDrivers = [...new Set(drivers)];
     let newCustomers = [...new Set(customers)];
+    let newDrivers2 = [...new Set(drivers2)];
+    let newCustomers2 = [...new Set(customers2)];
     // console.log("newDrivers", newDrivers);
     // console.log("newCustomers", newCustomers);
 
-    driverCount = newDrivers[0] !== "" ? newDrivers.length : 0;
-    customerCount = newCustomers[0] !== "" ? newCustomers.length : 0;
+    driverCount = newDrivers2[0] !== "" ? newDrivers2.length : 0;
+    customerCount = newCustomers2[0] !== "" ? newCustomers2.length : 0;
 
-    totalDrivers.innerHTML = driverCount;
-    totalCustomers.innerHTML = customerCount;
+    totalDrivers.innerHTML = newDrivers[0] !== "" ? newDrivers.length : 0;
+    totalCustomers.innerHTML = newCustomers[0] !== "" ? newCustomers.length : 0;
 
     // let countCount = i;
     let countOrders = 1;
     let countCustomers = customerCount;
     let countDrivers = driverCount;
+
+    // console.log("countCustomers", countCustomers);
+    // console.log("countDrivers", countDrivers);
 
     const checkRow = document.querySelector(
       `.order[data-id="${date.replace(/[^a-zA-Z0-9]/g, "")}"]`
@@ -484,8 +497,26 @@ const renderEachOrders = (data, dataID, dateType) => {
       checkRow.remove();
     } else {
       if (i !== 1) {
-        countCustomers = 0;
-        countDrivers = 0;
+        m = 1;
+        n = 1;
+
+        drivers2 = [];
+        customers2 = [];
+        newDrivers2 = [];
+        newCustomers2 = [];
+
+        drivers2[m - 1] = driverID;
+        customers2[n - 1] = customerID;
+        // console.log("drivers2", drivers2);
+        // console.log("customers2", customers2);
+
+        newDrivers2 = [...new Set(drivers2)];
+        newCustomers2 = [...new Set(customers2)];
+        // console.log("newDrivers2", newDrivers2);
+        // console.log("newCustomers2", newCustomers2);
+
+        countDrivers = newDrivers2.length;
+        countCustomers = newCustomers2.length;
       }
     }
 

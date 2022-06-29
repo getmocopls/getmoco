@@ -107,27 +107,30 @@
                 document.querySelector('.filter-orders select').value = 'all'; setupAllOrders()
               "
             >
-              <option value="current, created, !=, none, created">
+              <!-- <option value="current, created, !=, none, created">
                 Booking up
-              </option>
+              </option> -->
               <option value="waiting, waiting, !=, none, waiting">
                 Pending
               </option>
               <option value="transac, transac, !=, none, transac">
                 On-going
               </option>
-              <option value="toPay, shipment, ==, none, orderConfirmed">
+              <!-- <option value="toPay, shipment, ==, none, orderConfirmed">
                 To Ship
               </option>
               <option value="toPay, shipment, !=, none, shipment">
                 Shipping
+              </option> -->
+              <option value="paid, delivered, !=, none, delivered">
+                Delivered
               </option>
-              <option value="paid, orderReceived, ==, false, delivered">
+              <!-- <option value="paid, orderReceived, ==, false, delivered">
                 Delivered
               </option>
               <option value="paid, orderReceived, ==, true, received">
                 Received
-              </option>
+              </option> -->
             </select>
           </div>
           <div class="input-field filter-orders col s6">
@@ -487,10 +490,14 @@
       let i = 0; // driver data count
       let j = 0;
       let k = 0;
+      let m = 0;
+      let n = 0;
 
       let orders = [];
       let customers = [];
       let drivers = [];
+      let customers2 = [];
+      let drivers2 = [];
 
       // * Auth Status
       auth.onAuthStateChanged((user) => {

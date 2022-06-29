@@ -87,6 +87,8 @@ function setupAllOrders() {
     i = 0;
     j = 0;
     k = 0;
+    m = 0;
+    n = 0;
 
     orders = [];
     customers = [];
@@ -101,6 +103,8 @@ function setupAllOrders() {
         i++;
         j++;
         k++;
+        m++;
+        n++;
 
         renderAllOrders(doc.data(), doc.id, splitVal[4]);
       });
