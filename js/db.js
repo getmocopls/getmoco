@@ -45,101 +45,101 @@ function reportUser(reportedUser, reportedBy, page) {
 /**
  ** ****************************************************************************
  **
+ ** a_orders.html
+ **
+ ** ****************************************************************************
+ */
+
+// * Setup All Orders
+function setupAllOrders() {
+  const tableBody = document.querySelector(".table-body");
+  const totalOrders = document.querySelector(".totalOrders");
+  const totalDrivers = document.querySelector(".totalDrivers");
+  const totalCustomers = document.querySelector(".totalCustomers");
+  const expandButton = document.querySelector(
+    "#expand_form input[name='expand']"
+  );
+  const orderTypeSelect = document.querySelector(".filter-orders-type select");
+
+  tableBody.innerHTML = "";
+  totalOrders.innerHTML = "0";
+  totalDrivers.innerHTML = "0";
+  totalCustomers.innerHTML = "0";
+
+  expandButton.disabled = true;
+
+  const selectVal =
+    orderTypeSelect.options[orderTypeSelect.selectedIndex].value;
+
+  let splitVal = selectVal.split(", ");
+
+  const dbQuery = db
+    .collection("getmoco_orders")
+    .where("status", "==", splitVal[0])
+    .where(
+      splitVal[1],
+      splitVal[2],
+      splitVal[3] === "false" || splitVal[3] === "true" ? eval(splitVal[3]) : ""
+    )
+    .orderBy(splitVal[4], "asc");
+
+  dbQuery.get().then((snap) => {
+    i = 0;
+    j = 0;
+    k = 0;
+
+    orders = [];
+    customers = [];
+    drivers = [];
+
+    if (!snap.empty) {
+      snap.forEach((doc) => {
+        orderCount = parseInt(totalOrders.textContent);
+        customerCount = parseInt(totalDrivers.textContent);
+        driverCount = parseInt(totalDrivers.textContent);
+
+        i++;
+        j++;
+        k++;
+
+        renderAllOrders(doc.data(), doc.id, splitVal[4]);
+      });
+    }
+  });
+}
+
+/**
+ ** ****************************************************************************
+ **
  ** a_sales_report.html
  **
  ** ****************************************************************************
  */
 
-function searchInTable(searchName, tableName) {
+// * Search in Table
+function searchInTable(searchName, tableName, start, max) {
   // Declare variables
-  let input, filter, table, tr, td, x, txtValue;
+  let input, filter, table, tr, td, txtValue;
   input = document.querySelector(searchName);
   filter = input.value.toUpperCase();
   table = document.querySelector(tableName);
   tr = table.getElementsByTagName("tr");
 
   // Loop through all table rows, and hide those who don't match the search query
-  for (x = 0; x < tr.length; x++) {
-    td = tr[x].getElementsByTagName("td")[1];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      //console.log(txtValue);
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[x].style.display = "";
-        //console.log(tr[x]);
-      } else {
-        //tr[x].style.display = "none";
-
-        td = tr[x].getElementsByTagName("td")[2];
-        if (td) {
-          txtValue = td.textContent || td.innerText;
-          //console.log(txtValue);
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[x].style.display = "";
-            //console.log(tr[x]);
-          } else {
-            //tr[x].style.display = "none";
-
-            td = tr[x].getElementsByTagName("td")[3];
-            if (td) {
-              txtValue = td.textContent || td.innerText;
-              //console.log(txtValue);
-              if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr[x].style.display = "";
-                //console.log(tr[x]);
-              } else {
-                //tr[x].style.display = "none";
-
-                td = tr[x].getElementsByTagName("td")[4];
-                if (td) {
-                  txtValue = td.textContent || td.innerText;
-                  //console.log(txtValue);
-                  if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[x].style.display = "";
-                    //console.log(tr[x]);
-                  } else {
-                    //tr[x].style.display = "none";
-
-                    td = tr[x].getElementsByTagName("td")[5];
-                    if (td) {
-                      txtValue = td.textContent || td.innerText;
-                      //console.log(txtValue);
-                      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[x].style.display = "";
-                        //console.log(tr[x]);
-                      } else {
-                        //tr[x].style.display = "none";
-
-                        td = tr[x].getElementsByTagName("td")[6];
-                        if (td) {
-                          txtValue = td.textContent || td.innerText;
-                          //console.log(txtValue);
-                          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            tr[x].style.display = "";
-                            //console.log(tr[x]);
-                          } else {
-                            //tr[x].style.display = "none";
-
-                            td = tr[x].getElementsByTagName("td")[7];
-                            if (td) {
-                              txtValue = td.textContent || td.innerText;
-                              //console.log(txtValue);
-                              if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                                tr[x].style.display = "";
-                                //console.log(tr[x]);
-                              } else {
-                                tr[x].style.display = "none";
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
+  for (let x = 0; x < tr.length; x++) {
+    for (let y = start; y <= max; y++) {
+      td = tr[x].getElementsByTagName("td")[y];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        //console.log(txtValue);
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[x].style.display = "";
+          //console.log(tr[x]);
+          break;
+        } else if (y === max) {
+          tr[x].style.display = "none";
+        } else {
+          continue;
         }
       }
     }
@@ -158,7 +158,9 @@ function setupAllSales() {
   const totalItemFees = document.querySelector(".totalItemFees");
   const totalOrderFees = document.querySelector(".totalOrderFees");
   const downloadButton = document.querySelector(".download-button");
-  const expandButton = document.querySelector("#expand_form input");
+  const expandButton = document.querySelector(
+    "#expand_form input[name='expand']"
+  );
 
   tableBody.innerHTML = "";
   totalOrders.innerHTML = "0";
@@ -177,6 +179,7 @@ function setupAllSales() {
     .get()
     .then((snap) => {
       i = 0;
+      j = 0;
 
       drivers = [];
 
@@ -191,6 +194,7 @@ function setupAllSales() {
           allOrderFees = parseFloat(totalOrderFees.textContent);
 
           i++;
+          j++;
 
           renderAllSales(doc.data(), doc.id);
         });
@@ -294,26 +298,27 @@ function setupViewOrderInfo() {
     }
   });
 
-  tableBody2.addEventListener("click", (e) => {
-    // console.log("e.target", e.target);
-    // * bug = can't detect textContent
+  if (tableBody2)
+    tableBody2.addEventListener("click", (e) => {
+      // console.log("e.target", e.target);
+      // * bug = can't detect textContent
 
-    document.querySelector(".order-items").innerHTML = "";
+      document.querySelector(".order-items").innerHTML = "";
 
-    const dataID = e.target.getAttribute("data-id");
-    const targetAttr = e.target.parentElement.getAttribute("href");
-    // console.log(targetAttr);
+      const dataID = e.target.getAttribute("data-id");
+      const targetAttr = e.target.parentElement.getAttribute("href");
+      // console.log(targetAttr);
 
-    if (dataID !== null && targetAttr === "#view_order_modal") {
-      db.collection("getmoco_orders")
-        .doc(dataID)
-        .get()
-        .then((doc) => {
-          setupOrderDetails(dataID, "driver"); // called from d_order_details.html
-          setOrderItems(doc.data().customerID, dataID); // called from d_order_details.html
-        });
-    }
-  });
+      if (dataID !== null && targetAttr === "#view_order_modal") {
+        db.collection("getmoco_orders")
+          .doc(dataID)
+          .get()
+          .then((doc) => {
+            setupOrderDetails(dataID, "driver"); // called from d_order_details.html
+            setOrderItems(doc.data().customerID, dataID); // called from d_order_details.html
+          });
+      }
+    });
 }
 
 // * Export to PDF
@@ -3039,6 +3044,7 @@ function cancelWaitPriceList(orderID, locationID, driverID, customerID) {
             totalItemsPrice: serviceFee.toFixed(2).toString(), // same as service fee
             driverID: "",
             status: "waiting",
+            waiting: firebase.firestore.FieldValue.serverTimestamp(),
           })
           .then(() => {
             db.collection("getmoco_items")
@@ -3598,6 +3604,7 @@ function nextBackCustomer(orderID, status) {
           status: status,
           totalWeight: weight,
           change: parseFloat(change).toFixed(2).toString(),
+          waiting: firebase.firestore.FieldValue.serverTimestamp(),
         })
         .then(() => {
           if (status === "waiting")
@@ -3861,8 +3868,8 @@ function pinLocation(userID, type) {
                 orderReceived: false,
                 delivered: "",
                 shipment: "",
-                receipt: "",
                 received: "",
+                waiting: "",
                 totalWeight: 0,
                 totalDistance: totalDistance,
                 change: "",

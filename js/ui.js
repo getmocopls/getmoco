@@ -190,6 +190,427 @@ const renderDisableMessage = (userID) => {
 /**
  ** ****************************************************************************
  **
+ ** a_orders.html
+ **
+ ** ****************************************************************************
+ */
+
+// * Render All Orders
+const renderAllOrders = (data, dataID, dateType) => {
+  const filterOrders = document.querySelector(".filter-orders select");
+  const dateForm = document.querySelector("#date-form");
+  const dayWeekContainer = dateForm.querySelector(".day-week-container");
+  const monthContainer = dateForm.querySelector(".month-container");
+  const customContainer = dateForm.querySelector(".custom-container");
+
+  const selectVal = filterOrders.value;
+
+  if (selectVal === "all") {
+    dayWeekContainer.style.display = "none";
+    monthContainer.style.display = "none";
+    customContainer.style.display = "none";
+
+    renderEachOrders(data, dataID, dateType);
+  } else if (selectVal === "day") {
+    dayWeekContainer.style.display = "block";
+    monthContainer.style.display = "none";
+    customContainer.style.display = "none";
+
+    const dataDate = `data.${dateType}`;
+    const date = eval(dataDate).toDate().toLocaleString("en-US", {
+      month: "numeric",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    const day =
+      dateForm.day.value !== ""
+        ? new Date(dateForm.day.value).toLocaleString("en-US", {
+            month: "numeric",
+            day: "numeric",
+            year: "numeric",
+          })
+        : "";
+
+    // console.log(day, date);
+    if (day !== "" && day === date) {
+      renderEachOrders(data, dataID, dateType);
+    } else {
+      i--;
+      j--;
+      k--;
+    }
+  } else if (selectVal === "week") {
+    dayWeekContainer.style.display = "block";
+    monthContainer.style.display = "none";
+    customContainer.style.display = "none";
+
+    const dataDate = `data.${dateType}`;
+    const date = eval(dataDate).toDate().toLocaleString("en-US", {
+      month: "numeric",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    const day = dateForm.day.value !== "" ? new Date(dateForm.day.value) : "";
+
+    if (day !== "") {
+      // console.log(day);
+
+      let week = new Array();
+
+      // Starting Monday not Sunday
+      day.setDate(day.getDate() - day.getDay() + 1);
+
+      for (let i = 0; i < 7; i++) {
+        week.push(new Date(day));
+        day.setDate(day.getDate() + 1);
+      }
+
+      // console.log(week);
+
+      week.forEach((day) => {
+        const perDay = day.toLocaleString("en-US", {
+          month: "numeric",
+          day: "numeric",
+          year: "numeric",
+        });
+
+        // console.log(perDay, date);
+
+        if (perDay === date) {
+          renderEachOrders(data, dataID, dateType);
+        }
+      });
+    }
+  } else if (selectVal === "month") {
+    dayWeekContainer.style.display = "none";
+    monthContainer.style.display = "block";
+    customContainer.style.display = "none";
+
+    const dataDate = `data.${dateType}`;
+    const date = eval(dataDate).toDate().toLocaleString("en-US", {
+      month: "numeric",
+      year: "numeric",
+    });
+
+    const month =
+      dateForm.month.value !== ""
+        ? new Date(dateForm.month.value).toLocaleString("en-US", {
+            month: "numeric",
+            year: "numeric",
+          })
+        : "";
+
+    if (month !== "" && month === date) {
+      // console.log(month);
+      renderEachOrders(data, dataID, dateType);
+    }
+  } else if (selectVal === "custom") {
+    dayWeekContainer.style.display = "none";
+    monthContainer.style.display = "none";
+    customContainer.style.display = "block";
+
+    const day1 =
+      dateForm.day1.value !== ""
+        ? new Date(dateForm.day1.value).toLocaleString("en-US", {
+            month: "numeric",
+            day: "numeric",
+            year: "numeric",
+          })
+        : "";
+
+    const day2 =
+      dateForm.day2.value !== ""
+        ? new Date(dateForm.day2.value).toLocaleString("en-US", {
+            month: "numeric",
+            day: "numeric",
+            year: "numeric",
+          })
+        : "";
+
+    if (day1 !== "" && day2 !== "") {
+      // console.log(month);
+
+      let daylist = getDaysArray(day1, day2);
+      daylist.map((v) => v.toISOString().slice(0, 10)).join("");
+
+      // console.log(daylist);
+
+      const dataDate = `data.${dateType}`;
+      const date = eval(dataDate).toDate().toLocaleString("en-US", {
+        month: "numeric",
+        day: "numeric",
+        year: "numeric",
+      });
+
+      daylist.forEach((day) => {
+        const perDay = day.toLocaleString("en-US", {
+          month: "numeric",
+          day: "numeric",
+          year: "numeric",
+        });
+
+        // console.log(day1, day2);
+        // console.log(perDay, date);
+
+        const day1Time = new Date(dateForm.day1.value).toLocaleString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          hour12: false,
+        });
+        const day2Time = new Date(dateForm.day2.value).toLocaleString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          hour12: false,
+        });
+        const dataDate = `data.${dateType}`;
+        const dateTime = eval(dataDate).toDate().toLocaleString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          hour12: false,
+        });
+
+        if (
+          perDay === day1 &&
+          perDay === day2 &&
+          date === day1 &&
+          date === day2
+        ) {
+          // console.log(day1Time, dateTime, day2Time);
+          if (dateTime >= day1Time && dateTime <= day2Time) {
+            renderEachOrders(data, dataID, dateType);
+          } else {
+            i--;
+            j--;
+            k--;
+          }
+        } else if (perDay === day1 && date === day1) {
+          if (dateTime >= day1Time) {
+            renderEachOrders(data, dataID, dateType);
+          } else {
+            i--;
+            j--;
+            k--;
+          }
+        } else if (perDay === day2 && date === day2) {
+          if (dateTime <= day2Time) {
+            renderEachOrders(data, dataID, dateType);
+          }
+        } else if (perDay === date) {
+          renderEachOrders(data, dataID, dateType);
+        }
+      });
+    }
+  }
+};
+
+// * Render Each Orders after choosing option
+const renderEachOrders = (data, dataID, dateType) => {
+  const totalOrders = document.querySelector(".totalOrders");
+  const totalCustomers = document.querySelector(".totalCustomers");
+  const totalDrivers = document.querySelector(".totalDrivers");
+  const expandButton = document.querySelector(
+    "#expand_form input[name='expand']"
+  );
+
+  expandButton.disabled = false;
+
+  orderCount++;
+
+  totalOrders.innerHTML = orderCount;
+
+  const expandForm = document.querySelector("#expand_form");
+
+  const checkValue = expandForm.expand.checked; // date expand
+  const checkValue2 = expandForm.expand2.checked; // per driver
+  // console.log(checkValue);
+
+  if (!checkValue) {
+    expandForm.querySelector(".per-driver").style.display = "none";
+    expandForm.expand2.disabled = true;
+    expandForm.expand2.checked = false;
+
+    const column3 = document.querySelector(".column3");
+    const column4 = document.querySelector(".column4");
+    const column5 = document.querySelector(".column5");
+    column3.innerHTML = "Orders";
+    column4.innerHTML = "Customers";
+    column5.innerHTML = "Drivers";
+
+    const dataDate = `data.${dateType}`;
+    const date = eval(dataDate).toDate().toLocaleString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    const driverID = data.driverID;
+    const customerID = data.customerID;
+
+    drivers[j - 1] = driverID;
+    customers[k - 1] = customerID;
+    // console.log("drivers", drivers);
+    // console.log("customers", customers);
+
+    let newDrivers = [...new Set(drivers)];
+    let newCustomers = [...new Set(customers)];
+    // console.log("newDrivers", newDrivers);
+    // console.log("newCustomers", newCustomers);
+
+    driverCount = newDrivers[0] !== "" ? newDrivers.length : 0;
+    customerCount = newCustomers[0] !== "" ? newCustomers.length : 0;
+
+    totalDrivers.innerHTML = driverCount;
+    totalCustomers.innerHTML = customerCount;
+
+    // let countCount = i;
+    let countOrders = 1;
+    let countCustomers = customerCount;
+    let countDrivers = driverCount;
+
+    const checkRow = document.querySelector(
+      `.order[data-id="${date.replace(/[^a-zA-Z0-9]/g, "")}"]`
+    );
+    if (checkRow) {
+      const modOrders = checkRow.querySelector(".modOrders").innerHTML;
+
+      i--;
+      countOrders = parseInt(modOrders) + 1;
+
+      checkRow.remove();
+    } else {
+      if (i !== 1) {
+        countCustomers = 0;
+        countDrivers = 0;
+      }
+    }
+
+    const html = `
+      <tr 
+        class="order"
+        data-id="${date.replace(/[^a-zA-Z0-9]/g, "")}" 
+      >
+        <td class="modCount">
+          ${i}
+        </td>
+        <td class="modDate">
+          ${date}
+        </td>
+        <td class="modOrders">
+          ${countOrders}
+        </td>
+        <td class="modCustomer" data-id="${data.customerID}">
+          ${countCustomers}
+        </td>
+        <td class="modDriver" data-id="${data.driverID}">
+          ${countDrivers}
+        </td>
+      </tr>
+    `;
+
+    const tableBody = document.querySelector(".table-body");
+
+    tableBody.innerHTML += html;
+  } else if (checkValue && !checkValue2) {
+    //expandForm.querySelector(".per-driver").style.display = "block";
+    expandForm.expand2.disabled = false;
+
+    const column3 = document.querySelector(".column3");
+    const column4 = document.querySelector(".column4");
+    const column5 = document.querySelector(".column5");
+    column3.innerHTML = "Order";
+    column4.innerHTML = "Customer";
+    column5.innerHTML = "Driver";
+
+    const dataDate = `data.${dateType}`;
+    const date = eval(dataDate).toDate().toLocaleString("en-US", {
+      weekday: "short",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: true,
+    });
+
+    const driverID = data.driverID;
+    const customerID = data.customerID;
+
+    drivers[i - 1] = driverID;
+    customers[i - 1] = customerID;
+    // console.log("drivers", drivers);
+    // console.log("customers", customers);
+
+    let newDrivers = [...new Set(drivers)];
+    let newCustomers = [...new Set(customers)];
+    // console.log("newDrivers", newDrivers);
+    // console.log("newCustomers", newCustomers);
+
+    driverCount = newDrivers[0] !== "" ? newDrivers.length : 0;
+    customerCount = newCustomers[0] !== "" ? newCustomers.length : 0;
+
+    totalDrivers.innerHTML = driverCount;
+    totalCustomers.innerHTML = customerCount;
+
+    const html = `
+      <tr 
+        class="order modal-trigger"
+        data-id="${dataID}"
+        href="#view_order_modal"
+        style="cursor: pointer;"
+      >
+        <td class="modCount" data-id="${dataID}">
+          ${i}
+        </td>
+        <td class="modDate" data-id="${dataID}">
+          ${date}
+        </td>
+        <td class="modOrders" data-id="${dataID}">
+          ${dataID}
+        </td>
+        <td class="modCustomer" data-id="${dataID}">
+          <em>None</em>
+        </td>
+        <td class="modDriver" data-id="${dataID}">
+          <em>None</em>
+        </td>
+      </tr>
+    `;
+
+    const tableBody = document.querySelector(".table-body");
+
+    tableBody.innerHTML += html;
+
+    db.collection("getmoco_users")
+      .get()
+      .then((snap) => {
+        snap.forEach((doc) => {
+          if (doc.id === customerID) {
+            const trName = document.querySelector(
+              `.order[data-id="${dataID}"] .modCustomer`
+            );
+            trName.innerHTML = doc.data().lname + ", " + doc.data().fname;
+          }
+
+          if (doc.id === driverID) {
+            const trName = document.querySelector(
+              `.order[data-id="${dataID}"] .modDriver`
+            );
+            trName.innerHTML = doc.data().lname + ", " + doc.data().fname;
+          }
+        });
+      });
+  }
+};
+
+/**
+ ** ****************************************************************************
+ **
  ** a_sales_report.html
  **
  ** ****************************************************************************
@@ -237,6 +658,7 @@ const renderAllSales = (data, dataID) => {
         renderEachSales(data, dataID);
       } else {
         i--;
+        j--; // for total drivers count
       }
     } else if (selectVal === "week") {
       dayWeekContainer.style.display = "block";
@@ -385,12 +807,14 @@ const renderAllSales = (data, dataID) => {
               renderEachSales(data, dataID);
             } else {
               i--;
+              j--; // for total drivers count
             }
           } else if (perDay === day1 && date === day1) {
             if (dateTime >= day1Time) {
               renderEachSales(data, dataID);
             } else {
               i--;
+              j--; // for total drivers count
             }
           } else if (perDay === day2 && date === day2) {
             if (dateTime <= day2Time) {
@@ -425,7 +849,9 @@ const renderEachSales = (data, dataID) => {
   const totalOrderFees = document.querySelector(".totalOrderFees");
   const totalOrders = document.querySelector(".totalOrders");
   const downloadButton = document.querySelector(".download-button");
-  const expandButton = document.querySelector("#expand_form input");
+  const expandButton = document.querySelector(
+    "#expand_form input[name='expand']"
+  );
 
   let totalItemsPrice = parseFloat(data.totalItemsPrice);
   let itemsPrice = parseFloat(data.itemsPrice);
@@ -474,12 +900,16 @@ const renderEachSales = (data, dataID) => {
 
     const driverID = data.driverID;
 
-    drivers[i - 1] = driverID;
+    drivers[j - 1] = driverID;
+    // console.log("drivers", drivers);
 
     let newDrivers = [...new Set(drivers)];
+    // console.log("newDrivers", newDrivers);
 
     const totalDrivers = document.querySelector(".totalDrivers");
-    totalDrivers.innerHTML = newDrivers.length;
+
+    driverCount = newDrivers.length;
+    totalDrivers.innerHTML = driverCount;
 
     // let countCount = i;
     let countOrders = 1;
@@ -2954,6 +3384,49 @@ const setOrderItems = (customerID, orderID) => {
 
           orderItemsContainer.innerHTML += html;
         });
+      } else {
+        const html = `
+            <li class="item" data-id="${"<em>None</em>"}">
+              <div class="collapsible-header">
+                <i class="material-icons">local_mall</i>
+                <strong class="product">${"<em>None</em>"}</strong>
+              </div>
+              <div class="collapsible-body grey lighten-2">
+                <h6><strong>Store Name (Optional)</strong></h6>
+                <p class="store">
+                  ${"<em>None</em>"}
+                </p>
+                <h6><strong>Product Description (Optional)</strong></h6>
+                <p class="productDesc">
+                ${"<em>None</em>"}
+                </p>
+                <h6><strong>Quantity</strong></h6>
+                <p class="quantity">${"<em>None</em>"}</p>
+                <h6><strong>Note (Optional)</strong></h6>
+                <p class="note">
+                ${"<em>None</em>"}
+                </p>
+                <h6><strong>Price</strong></h6>
+                <p>
+                  <span class="priceTag">
+                  </span>
+                  <span class="price">
+                    ${"<em>None</em>"}
+                  </span>
+                </p>
+                <h6><strong>Total Price</strong></h6>
+                <p>
+                  <span class="totalPriceTag">
+                  </span>
+                  <span class="totalPrice">
+                    ${"<em>None</em>"}
+                  </span>
+                </p>
+              </div>
+            </li>
+          `;
+
+        orderItemsContainer.innerHTML += html;
       }
     });
 };

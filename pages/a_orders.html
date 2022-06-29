@@ -42,10 +42,10 @@
               <i class="material-icons">menu</i>
             </a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-              <li class="active">
+              <li class="">
                 <a class="" href="/pages/a_sales_report.html"> Sales </a>
               </li>
-              <li class="">
+              <li class="active">
                 <a class="" href="/pages/a_orders.html"> Orders </a>
               </li>
               <li>
@@ -82,10 +82,10 @@
         </li>
         <li><a href="/pages/admin.html">Getmoco</a></li>
         <li><div class="divider"></div></li>
-        <li class="active">
+        <li class="">
           <a class="" href="/pages/a_sales_report.html"> Sales </a>
         </li>
-        <li class="">
+        <li class="active">
           <a class="" href="/pages/a_orders.html"> Orders </a>
         </li>
         <li>
@@ -99,10 +99,41 @@
 
       <!-- * Content -->
       <div class="container center-align">
-        <div class="">
-          <div class="input-field filter-orders">
+        <div class="row">
+          <div class="input-field filter-orders-type col s6">
             <select
-              onchange="document.querySelector('#date-form').reset(); setupAllSales()"
+              class="browser-default"
+              onchange="
+                document.querySelector('.filter-orders select').value = 'all'; setupAllOrders()
+              "
+            >
+              <option value="current, created, !=, none, created">
+                Booking up
+              </option>
+              <option value="waiting, waiting, !=, none, waiting">
+                Pending
+              </option>
+              <option value="transac, transac, !=, none, transac">
+                On-going
+              </option>
+              <option value="toPay, shipment, ==, none, orderConfirmed">
+                To Ship
+              </option>
+              <option value="toPay, shipment, !=, none, shipment">
+                Shipping
+              </option>
+              <option value="paid, orderReceived, ==, false, delivered">
+                Delivered
+              </option>
+              <option value="paid, orderReceived, ==, true, received">
+                Received
+              </option>
+            </select>
+          </div>
+          <div class="input-field filter-orders col s6">
+            <select
+              class="browser-default"
+              onchange="document.querySelector('#date-form').reset(); setupAllOrders()"
             >
               <option value="all">Overall</option>
               <option value="day">Day</option>
@@ -110,6 +141,8 @@
               <option value="month">Month</option>
               <option value="custom">Custom Range</option>
             </select>
+          </div>
+          <div class="col s12">
             <form id="date-form">
               <div class="day-week-container" style="display: none">
                 <label for="day">Select a date:</label>
@@ -117,7 +150,7 @@
                   type="date"
                   id="day"
                   name="day"
-                  onchange="setupAllSales()"
+                  onchange="setupAllOrders()"
                 />
               </div>
               <div class="month-container" style="display: none">
@@ -126,7 +159,7 @@
                   type="month"
                   id="month"
                   name="month"
-                  onchange="setupAllSales()"
+                  onchange="setupAllOrders()"
                 />
               </div>
               <div class="custom-container row" style="display: none">
@@ -136,7 +169,7 @@
                     type="datetime-local"
                     id="day1"
                     name="day1"
-                    onchange="setupAllSales()"
+                    onchange="setupAllOrders()"
                   />
                 </div>
                 <div class="col s6">
@@ -145,7 +178,7 @@
                     type="datetime-local"
                     id="day2"
                     name="day2"
-                    onchange="setupAllSales()"
+                    onchange="setupAllOrders()"
                   />
                 </div>
               </div>
@@ -155,50 +188,26 @@
         <div>
           <hr />
           <div class="row">
-            <div class="col s12">
-              <div class="col s4">
-                <h6>
-                  <strong class="orange-text">Total Service Fees:</strong>
-                </h6>
-                <p>&#8369;&nbsp;<span class="totalServiceFees">0.00</span></p>
-              </div>
-              <div class="col s4">
-                <h6><strong class="teal-text">Total App Earnings:</strong></h6>
-                <p>&#8369;&nbsp;<span class="totalAppEarnings">0.00</span></p>
-              </div>
-              <div class="col s4">
-                <h6>
-                  <strong class="red-text">Total Driver Earnings:</strong>
-                </h6>
-                <p>
-                  &#8369;&nbsp;<span class="totalDriverEarnings">0.00</span>
-                </p>
-              </div>
+            <div class="col s4">
+              <h6><strong class="teal-text">Total Orders:</strong></h6>
+              <p><span class="totalOrders">0</span></p>
             </div>
-            <div class="col s12">
-              <div class="col s3">
-                <h6><strong class="green-text">Total Order Fees:</strong></h6>
-                <p>&#8369;&nbsp;<span class="totalOrderFees">0.00</span></p>
-              </div>
-              <div class="col s3">
-                <h6><strong class="blue-text">Total Item Fees:</strong></h6>
-                <p>&#8369;&nbsp;<span class="totalItemFees">0.00</span></p>
-              </div>
-              <div class="col s3">
-                <h6><strong class="teal-text">Total Orders:</strong></h6>
-                <p><span class="totalOrders">0</span></p>
-              </div>
-              <div class="col s3">
-                <h6>
-                  <strong class="red-text">Total Drivers:</strong>
-                </h6>
-                <p><span class="totalDrivers">0</span></p>
-              </div>
+            <div class="col s4">
+              <h6>
+                <strong class="orange-text">Total Customers:</strong>
+              </h6>
+              <p><span class="totalCustomers">0</span></p>
+            </div>
+            <div class="col s4">
+              <h6>
+                <strong class="red-text">Total Drivers:</strong>
+              </h6>
+              <p><span class="totalDrivers">0</span></p>
             </div>
           </div>
           <hr />
           <div class="row">
-            <div class="col s9 m10">
+            <div class="col s12">
               <form id="expand_form" class="">
                 <div class="switch col s6 m3">
                   <label>
@@ -206,7 +215,7 @@
                     <input
                       type="checkbox"
                       name="expand"
-                      onchange="setupAllSales()"
+                      onchange="setupAllOrders()"
                       disabled
                     />
                     <span class="lever"></span>
@@ -218,25 +227,13 @@
                     <input
                       type="checkbox"
                       name="expand2"
-                      onchange="setupAllSales()"
+                      onchange="setupAllOrders()"
                       disabled
                     />
                     <span class="lever"></span>
                   </label>
                 </div>
               </form>
-            </div>
-            <div class="col s3 m2">
-              <!-- Dropdown Trigger -->
-              <button
-                class="waves-effect waves-light btn-small col s8 m12 right download-button dropdown-trigger"
-                href="#"
-                data-target="dl_buttons"
-                disabled
-              >
-                <i class="material-icons right">file_download</i>
-                <span class="hide-on-med-and-down">Export</span>
-              </button>
             </div>
             <div class="col s12">
               <div class="input-field col s12 search">
@@ -245,7 +242,7 @@
                   id="search"
                   type="text"
                   class="validate"
-                  onkeyup="searchInTable('#search', '.table-main', 1, 7)"
+                  onkeyup="searchInTable('#search', '.table-main', 1, 4)"
                 />
                 <label for="search">Search</label>
               </div>
@@ -257,13 +254,10 @@
               <thead class="table-head">
                 <tr>
                   <th>#</th>
-                  <th class="column2">Driver</th>
-                  <th class="column3">Date</th>
-                  <th>Total Fees</th>
-                  <th>Item Fees</th>
-                  <th>Service Fees</th>
-                  <th>Driver Earnings</th>
-                  <th>App Earnings</th>
+                  <th class="">Date</th>
+                  <th class="column3">Orders</th>
+                  <th class="column4">Customers</th>
+                  <th class="column5">Drivers</th>
                 </tr>
               </thead>
               <tbody class="table-body">
@@ -273,9 +267,6 @@
                   <td>3</td>
                   <td>4</td>
                   <td>5</td>
-                  <td>6</td>
-                  <td>7</td>
-                  <td>8</td>
                 </tr>
               </tbody>
             </table>
@@ -284,151 +275,6 @@
         </div>
       </div>
     </main>
-
-    <!-- Dropdown Structure -->
-    <ul id="dl_buttons" class="dropdown-content">
-      <li><a href="#!" onclick="tableToCSV('.table-main')">.csv</a></li>
-      <li>
-        <a
-          href="#!"
-          onclick="exportTableToExcel('.table-main', 'Getmoco Data', 'getmoco_data.xls')"
-        >
-          .xls
-        </a>
-      </li>
-      <li><a href="#!" onclick="createPDF('#table-container')">.pdf</a></li>
-      <li style="display: none">
-        <a id="excelLink" style="display: none"></a>
-      </li>
-    </ul>
-
-    <!-- Dropdown Structure -->
-    <ul id="dl_buttons2" class="dropdown-content">
-      <li><a href="#!" onclick="tableToCSV('.table-main2')">.csv</a></li>
-      <li>
-        <a
-          href="#!"
-          onclick="exportTableToExcel('.table-main2', 'Getmoco Data', 'getmoco_data.xls')"
-        >
-          .xls
-        </a>
-      </li>
-      <li><a href="#!" onclick="createPDF('#table-container2')">.pdf</a></li>
-    </ul>
-
-    <!-- Modal Structure -->
-    <div id="driver_modal" class="modal">
-      <div class="modal-content">
-        <div class="row">
-          <div class="col s12">
-            <h6 class="center-align"><strong class="modName"></strong></h6>
-          </div>
-          <div class="col s6">
-            <div class="col s12">
-              <p>
-                <strong>Total Orders:</strong>
-                <br />
-                <span class="modOrders"></span>
-              </p>
-            </div>
-            <div class="col s12">
-              <p>
-                <strong>Total Order Fees:</strong>
-                <br />
-                <span class="modTotalFees"></span>
-              </p>
-            </div>
-            <div class="col s12">
-              <p>
-                <strong>Total Item Fees:</strong>
-                <br />
-                <span class="modItemFees"></span>
-              </p>
-            </div>
-          </div>
-          <div class="col s6">
-            <div class="col s12">
-              <p>
-                <strong> Total Service Fees:</strong>
-                <br />
-                <span class="modServiceFees"></span>
-              </p>
-            </div>
-            <div class="col s12">
-              <p>
-                <strong>Total Driver Earnings:</strong>
-                <br />
-                <span class="modEarnings"></span>
-              </p>
-            </div>
-            <div class="col s12">
-              <p>
-                <strong>Total App Earnings:</strong>
-                <br />
-                <span class="modPlatformFee"></span>
-              </p>
-            </div>
-          </div>
-        </div>
-        <hr />
-        <div class="row">
-          <div class="col s9 m9">
-            <form id="expand_form2" class="">
-              <div class="switch">
-                <label>
-                  Date Expand:
-                  <input
-                    type="checkbox"
-                    name="expand"
-                    onchange="setupDriverSales()"
-                  />
-                  <span class="lever"></span>
-                </label>
-              </div>
-            </form>
-          </div>
-          <div class="col s3 m3">
-            <!-- Dropdown Trigger -->
-            <button
-              class="waves-effect waves-light col s12 btn-small right dropdown-trigger"
-              href="#"
-              data-target="dl_buttons2"
-            >
-              <i class="material-icons right">file_download</i>
-              <span class="hide-on-med-and-down">Export</span>
-            </button>
-          </div>
-        </div>
-        <hr />
-        <div id="table-container2">
-          <table class="responsive-table highlight centered table-main2">
-            <thead class="table-head2">
-              <tr>
-                <th>#</th>
-                <th>Date</th>
-                <th>Orders</th>
-                <th>Total Fees</th>
-                <th>Item Fees</th>
-                <th>Service Fees</th>
-                <th>Driver Earnings</th>
-                <th>App Earnings</th>
-              </tr>
-            </thead>
-            <tbody class="table-body2">
-              <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
 
     <!-- Modal Structure -->
     <div id="view_order_modal" class="modal">
@@ -635,19 +481,16 @@
       let adminID = "";
 
       let orderCount;
+      let customerCount;
       let driverCount;
-      let allAppEarnings;
-      let allDriverEarnings;
-      let allServiceFees;
-      let allItemFees;
-      let allOrderFees;
 
       let i = 0; // driver data count
       let j = 0;
+      let k = 0;
 
+      let orders = [];
+      let customers = [];
       let drivers = [];
-
-      let currentDriverModalID;
 
       // * Auth Status
       auth.onAuthStateChanged((user) => {
@@ -671,8 +514,7 @@
                 setupPageLoading();
                 setupMenuUI(user);
                 logout();
-                setupAllSales();
-                setupViewDriverModal();
+                setupAllOrders();
                 setupViewOrderInfo();
               } else {
                 window.location.href = "/pages/error.html";
