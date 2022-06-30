@@ -3742,15 +3742,17 @@ function pinLocation(userID, type) {
       const houseOrg = pinLocForm.houseOrg.value.trim();
       const landmarkOrg = pinLocForm.landmarkOrg.value.trim();
       const addressOrg =
-        houseOrg +
-        " " +
-        streetOrg +
-        ", " +
-        brgyOrg +
-        ", " +
-        settingsLoc +
-        " " +
-        zipOrg;
+        houseOrg !== "" || streetOrg !== ""
+          ? houseOrg +
+            " " +
+            streetOrg +
+            ", " +
+            brgyOrg +
+            ", " +
+            settingsLoc +
+            " " +
+            zipOrg
+          : brgyOrg + ", " + settingsLoc + " " + zipOrg;
 
       const useCurrent = pinLocForm.useCurrent.checked;
 

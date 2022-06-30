@@ -2344,30 +2344,30 @@ const renderUserOrdersList = (
       delivered === "" &&
       received === ""
     ) {
-      ordShipmentStatus = "In Purchase";
-      ordShipmentTime = "In Purchase";
-      ordDeliveredTime = "In Purchase";
-      ordReceivedTime = "In Purchase";
+      ordShipmentStatus = "Ongoing"; // In Purchase
+      ordShipmentTime = "Ongoing"; // In Purchase
+      ordDeliveredTime = "Ongoing"; // In Purchase
+      ordReceivedTime = "Ongoing"; // In Purchase
     } else if (
       orderConfirmed !== "" &&
       shipment === "" &&
       delivered === "" &&
       received === ""
     ) {
-      ordShipmentStatus = "To Ship";
-      ordShipmentTime = "To Ship";
-      ordDeliveredTime = "To Ship";
-      ordReceivedTime = "To Ship";
+      ordShipmentStatus = "Ongoing"; // To Ship
+      ordShipmentTime = "Ongoing"; // To Ship
+      ordDeliveredTime = "Ongoing"; // To Ship
+      ordReceivedTime = "Ongoing"; // To Ship
     } else if (
       orderConfirmed !== "" &&
       shipment !== "" &&
       delivered === "" &&
       received === ""
     ) {
-      ordShipmentStatus = "In Shipment";
+      ordShipmentStatus = "Ongoing"; // In Shipment
       ordShipmentTime = shipment;
-      ordDeliveredTime = "In Shipment";
-      ordReceivedTime = "In Shipment";
+      ordDeliveredTime = "Ongoing"; // In Shipment
+      ordReceivedTime = "Ongoing"; // In Shipment
     } else if (
       orderConfirmed !== "" &&
       shipment !== "" &&
@@ -2454,9 +2454,9 @@ const renderUserOrdersList = (
                         Location Details
                       </div>
                       <div class="collapsible-body">
-                        <h6><strong>Address</strong></h6>
+                        <h6><strong>Store Location</strong></h6>
                         <p class="addressOrg">${data.addressOrg}</p>
-                        <h6><strong>Landmark</strong></h6>
+                        <h6><strong>Store Landmark</strong></h6>
                         <p class="landmarkOrg">
                           ${
                             data.landmarkOrg === ""
@@ -2465,9 +2465,9 @@ const renderUserOrdersList = (
                           }
                         </p>
                         <hr>
-                        <h6><strong>Drop-off Address</strong></h6>
+                        <h6><strong>Delivery Address</strong></h6>
                         <p class="addressDrp">${data.addressDrp}</p>
-                        <h6><strong>Drop-off Landmark</strong></h6>
+                        <h6><strong>Delivery Landmark</strong></h6>
                         <p class="landmarkDrp">
                           ${
                             data.landmarkDrp === ""
@@ -3285,10 +3285,10 @@ const modifyOrderDetails = (data, dataID, type) => {
         delivered === "" &&
         received === ""
       ) {
-        ordShipmentStatus.innerHTML = "In Purchase";
-        ordShipmentTime.innerHTML = "In Purchase";
-        ordDeliveredTime.innerHTML = "In Purchase";
-        ordReceivedTime.innerHTML = "In Purchase";
+        ordShipmentStatus.innerHTML = "Ongoing"; // In Purchase
+        ordShipmentTime.innerHTML = "Ongoing"; // In Purchase
+        ordDeliveredTime.innerHTML = "Ongoing"; // In Purchase
+        ordReceivedTime.innerHTML = "Ongoing"; // In Purchase
         ordReceiveButton.disabled = true;
       } else if (
         orderConfirmed !== "" &&
@@ -3296,10 +3296,10 @@ const modifyOrderDetails = (data, dataID, type) => {
         delivered === "" &&
         received === ""
       ) {
-        ordShipmentStatus.innerHTML = "To Ship";
-        ordShipmentTime.innerHTML = "To Ship";
-        ordDeliveredTime.innerHTML = "To Ship";
-        ordReceivedTime.innerHTML = "In Ship";
+        ordShipmentStatus.innerHTML = "Ongoing"; // To Ship
+        ordShipmentTime.innerHTML = "Ongoing"; // To Ship
+        ordDeliveredTime.innerHTML = "Ongoing"; // To Ship
+        ordReceivedTime.innerHTML = "Ongoing"; // In Ship
         ordReceiveButton.disabled = true;
       } else if (
         orderConfirmed !== "" &&
@@ -3307,10 +3307,10 @@ const modifyOrderDetails = (data, dataID, type) => {
         delivered === "" &&
         received === ""
       ) {
-        ordShipmentStatus.innerHTML = "In Shipment";
+        ordShipmentStatus.innerHTML = "Ongoing"; // In Shipment
         ordShipmentTime.innerHTML = shipment;
-        ordDeliveredTime.innerHTML = "In Shipment";
-        ordReceivedTime.innerHTML = "In Shipment";
+        ordDeliveredTime.innerHTML = "Ongoing"; // In Shipment
+        ordReceivedTime.innerHTML = "Ongoing"; // In Shipment
         ordReceiveButton.disabled = true;
       } else if (
         orderConfirmed !== "" &&
@@ -3516,7 +3516,7 @@ const modifyDeliveryStatus = (data, dataID) => {
       dShipment.innerHTML = shipmentDate;
 
       if (data.delivered === "") {
-        dDelivered.innerHTML = "In Shipment";
+        dDelivered.innerHTML = "Ongoing"; // In Shipment
 
         driverHomeButton.style.display = "none";
       } else {
@@ -4511,13 +4511,13 @@ const renderNewOrder = (data, dataID) => {
               </p>
               <hr>
               <p data-id="${dataID}">
-                Address: 
+                Store Location: 
                 <span class="addressOrg orange-text" data-id="${dataID}">
                   ${data.addressOrg}
                 </span>
               </p>
               <p data-id="${dataID}">
-                Landmark: 
+                Store Landmark: 
                 <span class="landmarkOrg teal-text" data-id="${dataID}">
                   ${
                     data.landmarkOrg === "" ? "<em>None</em>" : data.landmarkOrg
@@ -4526,13 +4526,13 @@ const renderNewOrder = (data, dataID) => {
               </p>
               <hr>
               <p data-id="${dataID}">
-                Drop-off Address: 
+                Delivery Address: 
                 <span class="addressDrp orange-text" data-id="${dataID}">
                   ${data.addressDrp}
                 </span>
               </p>
               <p data-id="${dataID}">
-                Drop-off Landmark: 
+                Delivery Landmark: 
                 <span class="landmarkDrp teal-text" data-id="${dataID}">
                   ${
                     data.landmarkDrp === "" ? "<em>None</em>" : data.landmarkDrp
