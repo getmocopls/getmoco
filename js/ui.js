@@ -236,11 +236,11 @@ const renderAllOrders = (data, dataID, dateType) => {
     if (day !== "" && day === date) {
       renderEachOrders(data, dataID, dateType);
     } else {
-      i--;
-      j--;
-      k--;
-      m--;
-      n--;
+      // i--;
+      // j--;
+      // k--;
+      // m--;
+      // n--;
     }
   } else if (selectVal === "week") {
     dayWeekContainer.style.display = "block";
@@ -386,21 +386,21 @@ const renderAllOrders = (data, dataID, dateType) => {
           if (dateTime >= day1Time && dateTime <= day2Time) {
             renderEachOrders(data, dataID, dateType);
           } else {
-            i--;
-            j--;
-            k--;
-            m--;
-            n--;
+            // i--;
+            // j--;
+            // k--;
+            // m--;
+            // n--;
           }
         } else if (perDay === day1 && date === day1) {
           if (dateTime >= day1Time) {
             renderEachOrders(data, dataID, dateType);
           } else {
-            i--;
-            j--;
-            k--;
-            m--;
-            n--;
+            // i--;
+            // j--;
+            // k--;
+            // m--;
+            // n--;
           }
         } else if (perDay === day2 && date === day2) {
           if (dateTime <= day2Time) {
@@ -434,6 +434,12 @@ const renderEachOrders = (data, dataID, dateType) => {
   const checkValue = expandForm.expand.checked; // date expand
   const checkValue2 = expandForm.expand2.checked; // per driver
   // console.log(checkValue);
+
+  i++;
+  j++;
+  k++;
+  m++;
+  n++;
 
   if (!checkValue) {
     expandForm.querySelector(".per-driver").style.display = "none";
@@ -474,8 +480,14 @@ const renderEachOrders = (data, dataID, dateType) => {
     driverCount = newDrivers2[0] !== "" ? newDrivers2.length : 0;
     customerCount = newCustomers2[0] !== "" ? newCustomers2.length : 0;
 
-    totalDrivers.innerHTML = newDrivers[0] !== "" ? newDrivers.length : 0;
-    totalCustomers.innerHTML = newCustomers[0] !== "" ? newCustomers.length : 0;
+    totalDrivers.innerHTML =
+      newDrivers[0] !== "" && newDrivers[newDrivers.length - 1] !== ""
+        ? newDrivers.length
+        : 0;
+    totalCustomers.innerHTML =
+      newCustomers[0] !== "" && newCustomers[newCustomers.length - 1]
+        ? newCustomers.length
+        : 0;
 
     // let countCount = i;
     let countOrders = 1;
@@ -515,8 +527,14 @@ const renderEachOrders = (data, dataID, dateType) => {
         // console.log("newDrivers2", newDrivers2);
         // console.log("newCustomers2", newCustomers2);
 
-        countDrivers = newDrivers2.length;
-        countCustomers = newCustomers2.length;
+        countDrivers =
+          newDrivers2[0] !== "" && newDrivers2[newDrivers2.length - 1] !== ""
+            ? newDrivers2.length
+            : 0;
+        countCustomers =
+          newCustomers2[0] !== "" && newCustomers2[newCustomers2.length - 1]
+            ? newCustomers2.length
+            : 0;
       }
     }
 

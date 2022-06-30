@@ -118,11 +118,11 @@ function setupAllOrders() {
         customerCount = parseInt(totalDrivers.textContent);
         driverCount = parseInt(totalDrivers.textContent);
 
-        i++;
-        j++;
-        k++;
-        m++;
-        n++;
+        // i++;
+        // j++;
+        // k++;
+        // m++;
+        // n++;
 
         renderAllOrders(doc.data(), doc.id, splitVal[4]);
       });
