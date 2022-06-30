@@ -73,15 +73,33 @@ function setupAllOrders() {
 
   let splitVal = selectVal.split(", ");
 
-  const dbQuery = db
-    .collection("getmoco_orders")
-    .where("status", "==", splitVal[0])
-    .where(
-      splitVal[1],
-      splitVal[2],
-      splitVal[3] === "false" || splitVal[3] === "true" ? eval(splitVal[3]) : ""
-    )
-    .orderBy(splitVal[4], "asc");
+  // const dbQuery = db
+  //   .collection("getmoco_orders")
+  //   .where("status", "==", splitVal[0])
+  //   .where(
+  //     splitVal[1],
+  //     splitVal[2],
+  //     splitVal[3] === "false" || splitVal[3] === "true" ? eval(splitVal[3]) : ""
+  //   )
+  //   .orderBy(splitVal[4], "asc");
+
+  const dbQuery =
+    splitVal[0] === "pending"
+      ? db
+          .collection("getmoco_orders")
+          .where("status", "in", ["current", "waiting"])
+          .orderBy("created", "asc")
+      : splitVal[0] === "ongoing"
+      ? db
+          .collection("getmoco_orders")
+          .where("status", "in", ["transac", "toPay"])
+          .orderBy("transac", "asc")
+      : splitVal[0] === "delivered"
+      ? db
+          .collection("getmoco_orders")
+          .where("status", "==", "paid")
+          .orderBy("delivered", "asc")
+      : "";
 
   dbQuery.get().then((snap) => {
     i = 0;
