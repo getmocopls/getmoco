@@ -2284,7 +2284,7 @@ const renderUserOrdersList = (
     // Order Type Date
     const date =
       type === "toShip"
-        ? data.orderConfirmed.toDate().toLocaleString("en-US", {
+        ? data.created.toDate().toLocaleString("en-US", {
             weekday: "short",
             month: "long",
             day: "numeric",
