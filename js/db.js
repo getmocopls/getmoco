@@ -3714,7 +3714,7 @@ function setupUserVerified(userID, type) {
 // * Calculate Distance
 function calculateDistance(origin, destination) {
   //const accessToken = "4e5JlBCrZzqIniPGkkIqOIuZ0HkIW"; // patrick tup email token
-  const accessToken = "nkkUZdOpjpxbqpZGflZD0XBNR2iCT";
+  const accessToken = "nkkUZdOpjpxbqpZGfIZD0XBNR2iCT";
 
   // api url: distancematrix.ai
   const api_url = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&key=${accessToken}`;
