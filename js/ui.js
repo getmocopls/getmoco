@@ -3495,6 +3495,7 @@ const modifyDeliveryStatus = (data, dataID) => {
   const deliveryContainer = document.querySelector(".delivery");
   const dOrderID = deliveryContainer.querySelector(".orderID");
   const dCustomer = deliveryContainer.querySelector(".name");
+  const dContact = deliveryContainer.querySelector(".contact");
   const dAddressOrg = deliveryContainer.querySelector(".addressOrg");
   const dAddressDrp = deliveryContainer.querySelector(".addressDrp");
   const dShipment = deliveryContainer.querySelector(".shipment");
@@ -3507,8 +3508,10 @@ const modifyDeliveryStatus = (data, dataID) => {
     .get()
     .then((doc) => {
       const name = `${doc.data().fname} ${doc.data().lname}`;
+      const contact = doc.data().contact;
 
       dCustomer.innerHTML = name;
+      dContact.innerHTML = contact;
     });
   db.collection("getmoco_orders")
     .doc(data.orderID)
