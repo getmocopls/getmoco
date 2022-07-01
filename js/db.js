@@ -3824,14 +3824,14 @@ function pinLocation(userID, type) {
               const priceMatrix = parseFloat(doc.data().priceMatrix);
 
               if (totalDistance >= 0 && totalDistance <= 5) {
-                serviceFee = 50;
+                serviceFee = 40;
               } else if (totalDistance >= 5.01 && totalDistance <= 20) {
                 if (totalDistance === 5.01) {
-                  serviceFee = 80;
+                  serviceFee = 70;
                 } else {
                   // 5.01k min, +6php(example)
 
-                  serviceFee = 80;
+                  serviceFee = 70;
 
                   const distance =
                     totalDistance > 5.01
@@ -3845,7 +3845,7 @@ function pinLocation(userID, type) {
               } else {
                 // 20.01km min, +6php(example)
 
-                serviceFee = 180;
+                serviceFee = 170;
 
                 const distance =
                   totalDistance > 20.01
