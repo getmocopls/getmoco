@@ -4087,8 +4087,6 @@ function login() {
         loginForm.querySelector(".error").innerHTML = "";
         loginForm["email"].disabled = true;
         loginForm["password"].disabled = true;
-      
-        window.location.href = "/pages/home.html";
       })
       .catch((error) => {
         loginForm.querySelector(
@@ -4267,8 +4265,6 @@ function signup(type) {
               signupFormError.innerHTML = "";
               const instance = M.Modal.getInstance(signupModal);
               instance.close();
-            
-              window.location.href = type === "user" ? "/pages/home.html" : "/pages/driver.html";
             })
             .catch((error) => {
               signupFormError.innerHTML = `<blockquote><strong>${error.message}</strong></blockquote>`;
