@@ -113,7 +113,7 @@
               <div class="card">
                 <form id="weight-form">
                   <div class="card-content">
-                    <h6><strong>Total Weight</strong></h6>
+                    <!-- <h6><strong>Total Weight</strong></h6>
                     <p class="center-align">
                       <span class="weight-value">0</span> kg
                     </p>
@@ -126,7 +126,7 @@
                         value="0"
                         oninput="changeWeightPriceValue()"
                       />
-                    </p>
+                    </p> -->
                     <h6><strong>Change For</strong></h6>
                     <div class="input-field">
                       <input
@@ -140,9 +140,22 @@
                         required
                       />
                     </div>
+                    <div class="switch">
+                      <label>
+                        High Priority:
+                        <input type="checkbox" id="priority" name="priority" />
+                        <span class="lever"></span>
+                      </label>
+                    </div>
+                    <br />
                     <p class="orange-text text-darken-3 left-align">
                       Note: <br />
                       - Please be advised that the payment is cash on delivery.
+                      <br />
+                      - High priority will cost additional fee of &#8369;<span
+                        class="priorityFee"
+                      ></span
+                      >.
                     </p>
                   </div>
                   <div class="card-action col s12">
@@ -168,7 +181,12 @@
         <form id="add-item-form">
           <div class="center-align">
             <div class="input-field">
-              <input id="store" type="text" class="validate" name="store" />
+              <input
+                id="store"
+                type="text"
+                class="validate autocomplete"
+                name="store"
+              />
               <label for="store">Store Name (Optional)</label>
             </div>
             <div class="input-field">
@@ -188,6 +206,31 @@
                 class="materialize-textarea"
               ></textarea>
               <label for="productDesc">Product Description (Optional)</label>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m6">
+                <input
+                  id="unit"
+                  type="number"
+                  class="validate"
+                  name="unit"
+                  step="0.01"
+                  min="0"
+                  required
+                />
+                <label for="unit">Unit</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <select required name="measurement">
+                  <option value="" disabled selected>Choose Weight</option>
+                  <option value="kg">Kilogram (kg)</option>
+                  <option value="g">Gram (g)</option>
+                  <option value="mg">Milligram (mg)</option>
+                  <option value="lb">Pound (lb)</option>
+                  <option value="oz">Ounce (oz)</option>
+                </select>
+                <label>Measurement</label>
+              </div>
             </div>
             <div class="input-field">
               <input
@@ -240,7 +283,12 @@
         <form id="edit-item-form">
           <div class="center-align">
             <div class="input-field">
-              <input id="editStore" type="text" class="validate" name="store" />
+              <input
+                id="editStore"
+                type="text"
+                class="validate autocomplete"
+                name="store"
+              />
               <label for="editStore">Store Name (Optional)</label>
             </div>
             <div class="input-field">
@@ -260,6 +308,31 @@
                 class="materialize-textarea productDesc"
               ></textarea>
               <label for="editProdDesc">Product Description (Optional)</label>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m6">
+                <input
+                  id="editunit"
+                  type="number"
+                  class="validate"
+                  name="unit"
+                  step="0.01"
+                  min="0"
+                  required
+                />
+                <label for="editunit">Unit</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <select required name="measurement">
+                  <option value="" disabled selected>Choose Weight</option>
+                  <option value="kg">Kilogram (kg)</option>
+                  <option value="g">Gram (g)</option>
+                  <option value="mg">Milligram (mg)</option>
+                  <option value="lb">Pound (lb)</option>
+                  <option value="oz">Ounce (oz)</option>
+                </select>
+                <label>Measurement</label>
+              </div>
             </div>
             <div class="input-field">
               <input
@@ -365,6 +438,7 @@
       let customerID = "";
       let orderID = "";
       let orderItemID = "";
+      let priorityFee = 0;
 
       // * Auth Status
       auth.onAuthStateChanged((user) => {
@@ -373,7 +447,37 @@
         if (user) {
           customerID = user.uid;
 
-          // Account Type
+          db.collection("getmoco_settings")
+            .where("settings", "==", "ALL")
+            .get()
+            .then((snap) => {
+              if (!snap.empty) {
+                snap.forEach((doc) => {
+                  setProv = doc.data().province;
+                  setCity = doc.data().city;
+                  settingsLoc = setCity + ", " + setProv;
+                  priorityFee = parseFloat(doc.data().priorityFee);
+
+                  const prioFee = document.querySelector(".priorityFee");
+                  prioFee.innerHTML = priorityFee;
+
+                  const stores =
+                    settingsLoc === "Romblon, Romblon"
+                      ? {
+                          "Aling Marie Grocery": null,
+                          "Barrio Pharmacy": null,
+                          "Teddy Hardware": null,
+                        }
+                      : { "": null };
+
+                  const autocomplete =
+                    document.querySelectorAll(".autocomplete");
+                  M.Autocomplete.init(autocomplete, {
+                    data: stores,
+                  });
+                });
+              }
+            });
           db.collection("getmoco_users")
             .doc(customerID)
             .get()

@@ -120,6 +120,8 @@
         <p>&#8369;&nbsp;<span class="priceLimit">0.00</span></p>
         <h6 class="teal-text"><strong>Price Matrix (Per Distance):</strong></h6>
         <p>&#8369;&nbsp;<span class="priceMatrix">0.00</span></p>
+        <h6 class="teal-text"><strong>Priority Fee (High):</strong></h6>
+        <p>&#8369;&nbsp;<span class="priorityFee">0.00</span></p>
       </div>
     </main>
 
@@ -184,6 +186,18 @@
                 required
               />
               <label for="priceMatrix">Price Matrix (Per Distance)</label>
+            </div>
+            <div class="input-field">
+              <input
+                id="priorityFee"
+                type="number"
+                class="validate"
+                name="priorityFee"
+                step="0.01"
+                min="1"
+                required
+              />
+              <label for="priorityFee">Priority Fee (High)</label>
             </div>
             <span class="helper-text error" data-error="" data-success="">
             </span>

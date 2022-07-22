@@ -15,6 +15,7 @@ const initAllMaterializeCSS = (type, element) => {
   const dropdown = document.querySelectorAll(".dropdown-trigger");
   const tabs = document.querySelectorAll(".tabs");
   const datePicker = document.querySelectorAll(".datepicker");
+  const autocomplete = document.querySelectorAll(".autocomplete");
 
   if (type === undefined) {
     M.Sidenav.init(sidenav);
@@ -28,6 +29,11 @@ const initAllMaterializeCSS = (type, element) => {
     M.Dropdown.init(dropdown);
     M.Tabs.init(tabs);
     M.Datepicker.init(datePicker);
+    M.Autocomplete.init(autocomplete, {
+      data: {
+        None: null,
+      },
+    });
   } else {
     const m = `M.${type}.init(${element})`;
 
@@ -1908,6 +1914,7 @@ const renderMatrixInfo = (data, dataID) => {
   const platformFee = settingsContainer.querySelector(".platformFee");
   const priceLimit = settingsContainer.querySelector(".priceLimit");
   const priceMatrix = settingsContainer.querySelector(".priceMatrix");
+  const priorityFee = settingsContainer.querySelector(".priorityFee");
 
   const editMatrixModal = document.querySelector("#edit-matrix-modal");
   const editMatrixForm = editMatrixModal.querySelector("#edit-matrix-form");
@@ -1926,12 +1933,14 @@ const renderMatrixInfo = (data, dataID) => {
   platformFee.innerHTML = parseFloat(data.platformFee) * 100;
   priceLimit.innerHTML = parseFloat(data.priceLimit).toFixed(2);
   priceMatrix.innerHTML = parseFloat(data.priceMatrix).toFixed(2);
+  priorityFee.innerHTML = parseFloat(data.priorityFee).toFixed(2);
 
   editMatrixForm.province.value = data.province;
   editMatrixForm.city.value = data.city;
   editMatrixForm.platformFee.value = parseFloat(data.platformFee) * 100;
   editMatrixForm.priceLimit.value = parseFloat(data.priceLimit);
   editMatrixForm.priceMatrix.value = parseFloat(data.priceMatrix);
+  editMatrixForm.priorityFee.value = parseFloat(data.priorityFee);
 };
 
 /**
@@ -2266,183 +2275,194 @@ const renderUserOrdersList = (
   count,
   userType
 ) => {
-  if (data.status === "paid" || data.status === "toPay") {
-    const userTypeID =
-      userType === "customerID" ? data.driverID : data.customerID;
+  // if (data.status === "paid" || data.status === "toPay") {
+  const userTypeID =
+    userType === "customerID" && data.driverID !== ""
+      ? data.driverID
+      : userType === "driverID" && data.customerID !== ""
+      ? data.customerID
+      : "None";
 
-    let name;
-    let userImage;
-    const orderConfirmed = data.orderConfirmed; // upload id
+  // console.log("userType", userType);
+  // console.log("userTypeID", userTypeID);
 
-    let ordShipmentStatus = "";
-    let ordShipmentTime = "";
-    let ordDeliveredTime = "";
-    let ordReceivedTime = "";
+  let name;
+  let userImage;
+  const orderConfirmed = data.orderConfirmed; // upload id
 
-    let orderItems = [];
+  let ordShipmentStatus = "";
+  let ordShipmentTime = "";
+  let ordDeliveredTime = "";
+  let ordReceivedTime = "";
 
-    // Order Type Date
-    const date =
-      type === "toShip"
-        ? data.orderConfirmed.toDate().toLocaleString("en-US", {
-            weekday: "short",
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-            hour12: true,
-          })
-        : !typeBool
-        ? data.delivered.toDate().toLocaleString("en-US", {
-            weekday: "short",
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-            hour12: true,
-          })
-        : data.received.toDate().toLocaleString("en-US", {
-            weekday: "short",
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-            hour12: true,
-          });
+  let orderItems = [];
 
-    // Order Status
-    const shipment =
-      data.shipment === ""
-        ? data.shipment
-        : data.shipment.toDate().toLocaleString("en-US", {
-            weekday: "short",
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-            hour12: true,
-          });
-    const delivered =
-      data.delivered === ""
-        ? data.delivered
-        : data.delivered.toDate().toLocaleString("en-US", {
-            weekday: "short",
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-            hour12: true,
-          });
-    const received =
-      data.received === ""
-        ? data.received
-        : data.received.toDate().toLocaleString("en-US", {
-            weekday: "short",
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-            hour12: true,
-          });
-    if (
-      orderConfirmed === "" &&
-      shipment === "" &&
-      delivered === "" &&
-      received === ""
-    ) {
-      ordShipmentStatus = "Ongoing"; // In Purchase
-      ordShipmentTime = "Ongoing"; // In Purchase
-      ordDeliveredTime = "Ongoing"; // In Purchase
-      ordReceivedTime = "Ongoing"; // In Purchase
-    } else if (
-      orderConfirmed !== "" &&
-      shipment === "" &&
-      delivered === "" &&
-      received === ""
-    ) {
-      ordShipmentStatus = "Ongoing"; // To Ship
-      ordShipmentTime = "Ongoing"; // To Ship
-      ordDeliveredTime = "Ongoing"; // To Ship
-      ordReceivedTime = "Ongoing"; // To Ship
-    } else if (
-      orderConfirmed !== "" &&
-      shipment !== "" &&
-      delivered === "" &&
-      received === ""
-    ) {
-      ordShipmentStatus = "Ongoing"; // In Shipment
-      ordShipmentTime = shipment;
-      ordDeliveredTime = "Ongoing"; // In Shipment
-      ordReceivedTime = "Ongoing"; // In Shipment
-    } else if (
-      orderConfirmed !== "" &&
-      shipment !== "" &&
-      delivered !== "" &&
-      received === ""
-    ) {
-      ordShipmentStatus = "Delivered";
-      ordShipmentTime = shipment;
-      ordDeliveredTime = delivered;
-      ordReceivedTime = `To Receive`;
-    } else {
-      ordShipmentStatus = "Completed";
-      ordShipmentTime = shipment;
-      ordDeliveredTime = delivered;
-      ordReceivedTime = received;
-    }
+  // Order Type Date
+  const date =
+    type === "toShip"
+      ? data.created.toDate().toLocaleString("en-US", {
+          weekday: "short",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          hour12: true,
+        })
+      : !typeBool
+      ? data.delivered.toDate().toLocaleString("en-US", {
+          weekday: "short",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          hour12: true,
+        })
+      : data.received.toDate().toLocaleString("en-US", {
+          weekday: "short",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          hour12: true,
+        });
 
-    // Receipt
-    db.collection("getmoco_users")
-      .doc(userTypeID)
-      .get()
-      .then((doc) => {
+  // Order Status
+  const shipment =
+    data.shipment === ""
+      ? data.shipment
+      : data.shipment.toDate().toLocaleString("en-US", {
+          weekday: "short",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          hour12: true,
+        });
+  const delivered =
+    data.delivered === ""
+      ? data.delivered
+      : data.delivered.toDate().toLocaleString("en-US", {
+          weekday: "short",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          hour12: true,
+        });
+  const received =
+    data.received === ""
+      ? data.received
+      : data.received.toDate().toLocaleString("en-US", {
+          weekday: "short",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          hour12: true,
+        });
+  if (
+    orderConfirmed === "" &&
+    shipment === "" &&
+    delivered === "" &&
+    received === ""
+  ) {
+    ordShipmentStatus = "Ongoing"; // In Purchase
+    ordShipmentTime = "Ongoing"; // In Purchase
+    ordDeliveredTime = "Ongoing"; // In Purchase
+    ordReceivedTime = "Ongoing"; // In Purchase
+  } else if (
+    orderConfirmed !== "" &&
+    shipment === "" &&
+    delivered === "" &&
+    received === ""
+  ) {
+    ordShipmentStatus = "Ongoing"; // To Ship
+    ordShipmentTime = "Ongoing"; // To Ship
+    ordDeliveredTime = "Ongoing"; // To Ship
+    ordReceivedTime = "Ongoing"; // To Ship
+  } else if (
+    orderConfirmed !== "" &&
+    shipment !== "" &&
+    delivered === "" &&
+    received === ""
+  ) {
+    ordShipmentStatus = "Ongoing"; // In Shipment
+    ordShipmentTime = shipment;
+    ordDeliveredTime = "Ongoing"; // In Shipment
+    ordReceivedTime = "Ongoing"; // In Shipment
+  } else if (
+    orderConfirmed !== "" &&
+    shipment !== "" &&
+    delivered !== "" &&
+    received === ""
+  ) {
+    ordShipmentStatus = "Delivered";
+    ordShipmentTime = shipment;
+    ordDeliveredTime = delivered;
+    ordReceivedTime = `To Receive`;
+  } else {
+    ordShipmentStatus = "Completed";
+    ordShipmentTime = shipment;
+    ordDeliveredTime = delivered;
+    ordReceivedTime = received;
+  }
+
+  // Receipt
+  db.collection("getmoco_users")
+    .doc(userTypeID)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
         name = `${doc.data().fname} ${doc.data().lname}`;
-      });
-    db.collection("getmoco_uploads")
-      .where("uploadedBy", "==", userTypeID)
-      .where("description", "==", "profile")
-      .get()
-      .then((snap) => {
-        if (!snap.empty) {
-          snap.forEach((doc) => {
-            userImage = doc.data().url;
-          });
-        } else {
-          userImage = "/img/default-user.jpg";
-        }
-      });
-    db.collection("getmoco_items")
-      .where("orderID", "==", dataID)
-      .where("customerID", "==", data.customerID)
-      .get()
-      .then((snap) => {
-        if (!snap.empty) {
-          snap.forEach((doc) => {
-            // orderItems.push(doc.data());
+      } else {
+        name = "<em>None</em>";
+      }
+    });
+  db.collection("getmoco_uploads")
+    .where("uploadedBy", "==", userTypeID)
+    .where("description", "==", "profile")
+    .get()
+    .then((snap) => {
+      if (!snap.empty) {
+        snap.forEach((doc) => {
+          userImage = doc.data().url;
+        });
+      } else {
+        userImage = "/img/default-user.jpg";
+      }
+    });
+  db.collection("getmoco_items")
+    .where("orderID", "==", dataID)
+    .where("customerID", "==", data.customerID)
+    .get()
+    .then((snap) => {
+      if (!snap.empty) {
+        snap.forEach((doc) => {
+          // orderItems.push(doc.data());
 
-            orderItems.push(tabOrderItems(doc.data(), doc.id));
-          });
-        }
-      })
-      .then(() => {
-        // console.log(orderItems);
-        // console.log(orderItems.join(""));
+          orderItems.push(tabOrderItems(doc.data(), doc.id));
+        });
+      }
+    })
+    .then(() => {
+      // console.log(orderItems);
+      // console.log(orderItems.join(""));
 
-        const listResult = document.querySelector("#tab-orders .list-orders");
+      const listResult = document.querySelector("#tab-orders .list-orders");
 
-        const html = `
+      const html = `
         <li class="order" data-id="${dataID}">
           <div class="collapsible-header">
             <i class="material-icons">shopping_cart</i>
@@ -2519,14 +2539,14 @@ const renderUserOrdersList = (
                       <p class="order-id">${dataID}</p>
                       <div class="row">
                         <div class="col s12 m6">
+                        ${` <!--
                           <div class="col s12">
                             <div class="col s12 m6">Total Weight:</div>
                             <div class="col s12 m6">
-                              <span class="totalWeight">${
-                                data.totalWeight
-                              }</span> kg
+                              <span class="totalWeight">${"data.totalWeight"}</span> kg
                             </div>
                           </div>
+                        --> `}
                           <div class="col s12">
                             <div class="col s12 m6">Total Distance:</div>
                             <div class="col s12 m6">
@@ -2632,13 +2652,13 @@ const renderUserOrdersList = (
         </li>
       `;
 
-        listResult.innerHTML += html;
-      })
-      .then(() => {
-        initAllMaterializeCSS("Collapsible", "collapse");
-        initAllMaterializeCSS("Materialbox", "materialBox");
-      });
-  }
+      listResult.innerHTML += html;
+    })
+    .then(() => {
+      initAllMaterializeCSS("Collapsible", "collapse");
+      initAllMaterializeCSS("Materialbox", "materialBox");
+    });
+  // }
 };
 
 // * Render Order Items
@@ -2658,6 +2678,11 @@ const tabOrderItems = (data, dataID) => {
         <h6><strong>Product Description (Optional)</strong></h6>
         <p class="productDesc">
           ${data.productDesc !== "None" ? data.productDesc : "<em>None</em>"}
+        </p>
+        <h6><strong>Unit Measurement</strong></h6>
+        <p>
+          <span class="unit">${data.unit}</span>
+          <span class="measurement">${data.measurement}</span>
         </p>
         <h6><strong>Quantity</strong></h6>
         <p class="quantity">${data.quantity}</p>
@@ -2782,9 +2807,9 @@ const renderUsersList = (data, dataID, type, count) => {
           snap.forEach((doc) => {
             const status = doc.data().status;
 
-            if (status === "paid" || status === "toPay") {
-              orderCount++;
-            }
+            // if (status === "paid" || status === "toPay") {
+            orderCount++;
+            // }
           });
         }
       });
@@ -3177,7 +3202,7 @@ const modifyOrderDetails = (data, dataID, type) => {
   const paymentUser = document.querySelector(".payment-user");
   const payOrderID = paymentUser.querySelector(".order-id");
   const payItemsPrice = paymentUser.querySelector(".itemsPrice");
-  const payWeight = paymentUser.querySelector(".totalWeight");
+  // const payWeight = paymentUser.querySelector(".totalWeight");
   const payDistance = paymentUser.querySelector(".totalDistance");
   const payServiceFee = paymentUser.querySelector(".serviceFee");
   const payTotalItemsPrice = paymentUser.querySelector(".totalItemsPrice");
@@ -3207,7 +3232,7 @@ const modifyOrderDetails = (data, dataID, type) => {
 
   payOrderID.innerHTML = dataID;
   payItemsPrice.innerHTML = data.itemsPrice;
-  payWeight.innerHTML = data.totalWeight;
+  // payWeight.innerHTML = data.totalWeight;
   payDistance.innerHTML = data.totalDistance;
   payServiceFee.innerHTML = data.serviceFee;
   payTotalItemsPrice.innerHTML = data.totalItemsPrice;
@@ -3389,6 +3414,11 @@ const setOrderItems = (customerID, orderID) => {
                       : "<em>None</em>"
                   }
                 </p>
+                <h6><strong>Unit Measurement</strong></h6>
+                <p>
+                  <span class="unit">${doc.data().unit}</span>
+                  <span class="measurement">${doc.data().measurement}</span>
+                </p>
                 <h6><strong>Quantity</strong></h6>
                 <p class="quantity">${doc.data().quantity}</p>
                 <h6><strong>Note (Optional)</strong></h6>
@@ -3449,6 +3479,8 @@ const setOrderItems = (customerID, orderID) => {
                 <p class="productDesc">
                 ${"<em>None</em>"}
                 </p>
+                <h6><strong>Unit Measurement</strong></h6>
+                <p class="unit">${"<em>None</em>"}</p>
                 <h6><strong>Quantity</strong></h6>
                 <p class="quantity">${"<em>None</em>"}</p>
                 <h6><strong>Note (Optional)</strong></h6>
@@ -3726,7 +3758,7 @@ const updateSetPriceList = (data, dataID, orderID, customerID) => {
     .onSnapshot(
       (doc) => {
         const totalDistance = document.querySelector(".totalDistance");
-        const totalWeight = document.querySelector(".totalWeight");
+        // const totalWeight = document.querySelector(".totalWeight");
         const itemsPrice = document.querySelector(".itemsPrice");
         const serviceFee = document.querySelector(".serviceFee");
         const change = document.querySelector(".change");
@@ -3734,7 +3766,7 @@ const updateSetPriceList = (data, dataID, orderID, customerID) => {
 
         const totalItemsPriceValue = doc.data().totalItemsPrice;
 
-        totalWeight.innerHTML = doc.data().totalWeight;
+        // totalWeight.innerHTML = doc.data().totalWeight;
         totalDistance.innerHTML = doc.data().totalDistance;
         itemsPrice.innerHTML = doc.data().itemsPrice;
         serviceFee.innerHTML = doc.data().serviceFee;
@@ -3754,6 +3786,8 @@ const updateSetPriceList = (data, dataID, orderID, customerID) => {
           data.store !== "None" ? data.store : "<em>None</em>";
         item.querySelector(".productDesc").innerHTML =
           data.productDesc !== "None" ? data.productDesc : "<em>None</em>";
+        item.querySelector(".unit").innerHTML = data.unit;
+        item.querySelector(".measurement").innerHTML = data.measurement;
         item.querySelector(".quantity").innerHTML = data.quantity;
         item.querySelector(".note").innerHTML =
           data.note !== "None" ? data.note : "<em>None</em>";
@@ -3842,7 +3876,7 @@ const renderSetPriceList = (data, dataID, orderID, customerID) => {
     .then((doc) => {
       if (doc.exists) {
         const totalDistance = document.querySelector(".totalDistance");
-        const totalWeight = document.querySelector(".totalWeight");
+        // const totalWeight = document.querySelector(".totalWeight");
         const itemsPrice = document.querySelector(".itemsPrice");
         const serviceFee = document.querySelector(".serviceFee");
         const change = document.querySelector(".change");
@@ -3850,7 +3884,7 @@ const renderSetPriceList = (data, dataID, orderID, customerID) => {
 
         const totalItemsPriceValue = doc.data().totalItemsPrice;
 
-        totalWeight.innerHTML = doc.data().totalWeight;
+        // totalWeight.innerHTML = doc.data().totalWeight;
         totalDistance.innerHTML = doc.data().totalDistance;
         itemsPrice.innerHTML = doc.data().itemsPrice;
         serviceFee.innerHTML = doc.data().serviceFee;
@@ -3934,6 +3968,11 @@ const renderSetPriceList = (data, dataID, orderID, customerID) => {
                             ? data.productDesc
                             : "<em>None</em>"
                         }
+                      </p>
+                      <h6><strong>Unit Measurement</strong></h6>
+                      <p>
+                        <span class="unit">${data.unit}</span>
+                        <span class="measurement">${data.measurement}</span>
                       </p>
                       <h6><strong>Quantity</strong></h6>
                       <p class="quantity">${data.quantity}</p>
@@ -4084,7 +4123,11 @@ const renderChats = (data, dataID, type) => {
           const html = `
                 <li class="collection-item teal lighten-4 chat" data-id="${dataID}">
                   <p class="content right-align">
-                    ${data.content}
+                    ${
+                      data.content !== "image"
+                        ? data.content
+                        : `<img class="responsive-img materialboxed" src="${data.url}">`
+                    }
                   </p>
                   <p class="right-align"><small class="date grey-text">${date}</small></p>
                 </li>
@@ -4101,7 +4144,11 @@ const renderChats = (data, dataID, type) => {
                 />
                 <strong><span class="name">${name}</span></strong>
                 <p class="content">
-                  ${data.content}
+                  ${
+                    data.content !== "image"
+                      ? data.content
+                      : `<img class="responsive-img materialboxed" src="${data.url}">`
+                  }
                 </p>
                 <p><small class="date grey-text">${date}</small></p>
               </li>
@@ -4109,6 +4156,8 @@ const renderChats = (data, dataID, type) => {
 
           listResult.innerHTML += html;
         }
+
+        initAllMaterializeCSS("Materialbox", "materialBox");
       })
       .then(() => {
         if (chatByType !== "user") {
@@ -4141,7 +4190,7 @@ const updateGetPriceList = (data, dataID, orderID, customerID) => {
     .onSnapshot(
       (doc) => {
         const totalDistance = document.querySelector(".totalDistance");
-        const totalWeight = document.querySelector(".totalWeight");
+        // const totalWeight = document.querySelector(".totalWeight");
         const itemsPrice = document.querySelector(".itemsPrice");
         const serviceFee = document.querySelector(".serviceFee");
         const change = document.querySelector(".change");
@@ -4149,7 +4198,7 @@ const updateGetPriceList = (data, dataID, orderID, customerID) => {
 
         const totalItemsPriceValue = doc.data().totalItemsPrice;
 
-        totalWeight.innerHTML = doc.data().totalWeight;
+        // totalWeight.innerHTML = doc.data().totalWeight;
         totalDistance.innerHTML = doc.data().totalDistance;
         itemsPrice.innerHTML = doc.data().itemsPrice;
         serviceFee.innerHTML = doc.data().serviceFee;
@@ -4169,6 +4218,8 @@ const updateGetPriceList = (data, dataID, orderID, customerID) => {
           data.store !== "None" ? data.store : "<em>None</em>";
         item.querySelector(".productDesc").innerHTML =
           data.productDesc !== "None" ? data.productDesc : "<em>None</em>";
+        item.querySelector(".unit").innerHTML = data.unit;
+        item.querySelector(".measurement").innerHTML = data.measurement;
         item.querySelector(".quantity").innerHTML = data.quantity;
         item.querySelector(".note").innerHTML =
           data.note !== "None" ? data.note : "<em>None</em>";
@@ -4289,7 +4340,7 @@ const renderGetPriceList = (data, dataID, orderID, customerID) => {
     .then((doc) => {
       if (!doc.empty) {
         const totalDistance = document.querySelector(".totalDistance");
-        const totalWeight = document.querySelector(".totalWeight");
+        // const totalWeight = document.querySelector(".totalWeight");
         const itemsPrice = document.querySelector(".itemsPrice");
         const serviceFee = document.querySelector(".serviceFee");
         const change = document.querySelector(".change");
@@ -4297,7 +4348,7 @@ const renderGetPriceList = (data, dataID, orderID, customerID) => {
 
         const totalItemsPriceValue = doc.data().totalItemsPrice;
 
-        totalWeight.innerHTML = doc.data().totalWeight;
+        // totalWeight.innerHTML = doc.data().totalWeight;
         totalDistance.innerHTML = doc.data().totalDistance;
         itemsPrice.innerHTML = doc.data().itemsPrice;
         serviceFee.innerHTML = doc.data().serviceFee;
@@ -4388,6 +4439,11 @@ const renderGetPriceList = (data, dataID, orderID, customerID) => {
                             ? data.productDesc
                             : "<em>None</em>"
                         }
+                      </p>\
+                      <h6><strong>Unit Measurement</strong></h6>
+                      <p>
+                        <span class="unit">${data.unit}</span>
+                        <span class="measurement">${data.measurement}</span>
                       </p>
                       <h6><strong>Quantity</strong></h6>
                       <p class="quantity">${data.quantity}</p>
@@ -4477,7 +4533,8 @@ const renderNewOrder = (data, dataID) => {
   const ordStatus = data.status;
 
   if (ordStatus === "waiting") {
-    const listResult = document.querySelector(".list-result");
+    const highListResult = document.querySelector(".high-list-result");
+    const lowListResult = document.querySelector(".low-list-result");
 
     // Driver Details
     const id = data.customerID;
@@ -4597,12 +4654,29 @@ const renderNewOrder = (data, dataID) => {
                   ${data.serviceFee}
                 </span>
               </p>
+              <p 
+                data-id="${dataID}" 
+                class="
+                  ${data.prio ? "red-text" : "green-text"}
+                "
+              >
+                <span class="black-text">Priority:</span>
+                <span class="prio" data-id="${dataID}">
+                  ${data.prio ? "High" : "Low"}
+                </span>
+              </p>
             </a>
           `;
 
-        const tempHtml = listResult.innerHTML;
-        listResult.innerHTML = "";
-        listResult.innerHTML = html + tempHtml;
+        if (data.prio) {
+          const highTempHtml = highListResult.innerHTML;
+          highListResult.innerHTML = "";
+          highListResult.innerHTML = html + highTempHtml;
+        } else {
+          const lowTempHtml = lowListResult.innerHTML;
+          lowListResult.innerHTML = "";
+          lowListResult.innerHTML = html + lowTempHtml;
+        }
       });
   }
 };
@@ -4679,12 +4753,12 @@ const renderWaitingOrder = (data, dataID) => {
 const changeWeightPriceValue = () => {
   const weightModal = document.querySelector("#weight_modal");
   const weightForm = weightModal.querySelector("#weight-form");
-  const weightRange = weightForm.querySelector("#weight-range");
-  const weightValue = weightForm.querySelector(".weight-value");
+  // const weightRange = weightForm.querySelector("#weight-range");
+  // const weightValue = weightForm.querySelector(".weight-value");
   // const weightEstimateFee = weightForm.querySelector(".estimate-fee");
-  const weightVal = weightRange.value.trim();
+  // const weightVal = weightRange.value.trim();
 
-  weightValue.innerHTML = weightVal;
+  // weightValue.innerHTML = weightVal;
 
   // if (weightVal >= 0 && weightVal <= 5) {
   //   weightEstimateFee.innerHTML = "80.00";
@@ -4738,6 +4812,8 @@ const updateOrderItem = (data, dataID) => {
     data.store !== "None" ? data.store : "<em>None</em>";
   item.querySelector(".productDesc").innerHTML =
     data.productDesc !== "None" ? data.productDesc : "<em>None</em>";
+  item.querySelector(".unit").innerHTML = data.unit;
+  item.querySelector(".measurement").innerHTML = data.measurement;
   item.querySelector(".quantity").innerHTML = data.quantity;
   item.querySelector(".note").innerHTML =
     data.note !== "None" ? data.note : "<em>None</em>";
@@ -4763,6 +4839,11 @@ const renderOrderItem = (data, dataID) => {
               ${
                 data.productDesc !== "None" ? data.productDesc : "<em>None</em>"
               }
+            </p>
+            <h6><strong>Unit Measurement</strong></h6>
+            <p>
+              <span class="unit">${data.unit}</span>
+              <span class="measurement">${data.measurement}</span>
             </p>
             <h6><strong>Quantity</strong></h6>
             <p class="quantity">${data.quantity}</p>
@@ -4824,6 +4905,8 @@ const renderSampleItem = () => {
         <p><em>Example Store</em></p>
         <h6><strong>Product Description (Optional)</strong></h6>
         <p><em>Example Description</em></p>
+        <h6><strong>Unit Measurement</strong></h6>
+        <p><em>500 ml</em></p>
         <h6><strong>Quantity</strong></h6>
         <p><em>5</em></p>
         <h6><strong>Note (Optional)</strong></h6>

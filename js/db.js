@@ -601,6 +601,7 @@ function updateMatrixDetails(settingsID) {
     const platformFee = editMatrixForm.platformFee.value.trim() / 100;
     const priceLimit = editMatrixForm.priceLimit.value.trim();
     const priceMatrix = editMatrixForm.priceMatrix.value.trim();
+    const priorityFee = editMatrixForm.priorityFee.value.trim();
 
     db.collection("getmoco_settings")
       .doc(settingsID)
@@ -610,6 +611,7 @@ function updateMatrixDetails(settingsID) {
         platformFee: platformFee.toString(),
         priceLimit: priceLimit.toString(),
         priceMatrix: priceMatrix.toString(),
+        priorityFee: priorityFee.toString(),
       })
       .then(() => {
         errorField.innerHTML = `<blockquote class="green-text"><strong>Matrix settings updated successfully.</strong></blockquote>`;
@@ -2506,6 +2508,8 @@ function modifyOrderItemSetPrice() {
       const product = item.querySelector(".product").textContent;
       const productDesc = item.querySelector(".productDesc").textContent;
       const quantity = item.querySelector(".quantity").textContent;
+      const unit = item.querySelector(".unit").textContent;
+      const measurement = item.querySelector(".measurement").textContent;
       const note = item.querySelector(".note").textContent;
       const price = item.querySelector(".price").textContent;
 
@@ -2513,6 +2517,8 @@ function modifyOrderItemSetPrice() {
       editForm.product.value = product.trim();
       editForm.productDesc.value = productDesc.trim();
       editForm.quantity.value = quantity.trim();
+      editForm.unit.value = unit.trim();
+      editForm.measurement.value = measurement.trim();
       editForm.note.value = note.trim();
       editForm.price.value = price.trim();
 
@@ -2711,7 +2717,7 @@ function confirmCancelTransac(locationID, orderID, status) {
  */
 
 // * Send New Message
-function sendNewMessage(type) {
+function sendNewMessage(type, userID) {
   const chatModal = document.querySelector("#chat_modal");
   const chatForm = chatModal.querySelector("#chat_form");
 
@@ -2735,6 +2741,62 @@ function sendNewMessage(type) {
         .then(() => {
           chatForm.reset();
         });
+    } else {
+      const fileHolder = chatForm.querySelector("#file-holder");
+      const fileHolderText = chatForm.querySelector(".file-path.validate");
+
+      if (fileHolder.files.length !== 0) {
+        const file = fileHolder.files[0];
+        const name = "G-" + new Date().getTime();
+
+        const metadata = {
+          contentType: file.type,
+        };
+
+        storageRef
+          .child(name)
+          .put(file, metadata)
+          // uploadTask
+          .then((snapshot) => snapshot.ref.getDownloadURL())
+          .then((url) => {
+            // console.log(url);
+
+            //uploadDisplay.src = url;
+            fileHolder.value = "";
+            fileHolderText.value = "";
+
+            db.collection("getmoco_uploads")
+              .add({
+                uploadedBy: userID,
+                filename: name,
+                url: url,
+                description: "chat",
+                status: "",
+                created: firebase.firestore.FieldValue.serverTimestamp(),
+              })
+              .then((doc) => {
+                // console.log(doc);
+
+                db.collection("getmoco_chats")
+                  .add({
+                    customerID: customerID,
+                    driverID: driverID,
+                    content: "image",
+                    url: url,
+                    filename: name,
+                    chatBy: chatBy,
+                    chatByType: type,
+                    created: firebase.firestore.FieldValue.serverTimestamp(),
+                  })
+                  .then(() => {
+                    chatForm.reset();
+                  });
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          });
+      }
     }
   });
 }
@@ -2863,6 +2925,8 @@ function modifyOrderItemForPrice() {
       const product = item.querySelector(".product").textContent;
       const productDesc = item.querySelector(".productDesc").textContent;
       const quantity = item.querySelector(".quantity").textContent;
+      const unit = item.querySelector(".unit").textContent;
+      const measurement = item.querySelector(".measurement").textContent;
       const note = item.querySelector(".note").textContent;
       const price = item.querySelector(".price").textContent;
       const totalPrice = item.querySelector(".totalPrice").textContent;
@@ -2871,6 +2935,8 @@ function modifyOrderItemForPrice() {
       editForm.product.value = product.trim();
       editForm.productDesc.value = productDesc.trim();
       editForm.quantity.value = quantity.trim();
+      editForm.unit.value = unit.trim();
+      editForm.measurement.value = measurement.trim();
       editForm.note.value = note.trim();
       editForm.price.value = price.trim();
       editForm.totalPrice.value = totalPrice.trim();
@@ -3182,6 +3248,7 @@ function chooseNewOrder() {
     const landmarkDrp = customer.querySelector(".landmarkDrp").textContent;
     const totalDistance = customer.querySelector(".totalDistance").textContent;
     const serviceFee = customer.querySelector(".serviceFee").textContent;
+    const prio = customer.querySelector(".prio").textContent;
 
     viewCustomer.querySelector(".name").textContent = name;
     viewCustomer.querySelector(".addressOrg").textContent = addressOrg;
@@ -3192,6 +3259,7 @@ function chooseNewOrder() {
     viewCustomer.querySelector(".landmarkDrp").textContent = landmarkDrp;
     viewCustomer.querySelector(".totalDistance").textContent = totalDistance;
     viewCustomer.querySelector(".serviceFee").textContent = serviceFee;
+    viewCustomer.querySelector(".prio").textContent = prio;
 
     const takeOrderButton = viewCustomer.querySelector(".take-order-button");
 
@@ -3430,12 +3498,16 @@ function modifyOrderItem() {
       const productDesc = item.querySelector(".productDesc").textContent;
       const quantity = item.querySelector(".quantity").textContent;
       const note = item.querySelector(".note").textContent;
+      const unit = item.querySelector(".unit").textContent;
+      const measurement = item.querySelector(".measurement").textContent;
 
       editForm.store.value = store.trim();
       editForm.product.value = product.trim();
       editForm.productDesc.value = productDesc.trim();
       editForm.quantity.value = quantity.trim();
       editForm.note.value = note.trim();
+      editForm.unit.value = unit.trim();
+      editForm.measurement.value = measurement.trim();
 
       // Process Validation
       db.collection("getmoco_settings")
@@ -3482,12 +3554,16 @@ function editOrderItem() {
         : editForm.store.value.trim();
     const product = editForm.product.value.trim();
     const quantity = editForm.quantity.value.trim();
+    const unit = editForm.unit.value.trim();
+    const measurement = editForm.measurement.value.trim();
 
     const items = {
       store: store,
       product: product,
       productDesc: productDesc,
       quantity: quantity,
+      unit: parseFloat(unit).toFixed(2),
+      measurement: measurement,
       note: note,
       modified: firebase.firestore.FieldValue.serverTimestamp(),
     };
@@ -3534,6 +3610,8 @@ function addOrderItem(customerID, orderID) {
         : addForm.store.value.trim();
     const product = addForm.product.value.trim();
     const quantity = addForm.quantity.value.trim();
+    const unit = addForm.unit.value.trim();
+    const measurement = addForm.measurement.value.trim();
 
     const items = {
       customerID: customerID,
@@ -3542,6 +3620,8 @@ function addOrderItem(customerID, orderID) {
       product: product,
       productDesc: productDesc,
       quantity: quantity,
+      unit: parseFloat(unit).toFixed(2),
+      measurement: measurement,
       note: note,
       created: firebase.firestore.FieldValue.serverTimestamp(),
       price: "0.00",
@@ -3568,9 +3648,10 @@ function addOrderItem(customerID, orderID) {
 function checkWeightServiceFee(orderID) {
   const weightModal = document.querySelector("#weight_modal");
   const weightForm = weightModal.querySelector("#weight-form");
-  const weightRange = weightForm.querySelector("#weight-range");
-  const weightValue = weightForm.querySelector(".weight-value");
+  // const weightRange = weightForm.querySelector("#weight-range");
+  // const weightValue = weightForm.querySelector(".weight-value");
   const change = weightForm.querySelector("#change");
+  const priority = weightForm.querySelector("#priority");
 
   weightForm.reset();
 
@@ -3578,13 +3659,15 @@ function checkWeightServiceFee(orderID) {
     .doc(orderID)
     .get()
     .then((doc) => {
-      const totalWeight = doc.data().totalWeight;
+      // const totalWeight = doc.data().totalWeight;
       const docChange = parseFloat(doc.data().change);
+      const docPrio = doc.data().prio;
 
-      weightRange.value = totalWeight;
-      weightValue.innerHTML = totalWeight;
+      // weightRange.value = totalWeight;
+      // weightValue.innerHTML = totalWeight;
 
       change.value = docChange;
+      priority.checked = docPrio;
     });
 }
 
@@ -3615,26 +3698,56 @@ function nextBackCustomer(orderID, status) {
     weightForm.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const weightRange = weightForm.querySelector("#weight-range");
-      const weight = weightRange.value.trim();
+      // const weightRange = weightForm.querySelector("#weight-range");
+      // const weight = weightRange.value.trim();
 
       const change = weightForm.change.value.trim();
+      const prio = weightForm.priority.checked;
 
       db.collection("getmoco_orders")
         .doc(orderID)
-        .update({
-          status: status,
-          totalWeight: weight,
-          change: parseFloat(change).toFixed(2).toString(),
-          waiting: firebase.firestore.FieldValue.serverTimestamp(),
-        })
-        .then(() => {
-          if (status === "waiting")
-            window.location.href = "/pages/wait_driver.html";
-          else window.location.href = "/pages/order.html";
-        })
-        .catch((err) => {
-          console.log(err.message);
+        .get()
+        .then((doc) => {
+          const totalItemsPrice = parseFloat(doc.data().totalItemsPrice);
+          const serviceFee = parseFloat(doc.data().serviceFee);
+
+          const data =
+            totalItemsPrice === serviceFee && prio
+              ? {
+                  status: status,
+                  totalItemsPrice: parseFloat(totalItemsPrice + priorityFee)
+                    .toFixed(2)
+                    .toString(),
+                  prio: prio,
+                  change: parseFloat(change).toFixed(2).toString(),
+                  waiting: firebase.firestore.FieldValue.serverTimestamp(),
+                }
+              : totalItemsPrice !== serviceFee && !prio
+              ? {
+                  status: status,
+                  totalItemsPrice: parseFloat(totalItemsPrice - priorityFee)
+                    .toFixed(2)
+                    .toString(),
+                  prio: prio,
+                  change: parseFloat(change).toFixed(2).toString(),
+                  waiting: firebase.firestore.FieldValue.serverTimestamp(),
+                }
+              : {
+                  status: status,
+                  // totalWeight: weight,
+                  prio: prio,
+                  change: parseFloat(change).toFixed(2).toString(),
+                  waiting: firebase.firestore.FieldValue.serverTimestamp(),
+                };
+
+          db.collection("getmoco_orders")
+            .doc(orderID)
+            .update(data)
+            .then(() => {
+              if (status === "waiting")
+                window.location.href = "/pages/wait_driver.html";
+              else window.location.href = "/pages/order.html";
+            });
         });
     });
   }
@@ -3713,8 +3826,9 @@ function setupUserVerified(userID, type) {
 
 // * Calculate Distance
 function calculateDistance(origin, destination) {
-  //const accessToken = "4e5JlBCrZzqIniPGkkIqOIuZ0HkIW"; // patrick tup email token
-  const accessToken = "nkkUZdOpjpxbqpZGfIZD0XBNR2iCT";
+  // const accessToken = "4e5JlBCrZzqIniPGkkIqOIuZ0HkIW"; // patrick tup email token expired
+  // const accessToken = "nkkUZdOpjpxbqpZGfIZD0XBNR2iCT"; // jerome tup email token expired
+  const accessToken = "";
 
   // api url: distancematrix.ai
   const api_url = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&key=${accessToken}`;
@@ -3733,7 +3847,8 @@ function calculateDistance(origin, destination) {
     // console.log(data.rows[0].elements[0].duration);
     // console.log(data.rows[0].elements[0].distance.value);
 
-    return data.rows[0].elements[0].distance.value / 1000;
+    // return data.rows[0].elements[0].distance.value / 1000; // distance api vlaue
+    return parseFloat((Math.random() * (25.99 - 1) + 1).toFixed(2)); // temp api value
   }
 
   // Call Async
@@ -3895,12 +4010,13 @@ function pinLocation(userID, type) {
                 shipment: "",
                 received: "",
                 waiting: "",
-                totalWeight: 0,
+                // totalWeight: 0,
                 totalDistance: totalDistance,
                 change: "",
                 orderConfirmed: "",
                 driverEarning: "0.00",
                 appEarning: "0.00",
+                prio: false,
               })
               .then(() => {
                 window.location.href = "/pages/order.html";
@@ -4007,6 +4123,7 @@ function setupMatrix() {
             province: "",
             settings: "ALL",
             totalEarnings: "0.00",
+            priorityFee: "0",
           })
           .then((doc) => {
             auth

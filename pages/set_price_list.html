@@ -62,33 +62,37 @@
                 </span>
                 <div class="row">
                   <div class="col s6">
-                    <div class="col s6">Total Weight:</div>
-                    <div class="col s6">
-                      <span class="totalWeight">0</span> kg
+                    <!-- <div class="col s12">
+                      <div class="col s6">Total Weight:</div>
+                      <div class="col s6">
+                        <span class="totalWeight">0</span> kg
+                      </div>
+                    </div> -->
+                    <div class="col s12">
+                      <div class="col s6">Total Distance:</div>
+                      <div class="col s6">
+                        <span class="totalDistance">0</span> km
+                      </div>
+                    </div>
+                    <div class="col s12">
+                      <div class="col s6">Change For:</div>
+                      <div class="col s6">
+                        &#8369;&nbsp;<span class="change">0.00</span>
+                      </div>
                     </div>
                   </div>
                   <div class="col s6">
-                    <div class="col s6">Items Price:</div>
-                    <div class="col s6">
-                      &#8369;&nbsp;<span class="itemsPrice">0.00</span>
+                    <div class="col s12">
+                      <div class="col s6">Items Price:</div>
+                      <div class="col s6">
+                        &#8369;&nbsp;<span class="itemsPrice">0.00</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col s6">
-                    <div class="col s6">Total Distance:</div>
-                    <div class="col s6">
-                      <span class="totalDistance">0</span> km
-                    </div>
-                  </div>
-                  <div class="col s6">
-                    <div class="col s6">Service Fee:</div>
-                    <div class="col s6">
-                      &#8369;&nbsp;<span class="serviceFee">0.00</span>
-                    </div>
-                  </div>
-                  <div class="col s6">
-                    <div class="col s6">Change For:</div>
-                    <div class="col s6">
-                      &#8369;&nbsp;<span class="change">0.00</span>
+                    <div class="col s12">
+                      <div class="col s6">Service Fee:</div>
+                      <div class="col s6">
+                        &#8369;&nbsp;<span class="serviceFee">0.00</span>
+                      </div>
                     </div>
                   </div>
                   <hr class="col s12" />
@@ -137,7 +141,6 @@
                 name="message"
                 type="text"
                 class="validate"
-                required
               />
             </div>
           </div>
@@ -149,6 +152,21 @@
               <i class="material-icons right">send</i>
               <span class="hide-on-med-and-down">Send</span>
             </button>
+          </div>
+          <div class="col s12">
+            <div class="file-field input-field">
+              <div class="btn">
+                <span><i class="material-icons large">insert_photo</i></span>
+                <input type="file" accept="image/*" id="file-holder" />
+              </div>
+              <div class="file-path-wrapper">
+                <input
+                  class="file-path validate"
+                  type="text"
+                  placeholder="Upload Image"
+                />
+              </div>
+            </div>
           </div>
         </form>
       </div>
@@ -216,6 +234,32 @@
                 disabled
               ></textarea>
               <label for="editProdDesc">Product Description (Optional)</label>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m6">
+                <input
+                  id="editunit"
+                  type="number"
+                  class="validate"
+                  name="unit"
+                  step="0.01"
+                  min="0"
+                  required
+                  disabled
+                />
+                <label for="editunit">Unit</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <select required name="measurement" disabled>
+                  <option value="" disabled selected>Choose Weight</option>
+                  <option value="kg">Kilogram (kg)</option>
+                  <option value="g">Gram (g)</option>
+                  <option value="mg">Milligram (mg)</option>
+                  <option value="lb">Pound (lb)</option>
+                  <option value="oz">Ounce (oz)</option>
+                </select>
+                <label>Measurement</label>
+              </div>
             </div>
             <div class="input-field">
               <input
@@ -442,7 +486,7 @@
                     modifyOrderItemSetPrice();
                     editOrderItemSetPrice();
                     setupChat(type);
-                    sendNewMessage(type);
+                    sendNewMessage(type, driverID);
                   } else {
                     window.location.href = "/pages/driver.html";
                   }
