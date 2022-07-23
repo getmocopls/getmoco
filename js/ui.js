@@ -3762,6 +3762,8 @@ const updateSetPriceList = (data, dataID, orderID, customerID) => {
         const itemsPrice = document.querySelector(".itemsPrice");
         const serviceFee = document.querySelector(".serviceFee");
         const change = document.querySelector(".change");
+        const prio = document.querySelector(".prio");
+        const priorityFee = document.querySelector(".priorityFee");
         const totalItemsPrice = document.querySelector(".totalItemsPrice");
 
         const totalItemsPriceValue = doc.data().totalItemsPrice;
@@ -3771,6 +3773,8 @@ const updateSetPriceList = (data, dataID, orderID, customerID) => {
         itemsPrice.innerHTML = doc.data().itemsPrice;
         serviceFee.innerHTML = doc.data().serviceFee;
         change.innerHTML = doc.data().change;
+        prio.innerHTML = doc.data().prio ? "High" : "Low";
+        priorityFee.innerHTML = doc.data().prio ? prioFee : "0.00";
         totalItemsPrice.innerHTML = totalItemsPriceValue;
 
         const item = document.querySelector(`.item[data-id="${dataID}"]`);
@@ -3880,6 +3884,8 @@ const renderSetPriceList = (data, dataID, orderID, customerID) => {
         const itemsPrice = document.querySelector(".itemsPrice");
         const serviceFee = document.querySelector(".serviceFee");
         const change = document.querySelector(".change");
+        const prio = document.querySelector(".prio");
+        const priorityFee = document.querySelector(".priorityFee");
         const totalItemsPrice = document.querySelector(".totalItemsPrice");
 
         const totalItemsPriceValue = doc.data().totalItemsPrice;
@@ -3889,6 +3895,8 @@ const renderSetPriceList = (data, dataID, orderID, customerID) => {
         itemsPrice.innerHTML = doc.data().itemsPrice;
         serviceFee.innerHTML = doc.data().serviceFee;
         change.innerHTML = doc.data().change;
+        prio.innerHTML = doc.data().prio ? "High" : "Low";
+        priorityFee.innerHTML = doc.data().prio ? prioFee : "0.00";
         totalItemsPrice.innerHTML = totalItemsPriceValue;
 
         const priceListStatus = document.querySelector(".status");
@@ -4011,8 +4019,7 @@ const renderSetPriceList = (data, dataID, orderID, customerID) => {
                         data-id="${dataID}"
                       >
                         <i
-                          class="material-icons edit modal-trigger
-                          "
+                          class="material-icons edit modal-trigger"
                           href="#edit_item_modal"
                           style="cursor: pointer;"
                           data-position="top"
@@ -4043,11 +4050,18 @@ const renderSetPriceList = (data, dataID, orderID, customerID) => {
 const showClientResponse = (data, dataID) => {
   const notifCancel = document.querySelector("#notif_cancel_modal");
   const notifConfirm = document.querySelector("#notif_confirm_modal");
+  const notifButton = document.querySelector(".notif-confirm-button");
+  const price = document.querySelector("#editprice");
+  const update = document.querySelector(".update-button");
 
   if (data.request === "confirmed") {
+    price.disabled = true;
+    update.disabled = true;
+    notifButton.style.display = "block";
     M.Modal.getInstance(notifConfirm).open();
-    M.Modal.getInstance(notifConfirm).options.dismissible = false;
+    M.Modal.getInstance(notifConfirm).options.dismissible = true;
   } else if (data.request === "cancelled") {
+    notifButton.style.display = "none";
     M.Modal.getInstance(notifCancel).open();
     M.Modal.getInstance(notifCancel).options.dismissible = false;
   }
@@ -4194,6 +4208,8 @@ const updateGetPriceList = (data, dataID, orderID, customerID) => {
         const itemsPrice = document.querySelector(".itemsPrice");
         const serviceFee = document.querySelector(".serviceFee");
         const change = document.querySelector(".change");
+        const prio = document.querySelector(".prio");
+        const priorityFee = document.querySelector(".priorityFee");
         const totalItemsPrice = document.querySelector(".totalItemsPrice");
 
         const totalItemsPriceValue = doc.data().totalItemsPrice;
@@ -4203,6 +4219,8 @@ const updateGetPriceList = (data, dataID, orderID, customerID) => {
         itemsPrice.innerHTML = doc.data().itemsPrice;
         serviceFee.innerHTML = doc.data().serviceFee;
         change.innerHTML = doc.data().change;
+        prio.innerHTML = doc.data().prio ? "High" : "Low";
+        priorityFee.innerHTML = doc.data().prio ? prioFee : "0.00";
         totalItemsPrice.innerHTML = totalItemsPriceValue;
 
         const item = document.querySelector(`.item[data-id="${dataID}"]`);
@@ -4344,6 +4362,8 @@ const renderGetPriceList = (data, dataID, orderID, customerID) => {
         const itemsPrice = document.querySelector(".itemsPrice");
         const serviceFee = document.querySelector(".serviceFee");
         const change = document.querySelector(".change");
+        const prio = document.querySelector(".prio");
+        const priorityFee = document.querySelector(".priorityFee");
         const totalItemsPrice = document.querySelector(".totalItemsPrice");
 
         const totalItemsPriceValue = doc.data().totalItemsPrice;
@@ -4353,6 +4373,8 @@ const renderGetPriceList = (data, dataID, orderID, customerID) => {
         itemsPrice.innerHTML = doc.data().itemsPrice;
         serviceFee.innerHTML = doc.data().serviceFee;
         change.innerHTML = doc.data().change;
+        prio.innerHTML = doc.data().prio ? "High" : "Low";
+        priorityFee.innerHTML = doc.data().prio ? prioFee : "0.00";
         totalItemsPrice.innerHTML = totalItemsPriceValue;
 
         const cancelButton = document.querySelector(".cancel-button");

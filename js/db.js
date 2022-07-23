@@ -2594,8 +2594,21 @@ function editOrderItemSetPrice() {
           .then(() => {
             // Update total
             let itemsPrice = 0;
+            let serviceFee = 0;
             let totalItemsPrice = 0;
 
+            let priorityFee = 0;
+
+            db.collection("getmoco_settings")
+              .where("settings", "==", "ALL")
+              .get()
+              .then((snap) => {
+                if (!snap.empty) {
+                  snap.forEach((doc) => {
+                    priorityFee = parseFloat(doc.data().priorityFee);
+                  });
+                }
+              });
             db.collection("getmoco_items")
               .where("customerID", "==", customerID)
               .where("orderID", "==", orderID)
@@ -2615,9 +2628,13 @@ function editOrderItemSetPrice() {
                   .doc(orderID)
                   .get()
                   .then((doc) => {
+                    const prio = doc.data().prio;
+
                     serviceFee = parseFloat(doc.data().serviceFee);
 
-                    totalItemsPrice = itemsPrice + serviceFee;
+                    totalItemsPrice = prio
+                      ? itemsPrice + serviceFee + priorityFee
+                      : itemsPrice + serviceFee;
                   })
                   .then(() => {
                     db.collection("getmoco_orders")
@@ -3011,6 +3028,19 @@ function editOrderItemForPrice() {
             let serviceFee = 0;
             let totalItemsPrice = 0;
 
+            let priorityFee = 0;
+
+            db.collection("getmoco_settings")
+              .where("settings", "==", "ALL")
+              .get()
+              .then((snap) => {
+                if (!snap.empty) {
+                  snap.forEach((doc) => {
+                    priorityFee = parseFloat(doc.data().priorityFee);
+                  });
+                }
+              });
+
             db.collection("getmoco_items")
               .where("customerID", "==", customerID)
               .where("orderID", "==", orderID)
@@ -3030,9 +3060,13 @@ function editOrderItemForPrice() {
                   .doc(orderID)
                   .get()
                   .then((doc) => {
+                    const prio = doc.data().prio;
+
                     serviceFee = parseFloat(doc.data().serviceFee);
 
-                    totalItemsPrice = itemsPrice + serviceFee;
+                    totalItemsPrice = prio
+                      ? itemsPrice + serviceFee + priorityFee
+                      : itemsPrice + serviceFee;
                   })
                   .then(() => {
                     db.collection("getmoco_orders")

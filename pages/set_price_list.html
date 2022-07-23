@@ -32,7 +32,7 @@
         <nav class="z-depth-0 teal">
           <div class="nav-wrapper container">
             <ul>
-              <li class="right">
+              <li class="left">
                 <a
                   class="waves-effect modal-trigger"
                   href="#report_modal"
@@ -40,6 +40,16 @@
                 >
                   <i class="material-icons right">report</i>
                   Report
+                </a>
+              </li>
+              <li class="right">
+                <a
+                  class="notif-confirm-button waves-effect modal-trigger"
+                  href="#notif_confirm_modal"
+                  style="display: none"
+                >
+                  <i class="material-icons right">arrow_forward</i>
+                  Next
                 </a>
               </li>
             </ul>
@@ -80,6 +90,12 @@
                         &#8369;&nbsp;<span class="change">0.00</span>
                       </div>
                     </div>
+                    <div class="col s12">
+                      <div class="col s6">Priority:</div>
+                      <div class="col s6">
+                        <span class="prio">Low</span>
+                      </div>
+                    </div>
                   </div>
                   <div class="col s6">
                     <div class="col s12">
@@ -92,6 +108,12 @@
                       <div class="col s6">Service Fee:</div>
                       <div class="col s6">
                         &#8369;&nbsp;<span class="serviceFee">0.00</span>
+                      </div>
+                    </div>
+                    <div class="col s12">
+                      <div class="col s6">Priority Fee:</div>
+                      <div class="col s6">
+                        &#8369;&nbsp;<span class="priorityFee">0.00</span>
                       </div>
                     </div>
                   </div>
@@ -301,7 +323,7 @@
             >
             </span>
             <button
-              class="btn btn-large waves-effect waves-light"
+              class="btn btn-large waves-effect waves-light update-button"
               type="submit"
             >
               <i class="material-icons right large">check_circle</i>
@@ -435,6 +457,7 @@
       let customerID = "";
       let orderID = "";
       let orderItemID = "";
+      let prioFee = 0;
 
       // * Auth Status
       auth.onAuthStateChanged((user) => {
@@ -443,7 +466,16 @@
         if (user) {
           driverID = user.uid;
 
-          // Account Type
+          db.collection("getmoco_settings")
+            .where("settings", "==", "ALL")
+            .get()
+            .then((snap) => {
+              if (!snap.empty) {
+                snap.forEach((doc) => {
+                  prioFee = parseFloat(doc.data().priorityFee).toFixed(2);
+                });
+              }
+            });
           db.collection("getmoco_users")
             .doc(driverID)
             .get()

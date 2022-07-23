@@ -80,6 +80,12 @@
                         &#8369;&nbsp;<span class="change">0.00</span>
                       </div>
                     </div>
+                    <div class="col s12">
+                      <div class="col s6">Priority:</div>
+                      <div class="col s6">
+                        <span class="prio">Low</span>
+                      </div>
+                    </div>
                   </div>
                   <div class="col s6">
                     <div class="col s12">
@@ -92,6 +98,12 @@
                       <div class="col s6">Service Fee:</div>
                       <div class="col s6">
                         &#8369;&nbsp;<span class="serviceFee">0.00</span>
+                      </div>
+                    </div>
+                    <div class="col s12">
+                      <div class="col s6">Priority Fee:</div>
+                      <div class="col s6">
+                        &#8369;&nbsp;<span class="priorityFee">0.00</span>
                       </div>
                     </div>
                   </div>
@@ -508,6 +520,7 @@
       let locationID = "";
       let driverID = "";
       let orderItemID = "";
+      let prioFee = 0;
 
       // * Auth Status
       auth.onAuthStateChanged((user) => {
@@ -516,7 +529,16 @@
         if (user) {
           customerID = user.uid;
 
-          // Account Type
+          db.collection("getmoco_settings")
+            .where("settings", "==", "ALL")
+            .get()
+            .then((snap) => {
+              if (!snap.empty) {
+                snap.forEach((doc) => {
+                  prioFee = parseFloat(doc.data().priorityFee).toFixed(2);
+                });
+              }
+            });
           db.collection("getmoco_users")
             .doc(customerID)
             .get()
