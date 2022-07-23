@@ -3113,23 +3113,36 @@ function confirmWaitPriceList(orderID, locationID) {
 function cancelWaitPriceList(orderID, locationID, driverID, customerID) {
   const cancelButton = document.querySelector(".yes-cancel-button");
   cancelButton.addEventListener("click", () => {
-    let serviceFee = 0;
     let totalItemsPrice = 0;
+    let priorityFee = 0;
 
+    db.collection("getmoco_settings")
+      .where("settings", "==", "ALL")
+      .get()
+      .then((snap) => {
+        if (!snap.empty) {
+          snap.forEach((doc) => {
+            priorityFee = parseFloat(doc.data().priorityFee);
+          });
+        }
+      });
     db.collection("getmoco_orders")
       .doc(orderID)
       .get()
       .then((doc) => {
-        serviceFee = parseFloat(doc.data().serviceFee);
+        const prio = doc.data().prio;
 
-        totalItemsPrice = parseFloat(doc.data().totalItemsPrice);
+        totalItemsPrice = prio
+          ? parseFloat(doc.data().serviceFee).toFixed(2) +
+            parseFloat(priorityFee).toFixed(2)
+          : parseFloat(doc.data().serviceFee);
       })
       .then(() => {
         db.collection("getmoco_orders")
           .doc(orderID)
           .update({
             itemsPrice: "0.00",
-            totalItemsPrice: serviceFee.toFixed(2).toString(), // same as service fee
+            totalItemsPrice: totalItemsPrice.toFixed(2).toString(), // same as service fee
             driverID: "",
             status: "waiting",
             waiting: firebase.firestore.FieldValue.serverTimestamp(),
